@@ -145,7 +145,7 @@ namespace GO.API.Controllers.KNTC
         {
             try
             {
-                //return CreateActionResult(ConstantLogMessage.HT_NhomNguoiDung_Them, EnumLogType.Insert, () =>
+                // cmt
                 IdentityHelper IdentityHelper = new IdentityHelper();
                 IdentityHelper.CanBoID = CanBoID;
                 IdentityHelper.CoQuanID = CoQuanID;
