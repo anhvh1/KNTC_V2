@@ -145,7 +145,7 @@ namespace GO.API.Controllers.KNTC
         {
             try
             {
-                
+                // cmt
                 IdentityHelper IdentityHelper = new IdentityHelper();
                 IdentityHelper.CanBoID = CanBoID;
                 IdentityHelper.CoQuanID = CoQuanID;
