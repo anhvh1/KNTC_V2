@@ -1402,9 +1402,18 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             }
             else if (IdentityHelper.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode())
             {
-                var cr = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).FirstOrDefault();
-                var pr = ListAllCQ.Where(x => x.CoQuanID == cr.CoQuanChaID).FirstOrDefault();
-                cqList = new CoQuan().GetCoQuanByParentID(cr.CoQuanChaID).Where(x => x.CapID == CapQuanLy.CapUBNDXa.GetHashCode()).ToList();
+                if (IdentityHelper.ChuTichUBND == 1)
+                {
+                    var cr = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).FirstOrDefault();
+                    var pr = ListAllCQ.Where(x => x.CoQuanID == cr.CoQuanChaID).FirstOrDefault();
+                    cqList = new CoQuan().GetCoQuanByParentID(IdentityHelper.CoQuanID ?? 0).Where(x => x.CapID == CapQuanLy.CapUBNDXa.GetHashCode() || x.CapID == CapQuanLy.CapPhong.GetHashCode()).ToList();
+                }
+                else
+                {
+                    var cr = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).FirstOrDefault();
+                    var pr = ListAllCQ.Where(x => x.CoQuanID == cr.CoQuanChaID).FirstOrDefault();
+                    cqList = new CoQuan().GetCoQuanByParentID(cr.CoQuanChaID).Where(x => x.CapID == CapQuanLy.CapUBNDXa.GetHashCode()).ToList();
+                }
                 //cqList.Add(pr);
             }
             else
