@@ -619,12 +619,14 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 if (xldInfo.XuLyDonID > 0)
                 {
                     //xldInfo.XuLyDonID = xldID;
+                    xldInfo.CanBoXuLyID = IdentityHelper.CanBoID;
                     new Com.Gosol.KNTC.DAL.KNTC.TiepDan().UpdateXuLyDon(xldInfo);
                 }
                 else
                 {
                     xldInfo.SoDonThu = GetSoDonThu(IdentityHelper.CoQuanID ?? 0, IdentityHelper);
                     xldInfo.XuLyDonIDGoc = xldID;
+                    xldInfo.CanBoTiepNhapID = IdentityHelper.CanBoID;
                     xldID = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().InsertXuLyDon(xldInfo);
                     xldInfo.XuLyDonID = xldID;
                 }
