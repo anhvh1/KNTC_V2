@@ -463,6 +463,7 @@ namespace GO.API.Controllers.KNTC
                 IdentityHelper.CoQuanChaID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CoQuanChaID").Value, 0);
                 IdentityHelper.RoleID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "RoleID").Value, 0);
                 IdentityHelper.CapID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapID").Value, 0);
+                IdentityHelper.CapHanhChinh = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapHanhChinh").Value, 0);
 
                 int TotalRow = 0;
                 IList<CanBoInfo> Data;

@@ -155,6 +155,14 @@ namespace Com.Gosol.KNTC.API.Controllers.HeThong
                         }
                         else TrangThaiGiaoXacMinh = 0;
                     }
+                    else if (NguoiDung?.CapID == CapQuanLy.CapPhong.GetHashCode() && NguoiDung?.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocSo.GetHashCode())
+                    {
+                        if (NguoiDung?.RoleID == RoleEnum.LanhDao.GetHashCode() || NguoiDung?.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                        {
+                            TrangThaiGiaoXacMinh = 2;
+                        }
+                        else TrangThaiGiaoXacMinh = 0;
+                    }
                     else
                     {
                         if (NguoiDung?.RoleID == RoleEnum.LanhDao.GetHashCode())

@@ -143,7 +143,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         IdentityHelper,
                         item.NgayCapNhat,
                         item.ChuyenGiaiQuyetID,
-                        item.KetQuaID
+                        item.KetQuaID,
+                        item.LanhDaoDuyet2ID
                         );
                     item.TrangThaiMoi = renderTrangThai.TrangThaiMoi;
                     item.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;
@@ -1491,17 +1492,39 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             var Data = new CanBo().GetDanhSachLanhDao();
             if (IdentityHelper.CoQuanID > 0 && Data.Count > 0)
             {
+                var cq = new CoQuan().GetCoQuanByID(IdentityHelper.CoQuanID ?? 0);
                 //if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
                 //{
                 //    var cq = new CoQuan().GetCoQuanByID(IdentityHelper.CoQuanID ?? 0);
                 //    Data = Data.Where(x => x.CoQuanID == cq.CoQuanChaID && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
                 //}
                 //else 
-                if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+
+                if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocSo.GetHashCode())
                 {
-                    Data = Data.Where(x => (x.CoQuanID == IdentityHelper.CoQuanID || x.CoQuanID == IdentityHelper.CoQuanChaID) && (x.CanBoID != 20 && x.TenCanBo != "Administrator") && x.CanBoID != IdentityHelper.CanBoID).ToList();
+                    Data = new CanBo().GetDanhSachLanhDao_V2();
+
+                    if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        Data = Data.Where(x => x.CoQuanID == IdentityHelper.CoQuanID && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
+                    }
+                    else if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())// lãnh đạo phòng
+                    {
+                        Data = Data.Where(x => x.CoQuanID == cq.CoQuanChaID && x.RoleID == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
+                    }
+                    else if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())// lãnh đạo đơn vị
+                    {
+                        Data = Data.Where(x => x.CoQuanID == cq.CoQuanChaID && x.RoleID == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
+                    }
                 }
-                else Data = Data.Where(x => x.CoQuanID == IdentityHelper.CoQuanID && (x.CanBoID != 20 && x.TenCanBo != "Administrator") && x.CanBoID != IdentityHelper.CanBoID).ToList();
+                else
+                {
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        Data = Data.Where(x => (x.CoQuanID == IdentityHelper.CoQuanID || x.CoQuanID == IdentityHelper.CoQuanChaID) && (x.CanBoID != 20 && x.TenCanBo != "Administrator") && x.CanBoID != IdentityHelper.CanBoID).ToList();
+                    }
+                    else Data = Data.Where(x => x.CoQuanID == IdentityHelper.CoQuanID && (x.CanBoID != 20 && x.TenCanBo != "Administrator") && x.CanBoID != IdentityHelper.CanBoID).ToList();
+                }
             }
 
             return Data;
