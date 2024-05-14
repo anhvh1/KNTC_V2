@@ -164,7 +164,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         IdentityHelper,
                         donThuInfo.NgayCapNhat,
                         donThuInfo.ChuyenGiaiQuyetID,
-                        donThuInfo.KetQuaID
+                        donThuInfo.KetQuaID,
+                        donThuInfo.LanhDaoDuyet2ID
                         );
                     donThuInfo.TrangThaiMoi = renderTrangThai.TrangThaiMoi;
                     donThuInfo.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;

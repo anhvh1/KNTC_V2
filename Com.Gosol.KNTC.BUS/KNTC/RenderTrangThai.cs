@@ -415,17 +415,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             }
                         }
                     }
-                    else if (stateID == 18)
-                    {
-                        TrangThaiMoi = "Chưa giao xác minh";
-                        TrangThaiIDMoi = 202;
-                    }
                     else if (stateID == 19)
                     {
                         TrangThaiMoi = "Đang xác minh";
                         TrangThaiIDMoi = 203;
 
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                        if (lanhDaoDuyet2ID > 0 && lanhDaoDuyet2ID != IdentityHelper.CanBoID)
                         {
                             TrangThaiMoi = "Chưa giao xác minh";
                             TrangThaiIDMoi = 203;
@@ -484,20 +479,15 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
                         }
                     }
-                    else if (stateID == 22)
+                    else if (stateID == 9)
                     {
-                        TrangThaiMoi = "Trưởng phòng đã trình báo cáo xác minh";
+                        TrangThaiMoi = "Đã trình báo cáo xác minh";
                         TrangThaiIDMoi = 207;
                         if (IdentityHelper.RoleID == 1)
                         {
                             TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
                             TrangThaiIDMoi = 207;
                         }
-                    }
-                    else if (stateID == 9)
-                    {
-                        TrangThaiMoi = "Chưa ban hành quyết định";
-                        TrangThaiIDMoi = 208;
                     }
                     else if (stateID == 10)
                     {
