@@ -2596,6 +2596,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                             Info.listDoiTuongKN = new DoiTuongKN().GetByNhomKNID(Info.NhomKNID).ToList();
                         }
 
+                        Info.LanhDaoDuyet2ID = Utils.ConvertToInt32(dr["LanhDaoDuyet2ID"], 0);
                         Info.LoaiQuyTrinh = Utils.ConvertToInt32(dr["LoaiQuyTrinh"], 0);
                         Info.HuongGiaiQuyetID = Utils.ConvertToInt32(dr["HuongGiaiQuyetID"], 0);
                         Info.StateID = Utils.ConvertToInt32(dr["StateID"], 0);
