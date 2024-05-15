@@ -2200,6 +2200,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         Info.NhomKNID = Utils.ConvertToInt32(dr["NhomKNID"], 0);
                         Info.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         Info.HuongGiaiQuyetID = Utils.ConvertToInt32(dr["HuongGiaiQuyetID"], 0);
+                        Info.TrangThaiDuyet = Utils.ConvertToInt32(dr["TrangThaiDuyet"], 0);
                         //Info.Count = Utils.ConvertToInt32(dr["CountNum"], 0);
                         if (Info.NhomKNID > 0)
                         {
@@ -2349,6 +2350,9 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         Info.NhomKNID = Utils.ConvertToInt32(dr["NhomKNID"], 0);
                         Info.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         Info.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
+                        Info.LoaiQuyTrinh = Utils.ConvertToInt32(dr["LoaiQuyTrinh"], 0);
+                        Info.HuongGiaiQuyetID = Utils.ConvertToInt32(dr["HuongGiaiQuyetID"], 0);
+                        Info.TrangThaiDuyet = Utils.ConvertToInt32(dr["TrangThaiDuyet"], 0);
 
                         //Info.Count = Utils.ConvertToInt32(dr["CountNum"], 0);
                         if (Info.NhomKNID > 0)
