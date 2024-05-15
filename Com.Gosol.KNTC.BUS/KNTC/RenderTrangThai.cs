@@ -832,9 +832,9 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             }
                         }
                     }
-                    else if (stateID == 21)
+                    else if (stateID == 22)
                     {
-                        TrangThaiMoi = "Chuyên viên đã trình báo cáo xác minh";
+                        TrangThaiMoi = "Đrình báo cáo xác minh";
                         TrangThaiIDMoi = 206;
 
                         if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode())
@@ -847,7 +847,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         }
                         if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
                         {
-                            TrangThaiMoi = "Đang xác minh";
+                            TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                            TrangThaiIDMoi = 207;
                         }
 
                         if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode()
@@ -858,16 +859,16 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
                         }
                     }
-                    else if (stateID == 22)
-                    {
-                        TrangThaiMoi = "Trưởng phòng đã trình báo cáo xác minh";
-                        TrangThaiIDMoi = 207;
-                        if (IdentityHelper.RoleID == 1)
-                        {
-                            TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                            TrangThaiIDMoi = 207;
-                        }
-                    }
+                    //else if (stateID == 22)
+                    //{
+                    //    TrangThaiMoi = "Trưởng phòng đã trình báo cáo xác minh";
+                    //    TrangThaiIDMoi = 207;
+                    //    if (IdentityHelper.RoleID == 1)
+                    //    {
+                    //        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    //        TrangThaiIDMoi = 207;
+                    //    }
+                    //}
                     else if (stateID == 9)
                     {
                         TrangThaiMoi = "Chưa ban hành quyết định";

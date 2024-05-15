@@ -851,6 +851,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         phanGiaiQuyetInfo.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
                         phanGiaiQuyetInfo.LanhDaoDuyet2ID = Utils.ConvertToInt32(dr["LanhDaoDuyet2ID"], 0);
+                        phanGiaiQuyetInfo.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
 
                         phangiaiquyets.Add(phanGiaiQuyetInfo);
                     }
@@ -996,6 +997,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         phanGiaiQuyetInfo.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
                         phanGiaiQuyetInfo.LanhDaoDuyet2ID = Utils.ConvertToInt32(dr["LanhDaoDuyet2ID"], 0);
+                        phanGiaiQuyetInfo.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
                         
                         phangiaiquyets.Add(phanGiaiQuyetInfo);
                     }
@@ -1276,6 +1278,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         phanGiaiQuyetInfo.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
                         phanGiaiQuyetInfo.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
+                        phanGiaiQuyetInfo.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
                         phangiaiquyets.Add(phanGiaiQuyetInfo);
                     }
                     dr.Close();
@@ -1408,6 +1411,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         phanGiaiQuyetInfo.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
                         phanGiaiQuyetInfo.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
+                        phanGiaiQuyetInfo.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
 
 
                         phangiaiquyets.Add(phanGiaiQuyetInfo);
@@ -1831,6 +1835,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         dtinfo.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         dtinfo.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
                         dtinfo.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
+                        dtinfo.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
                         ListInfo.Add(dtinfo);
                     }
                     dr.Close();
