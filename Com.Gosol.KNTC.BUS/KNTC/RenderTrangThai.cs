@@ -816,7 +816,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         }
                         else if (trangThaiDuyet == 1)
                         {
-                            TrangThaiIDMoi = 105;
+                            TrangThaiIDMoi = 106;
                             TrangThaiMoi = "Đã duyệt";
                         }
 
