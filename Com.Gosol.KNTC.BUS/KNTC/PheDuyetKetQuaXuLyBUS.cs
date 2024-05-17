@@ -1456,7 +1456,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 new XuLyDonDAL().UpdateLanhDaoDuyet(DuyetXuLyModel.XuLyDonID, null, DuyetXuLyModel.LanhDaoID);
             }
 
-            if ((identityHelper.RoleID ?? 0) == (int)EnumChucVu.TruongPhong && identityHelper.CapHanhChinh == EnumCapHanhChinh.CapSoNganh.GetHashCode())
+            if ((identityHelper.RoleID ?? 0) == (int)EnumChucVu.TruongPhong && (identityHelper.CapHanhChinh == EnumCapHanhChinh.CapSoNganh.GetHashCode() || identityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode()))
             {
                 List<string> commandList = WorkflowInstance.Instance.GetAvailabelCommands(DuyetXuLyModel.XuLyDonID ?? 0);
                 int DUYET_XU_LY = 0;
