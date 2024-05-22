@@ -230,6 +230,7 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public int? LanhDaoDuyet2ID { get; set; }
         public int? TrangThaiDuyet { get; set; }
         public List<DanhSachHoSoTaiLieu> DanhSachHoSoTaiLieu { get; set; }
+
     }
 
     public class ChuyenDonModel

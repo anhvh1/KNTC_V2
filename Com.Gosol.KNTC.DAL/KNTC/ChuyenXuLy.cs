@@ -316,7 +316,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             parms[1].Value = cInfo.CQGuiID;
             parms[2].Value = cInfo.CQNhanID;
             parms[3].Value = cInfo.NgayChuyen;
-            parms[4].Value = cInfo.FileDinhKem;
+            parms[4].Value = string.IsNullOrEmpty(cInfo.FileDinhKem) ? DBNull.Value : cInfo.FileDinhKem;
 
             if (cInfo.CQNhanID == 0) parms[2].Value = DBNull.Value;
         }

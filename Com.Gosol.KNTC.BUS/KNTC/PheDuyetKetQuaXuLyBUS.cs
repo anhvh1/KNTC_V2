@@ -480,39 +480,56 @@ namespace Com.Gosol.KNTC.BUS.KNTC
 
                             if (info.HuongGiaiQuyetID == chuyenDon)
                             {
-                                #region chuyen don
-
-                                TiepDanInfo xldInfo = null;
-                                xldInfo = info;
-
-                                if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
-                                {
-                                    if (suDungQTVanThuTiepDan == false)
-                                        ChuyenDon(xldInfo, IdentityHelper);
-                                }
-
-                                DateTime NgayChuyen = DateTime.Now;
-                                if (suDungQTVanThuTiepDan)
-                                    commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[6];
-                                else
-                                    commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[3];
-
-
-                                kq = WorkflowInstance.Instance.ExecuteCommand(idxulydon, canboid, commandCode, NgayChuyen, DuyetXuLyModel.NoiDungPheDuyet);
-
+                                #region chuyen don giống de xuat thu ly để trình lãnh đạo cấp trên chuyển
+                                commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[0];
+                                DateTime NgayThuLy = DateTime.Now;
                                 try
                                 {
-                                    if (kq == true)
-                                    {
-                                        if (suDungQTVanThuTiepDan == false)
-                                            new ChuyenXuLy().ChuyenDonInsert(idxulydon, NgayChuyen);
+                                    new XuLyDonDAL().UpdateNgayThuLy(idxulydon, NgayThuLy);
 
-                                    }
                                 }
                                 catch
                                 {
+
                                 }
-                                showThongBao = false;
+                                DocumentInfo dCInfo = new DonThuDAL().GetDocumentByID(idxulydon);
+
+                                kq = WorkflowInstance.Instance.ExecuteCommand(idxulydon, canboid, commandCode, DateTime.Now.AddDays(45), DuyetXuLyModel.NoiDungPheDuyet ?? string.Empty);
+
+                                #endregion
+
+                                #region 
+                                //TiepDanInfo xldInfo = null;
+                                //xldInfo = info;
+
+                                //if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
+                                //{
+                                //    if (suDungQTVanThuTiepDan == false)
+                                //        ChuyenDon(xldInfo, IdentityHelper);
+                                //}
+
+                                //DateTime NgayChuyen = DateTime.Now;
+                                //if (suDungQTVanThuTiepDan)
+                                //    commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[6];
+                                //else
+                                //    commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[3];
+
+
+                                //kq = WorkflowInstance.Instance.ExecuteCommand(idxulydon, canboid, commandCode, NgayChuyen, DuyetXuLyModel.NoiDungPheDuyet);
+
+                                //try
+                                //{
+                                //    if (kq == true)
+                                //    {
+                                //        if (suDungQTVanThuTiepDan == false)
+                                //            new ChuyenXuLy().ChuyenDonInsert(idxulydon, NgayChuyen);
+
+                                //    }
+                                //}
+                                //catch
+                                //{
+                                //}
+                                //showThongBao = false;
                                 //if (laBanTCDTinh)
                                 //{
                                 //    ScriptManager.RegisterStartupScript(this, typeof(Page), "PhanGiaiQuyet", "PhanGiaiQuyet('" + idxulydon + "');", true);
@@ -1199,10 +1216,10 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             else
             {
                 CoQuanInfo cqInfo = new CoQuan().GetCoQuanByID(coquanID);
-                maCQ = cqInfo.MaCQ;
+                maCQ = cqInfo?.MaCQ;
             }
 
-            string numberPart = Regex.Replace(soDonThu.Replace(maCQ, ""), "[^0-9.]", "");
+            string numberPart = !string.IsNullOrEmpty(soDonThu) ? Regex.Replace(soDonThu.Replace(maCQ, ""), "[^0-9.]", "") : "";
             int soDonMoi = Utils.ConvertToInt32(numberPart, 0) + 1;
 
             return maCQ + soDonMoi;
@@ -1237,6 +1254,16 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 {
                     commandCode = WorkflowInstance.Instance.GetAvailabelCommands(docunmentid).Where(x => x.ToString() == "KetThuc").FirstOrDefault();
 
+                }
+                else
+                {
+                    commandCode = WorkflowInstance.Instance.GetAvailabelCommands(docunmentid).Where(x => x.ToString() == "ChuyenDonHoacGuiVBDonDoc").FirstOrDefault();
+                    kq = WorkflowInstance.Instance.ExecuteCommand(docunmentid, canboid, commandCode, dueDate, "");
+                    stateName = WorkflowInstance.Instance.GetCurrentStateOfDocument(docunmentid);
+                    if (stateName == Constant.CHUYENDON_RAVBDONDOC)
+                    {
+                        commandCode = WorkflowInstance.Instance.GetAvailabelCommands(docunmentid).Where(x => x.ToString() == "KetThuc").FirstOrDefault();
+                    }
                 }
 
                 int val = 0;

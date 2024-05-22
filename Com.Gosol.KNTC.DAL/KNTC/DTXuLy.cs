@@ -2427,6 +2427,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                     while (dr.Read())
                     {
                         DTXuLyInfo Info = GetDataDTDuyetXuLy(dr);
+                        Info.LoaiQuyTrinh = Utils.ConvertToInt32(dr["LoaiQuyTrinh"], 0);
                         Info.StateID = Utils.ConvertToInt32(dr["StateID"], 0);
                         Info.NgayQuaHan = Utils.ConvertToDateTime(dr["HanXuLyDueDate"], DateTime.MaxValue);
                         Info.HanXuLy = Format.FormatDate(Info.NgayQuaHan);

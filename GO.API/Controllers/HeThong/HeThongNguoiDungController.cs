@@ -364,11 +364,26 @@ namespace Com.Gosol.KNTC.API.Controllers.HeThong
                         }
                         else if (NguoiDung?.CapID == CapQuanLy.CapPhong.GetHashCode() && NguoiDung?.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
                         {
-                            if (NguoiDung?.RoleID == RoleEnum.LanhDao.GetHashCode())
+                            if (NguoiDung?.SuDungQuyTrinhGQPhucTap == true)
                             {
-                                TrangThaiGiaoXacMinh = 2;
+                                if (NguoiDung?.RoleID == RoleEnum.LanhDao.GetHashCode())
+                                {
+                                    TrangThaiGiaoXacMinh = 1;
+                                }
+                                else if (NguoiDung?.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                                {
+                                    TrangThaiGiaoXacMinh = 2;
+                                }
+                                else TrangThaiGiaoXacMinh = 0;
                             }
-                            else TrangThaiGiaoXacMinh = 0;
+                            else
+                            {
+                                if (NguoiDung?.RoleID == RoleEnum.LanhDao.GetHashCode())
+                                {
+                                    TrangThaiGiaoXacMinh = 2;
+                                }
+                                else TrangThaiGiaoXacMinh = 0;
+                            }
                         }
                         else if (NguoiDung?.CapID == CapQuanLy.CapPhong.GetHashCode() && NguoiDung?.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocSo.GetHashCode())
                         {

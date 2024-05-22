@@ -29,12 +29,13 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             )
         {
 
-            // 1 : SBN, phòng thuộc huyện
+            // 1 : SBN
             // 2 : BTD Huyện
             // 3 : Xã
             // 4 : BTD Tỉnh
             // 5 : phòng thuộc sở
-            if (loaiQuyTrinh == 1) // SBN, phòng thuộc huyện, phòng thuộc huyện 
+            // 6 : phòng thuộc huyện
+            if (loaiQuyTrinh == 1) // SBN, phòng thuộc huyện
             {
                 SBN(
                     huongGiaiQuyetID,
@@ -111,6 +112,21 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     lanhDaoDuyet2ID
                 );
             }
+            if (loaiQuyTrinh == 6) //phòng thuộc huyện 
+            {
+                PhongThuocHuyen(
+                    huongGiaiQuyetID,
+                    stateName,
+                    stateID,
+                    nextStateID,
+                    trangThaiDuyet,
+                    tringDuThao,
+                    IdentityHelper,
+                    ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
+                    chuyenGiaiQuyetID,
+                    ketQuaID
+                );
+            }
         }
         public void BTDCapTinh(
             int? huongGiaiQuyetID,
@@ -134,54 +150,90 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             }
             else
             {
-                if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                if (stateName == Constant.CV_TiepNhan || stateID == 11)
                 {
-                    if (stateName == Constant.CV_TiepNhan || stateID == 11)
+                    if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
                     {
-                        if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
+                        TrangThaiMoi = "Đã xử lý";
+                        TrangThaiIDMoi = 101;
+                        if (nextStateID == 11 || trangThaiDuyet == 2)
                         {
-                            TrangThaiMoi = "Đã xử lý";
-                            TrangThaiIDMoi = 101;
-                            if (nextStateID == 11 || trangThaiDuyet == 2)
+                            TrangThaiMoi = "Xử lý lại";
+                            TrangThaiIDMoi = 102;
+                        }
+                    }
+                    else
+                    {
+                        TrangThaiMoi = "Chưa xử lý";
+                        TrangThaiIDMoi = 100;
+                    }
+                }
+                else if (stateID == 6)
+                {
+                    TrangThaiIDMoi = 103;
+                    TrangThaiMoi = "Trưởng ban chưa duyệt";
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã trình";
+                    }
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt";
+                    }
+                }
+                else if (stateID == 7/* || stateID == 25*/)
+                {
+                    if (tringDuThao == 0)
+                    {
+                        TrangThaiMoi = "Trưởng ban đã duyệt";
+                        TrangThaiIDMoi = 104;
+                    }
+                    else if (tringDuThao == 1)
+                    {
+                        TrangThaiMoi = "Trưởng ban đã trình";
+                        TrangThaiIDMoi = 105;
+                    }
+                    else if (tringDuThao == 2)
+                    {
+                        TrangThaiMoi = "Đang xác minh";
+                        TrangThaiIDMoi = 200;
+
+                        if (chuyenGiaiQuyetID != null)
+                        {
+                            if (chuyenGiaiQuyetID > 0)
                             {
-                                TrangThaiMoi = "Xử lý lại";
-                                TrangThaiIDMoi = 102;
+                                TrangThaiMoi = "Đã cập nhật quyết định";
+                                TrangThaiIDMoi = 201;
+                            }
+                            else
+                            {
+                                TrangThaiMoi = "Chưa cập nhật quyết định";
+                                TrangThaiIDMoi = 200;
                             }
                         }
-                        else
-                        {
-                            TrangThaiMoi = "Chưa xử lý";
-                            TrangThaiIDMoi = 100;
-                        }
                     }
-                    else if (stateID == 6)
-                    {
-                        TrangThaiIDMoi = 103;
-                        TrangThaiMoi = "Trưởng ban chưa duyệt";
-                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
-                        {
-                            TrangThaiMoi = "Đã trình";
-                        }
-                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
-                        {
-                            TrangThaiMoi = "Chưa duyệt";
-                        }
-                    }
-                    else if (stateID == 7/* || stateID == 25*/)
+
+                    //if (chucNangId == ChucNangEnum.GiaiQuyetDon.GetHashCode())
+                    //{
+                    //    TrangThaiMoi = "Chưa giao xác minh";
+                    //    TrangThaiIDMoi = 202;
+                    //}
+
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode() && IdentityHelper.ChuTichUBND == 1)
                     {
                         if (tringDuThao == 0)
                         {
-                            TrangThaiMoi = "Trưởng ban đã duyệt";
+                            TrangThaiMoi = "Chưa duyệt";
                             TrangThaiIDMoi = 104;
                         }
                         else if (tringDuThao == 1)
                         {
-                            TrangThaiMoi = "Trưởng ban đã trình";
+                            TrangThaiMoi = "Chưa ban hành quyết định giao xác minh";
                             TrangThaiIDMoi = 105;
                         }
                         else if (tringDuThao == 2)
                         {
-                            TrangThaiMoi = "Đang xác minh";
+                            TrangThaiMoi = "Đã ban hành quyết định giao xác minh";
                             TrangThaiIDMoi = 200;
 
                             if (chuyenGiaiQuyetID != null)
@@ -198,155 +250,135 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                                 }
                             }
                         }
-
-                        //if (chucNangId == ChucNangEnum.GiaiQuyetDon.GetHashCode())
-                        //{
-                        //    TrangThaiMoi = "Chưa giao xác minh";
-                        //    TrangThaiIDMoi = 202;
-                        //}
-
-                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode() && IdentityHelper.ChuTichUBND == 1)
-                        {
-                            if (tringDuThao == 0)
-                            {
-                                TrangThaiMoi = "Chưa duyệt";
-                                TrangThaiIDMoi = 104;
-                            }
-                            else if (tringDuThao == 1)
-                            {
-                                TrangThaiMoi = "Chưa ban hành quyết định giao xác minh";
-                                TrangThaiIDMoi = 105;
-                            }
-                            else if (tringDuThao == 2)
-                            {
-                                TrangThaiMoi = "Đã ban hành quyết định giao xác minh";
-                                TrangThaiIDMoi = 200;
-
-                                if (chuyenGiaiQuyetID != null)
-                                {
-                                    if (chuyenGiaiQuyetID > 0)
-                                    {
-                                        TrangThaiMoi = "Đã cập nhật quyết định";
-                                        TrangThaiIDMoi = 201;
-                                    }
-                                    else
-                                    {
-                                        TrangThaiMoi = "Chưa cập nhật quyết định";
-                                        TrangThaiIDMoi = 200;
-                                    }
-                                }
-                            }
-                        }
                     }
-                    else if (stateID == 18)
+                }
+                else if (stateID == 18)
+                {
+                    TrangThaiMoi = "Chưa giao xác minh";
+                    TrangThaiIDMoi = 202;
+                }
+                else if (stateID == 19)
+                {
+                    TrangThaiMoi = "Đang xác minh";
+                    TrangThaiIDMoi = 203;
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa giao xác minh";
+                        TrangThaiIDMoi = 203;
+                    }
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode() && stateID == 19
+                    // tuandhh bổ sung cấp lãnh đạo phòng chỉ dành cho btd tỉnh, btd huyện lãnh đạo phân cho ai thì cấp đó xác minh
+                    && IdentityHelper.CapHanhChinh != EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
                     {
                         TrangThaiMoi = "Chưa giao xác minh";
                         TrangThaiIDMoi = 202;
                     }
-                    else if (stateID == 19)
+                }
+                else if (stateID == 8)
+                {
+                    //TrangThaiMoi = "Chuyên viên đang xác minh";
+                    TrangThaiMoi = "Đang xác minh";
+                    TrangThaiIDMoi = 204;
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
                     {
-                        TrangThaiMoi = "Đang xác minh";
-                        TrangThaiIDMoi = 203;
-
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                        if (ngayCapNhatTheoDoiXuLy == DateTime.MinValue)
                         {
-                            TrangThaiMoi = "Chưa giao xác minh";
-                            TrangThaiIDMoi = 203;
+                            TrangThaiMoi = "Chưa xác minh";
+                            TrangThaiIDMoi = 204;
                         }
-
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode() && stateID == 19
-                        // tuandhh bổ sung cấp lãnh đạo phòng chỉ dành cho btd tỉnh, btd huyện lãnh đạo phân cho ai thì cấp đó xác minh
-                        && IdentityHelper.CapHanhChinh != EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
-                        {
-                            TrangThaiMoi = "Chưa giao xác minh";
-                            TrangThaiIDMoi = 202;
-                        }
-                    }
-                    else if (stateID == 8)
-                    {
-                        //TrangThaiMoi = "Chuyên viên đang xác minh";
-                        TrangThaiMoi = "Đang xác minh";
-                        TrangThaiIDMoi = 204;
-                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
-                        {
-                            if (ngayCapNhatTheoDoiXuLy == DateTime.MinValue)
-                            {
-                                TrangThaiMoi = "Chưa xác minh";
-                                TrangThaiIDMoi = 204;
-                            }
-                            else
-                            {
-                                TrangThaiMoi = "Đang xác minh";
-                                TrangThaiIDMoi = 205;
-                            }
-                        }
-                    }
-                    else if (stateID == 21)
-                    {
-                        TrangThaiMoi = "Chuyên viên đã trình báo cáo xác minh";
-                        TrangThaiIDMoi = 206;
-
-                        if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode())
-                        {
-                            TrangThaiMoi = "Đã trình báo cáo xác minh";
-                        }
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
-                        {
-                            TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                        }
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                        else
                         {
                             TrangThaiMoi = "Đang xác minh";
-                        }
-
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode()
-                                    || (IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                                    || (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                                    )
-                        {
-                            TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                        }
-                    }
-                    else if (stateID == 22)
-                    {
-                        TrangThaiMoi = "Trưởng phòng đã trình báo cáo xác minh";
-                        TrangThaiIDMoi = 207;
-                        if (IdentityHelper.RoleID == 1)
-                        {
-                            TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                            TrangThaiIDMoi = 207;
-                        }
-                    }
-                    else if (stateID == 9)
-                    {
-                        TrangThaiMoi = "Chưa ban hành quyết định";
-                        TrangThaiIDMoi = 208;
-                    }
-                    else if (stateID == 10)
-                    {
-                        TrangThaiMoi = "Đang thi hành quyết định giải quyết";
-                        TrangThaiIDMoi = 300;
-                        //if (chucNangId == ChucNangEnum.CapNhatQuyetDinhGiaiQuyet.GetHashCode())
-                        //{
-                        //    TrangThaiMoi = "Chưa cập nhập";
-                        //    TrangThaiIDMoi = 300;
-                        //}
-                        if (ketQuaID != 0)
-                        {
-                            TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
-                            TrangThaiIDMoi = 301;
-                        }
-
-                        if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
-                        {
-                            TrangThaiIDMoi = 103;
-                            TrangThaiMoi = "Đã trình";
+                            TrangThaiIDMoi = 205;
                         }
                     }
                 }
+                else if (stateID == 21)
+                {
+                    TrangThaiMoi = "Chuyên viên đã trình báo cáo xác minh";
+                    TrangThaiIDMoi = 206;
 
-                CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
+                    if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    }
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    }
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đang xác minh";
+                    }
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode()
+                                || (IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                                || (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                                )
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    }
+                }
+                else if (stateID == 22)
+                {
+                    TrangThaiMoi = "Trưởng phòng đã trình báo cáo xác minh";
+                    TrangThaiIDMoi = 207;
+                    if (IdentityHelper.RoleID == 1)
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                        TrangThaiIDMoi = 207;
+                    }
+                }
+                else if (stateID == 9)
+                {
+                    TrangThaiMoi = "Chưa ban hành quyết định";
+                    TrangThaiIDMoi = 208;
+                }
+                else if (stateID == 10)
+                {
+                    TrangThaiMoi = "Đang thi hành quyết định giải quyết";
+                    TrangThaiIDMoi = 300;
+                    
+                    if (ketQuaID != 0)
+                    {
+                        TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
+                        TrangThaiIDMoi = 301;
+                    }
+
+                    if (huongGiaiQuyetID != (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                    {
+                        if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
+                        {
+                            TrangThaiIDMoi = 401;
+                            TrangThaiMoi = "Đã chuyển đơn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.HuongDan)
+                        {
+                            TrangThaiIDMoi = 402;
+                            TrangThaiMoi = "Đã hướng dẫn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.RaVanBanDonDoc || huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 403;
+                            TrangThaiMoi = "Đã đôn đốc";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 404;
+                            TrangThaiMoi = "Đã chỉ đạo";
+                        }
+                        else
+                        {
+                            TrangThaiIDMoi = 405;
+                            TrangThaiMoi = "Đã hoàn thành";
+                        }
+                    }
+                }
             }
+
+            CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
         }
 
         public void PhongThuocSo(
@@ -372,171 +404,191 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             }
             else
             {
-                if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                if (stateName == Constant.CV_TiepNhan || stateID == 11)
                 {
-                    if (stateName == Constant.CV_TiepNhan || stateID == 11)
+                    if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
                     {
-                        if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
+                        TrangThaiMoi = "Đã xử lý";
+                        TrangThaiIDMoi = 101;
+                        if (nextStateID == 11 || trangThaiDuyet == 2)
                         {
-                            TrangThaiMoi = "Đã xử lý";
-                            TrangThaiIDMoi = 101;
-                            if (nextStateID == 11 || trangThaiDuyet == 2)
-                            {
-                                TrangThaiMoi = "Xử lý lại";
-                                TrangThaiIDMoi = 102;
-                            }
-                        }
-                        else
-                        {
-                            TrangThaiMoi = "Chưa xử lý";
-                            TrangThaiIDMoi = 100;
+                            TrangThaiMoi = "Xử lý lại";
+                            TrangThaiIDMoi = 102;
                         }
                     }
-                    else if (stateID == 6)
+                    else
                     {
-                        TrangThaiIDMoi = 103;
-                        TrangThaiMoi = "Lãnh đạo chưa duyệt";
+                        TrangThaiMoi = "Chưa xử lý";
+                        TrangThaiIDMoi = 100;
+                    }
+                }
+                else if (stateID == 6)
+                {
+                    TrangThaiIDMoi = 103;
+                    TrangThaiMoi = "Lãnh đạo chưa duyệt";
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã trình";
+                    }
+                    else /*((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())*/
+                    {
+                        TrangThaiMoi = "Chưa duyệt";
+                    }
+                }
+                else if (stateID == 7)
+                {
+                    if (trangThaiDuyet == 0)
+                    {
+                        TrangThaiMoi = "Đã duyệt";
+                        TrangThaiIDMoi = 104;
                         if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
                         {
                             TrangThaiMoi = "Đã trình";
                         }
-                        else /*((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())*/
+                        if (lanhDaoDuyet2ID > 0)
+                        {
+                            TrangThaiMoi = "Đã trình";
+                            TrangThaiIDMoi = 105;
+                        }
+                        if (lanhDaoDuyet2ID > 0 && lanhDaoDuyet2ID == IdentityHelper.CanBoID)
                         {
                             TrangThaiMoi = "Chưa duyệt";
+                            TrangThaiIDMoi = 105;
                         }
+
                     }
-                    else if (stateID == 7)
+                    else if (trangThaiDuyet == 1)
                     {
-                        if (trangThaiDuyet == 0)
+                        TrangThaiMoi = "Đã duyệt";
+                        TrangThaiIDMoi = 106;
+                        if (lanhDaoDuyet2ID > 0 && lanhDaoDuyet2ID == IdentityHelper.CanBoID)
                         {
-                            TrangThaiMoi = "Đã duyệt";
-                            TrangThaiIDMoi = 104;
-                            if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
-                            {
-                                TrangThaiMoi = "Đã trình";
-                            }
-                            if (lanhDaoDuyet2ID > 0)
-                            {
-                                TrangThaiMoi = "Đã trình";
-                                TrangThaiIDMoi = 105;
-                            }
-                            if (lanhDaoDuyet2ID > 0 && lanhDaoDuyet2ID == IdentityHelper.CanBoID)
-                            {
-                                TrangThaiMoi = "Chưa duyệt";
-                                TrangThaiIDMoi = 105;
-                            }
-
-                        }
-                        else if (trangThaiDuyet == 1)
-                        {
-                            TrangThaiMoi = "Đã duyệt";
-                            TrangThaiIDMoi = 106;
-                            if (lanhDaoDuyet2ID > 0 && lanhDaoDuyet2ID == IdentityHelper.CanBoID)
-                            {
-                                TrangThaiMoi = "Đã duyệt và chưa giao xác minh";
-                                TrangThaiIDMoi = 202;
-                            }
-                        }
-                    }
-                    else if (stateID == 19)
-                    {
-                        TrangThaiMoi = "Đang xác minh";
-                        TrangThaiIDMoi = 203;
-
-                        if (lanhDaoDuyet2ID > 0 && lanhDaoDuyet2ID != IdentityHelper.CanBoID)
-                        {
-                            TrangThaiMoi = "Chưa giao xác minh";
-                            TrangThaiIDMoi = 203;
-                        }
-
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode() && stateID == 19
-                        // tuandhh bổ sung cấp lãnh đạo phòng chỉ dành cho btd tỉnh, btd huyện lãnh đạo phân cho ai thì cấp đó xác minh
-                        && IdentityHelper.CapHanhChinh != EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
-                        {
-                            TrangThaiMoi = "Chưa giao xác minh";
+                            TrangThaiMoi = "Đã duyệt và chưa giao xác minh";
                             TrangThaiIDMoi = 202;
                         }
                     }
-                    else if (stateID == 8)
-                    {
-                        //TrangThaiMoi = "Chuyên viên đang xác minh";
-                        TrangThaiMoi = "Đang xác minh";
-                        TrangThaiIDMoi = 204;
-                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
-                        {
-                            if (ngayCapNhatTheoDoiXuLy == DateTime.MinValue)
-                            {
-                                TrangThaiMoi = "Chưa xác minh";
-                                TrangThaiIDMoi = 204;
-                            }
-                            else
-                            {
-                                TrangThaiMoi = "Đang xác minh";
-                                TrangThaiIDMoi = 205;
-                            }
-                        }
-                    }
-                    else if (stateID == 21)
-                    {
-                        TrangThaiMoi = "Chuyên viên đã trình báo cáo xác minh";
-                        TrangThaiIDMoi = 206;
+                }
+                else if (stateID == 19)
+                {
+                    TrangThaiMoi = "Đang xác minh";
+                    TrangThaiIDMoi = 203;
 
-                        if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode())
+                    if (lanhDaoDuyet2ID > 0 && lanhDaoDuyet2ID != IdentityHelper.CanBoID)
+                    {
+                        TrangThaiMoi = "Chưa giao xác minh";
+                        TrangThaiIDMoi = 203;
+                    }
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode() && stateID == 19
+                    // tuandhh bổ sung cấp lãnh đạo phòng chỉ dành cho btd tỉnh, btd huyện lãnh đạo phân cho ai thì cấp đó xác minh
+                    && IdentityHelper.CapHanhChinh != EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa giao xác minh";
+                        TrangThaiIDMoi = 202;
+                    }
+                }
+                else if (stateID == 8)
+                {
+                    //TrangThaiMoi = "Chuyên viên đang xác minh";
+                    TrangThaiMoi = "Đang xác minh";
+                    TrangThaiIDMoi = 204;
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        if (ngayCapNhatTheoDoiXuLy == DateTime.MinValue)
                         {
-                            TrangThaiMoi = "Đã trình báo cáo xác minh";
+                            TrangThaiMoi = "Chưa xác minh";
+                            TrangThaiIDMoi = 204;
                         }
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
-                        {
-                            TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                        }
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                        else
                         {
                             TrangThaiMoi = "Đang xác minh";
-                        }
-
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode()
-                                    || (IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                                    || (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                                    )
-                        {
-                            TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                        }
-                    }
-                    else if (stateID == 9)
-                    {
-                        TrangThaiMoi = "Đã trình báo cáo xác minh";
-                        TrangThaiIDMoi = 207;
-                        if (IdentityHelper.RoleID == 1)
-                        {
-                            TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                            TrangThaiIDMoi = 207;
-                        }
-                    }
-                    else if (stateID == 10)
-                    {
-                        TrangThaiMoi = "Đang thi hành quyết định giải quyết";
-                        TrangThaiIDMoi = 300;
-                        //if (chucNangId == ChucNangEnum.CapNhatQuyetDinhGiaiQuyet.GetHashCode())
-                        //{
-                        //    TrangThaiMoi = "Chưa cập nhập";
-                        //    TrangThaiIDMoi = 300;
-                        //}
-                        if (ketQuaID != 0)
-                        {
-                            TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
-                            TrangThaiIDMoi = 301;
-                        }
-
-                        if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
-                        {
-                            TrangThaiIDMoi = 103;
-                            TrangThaiMoi = "Đã trình";
+                            TrangThaiIDMoi = 205;
                         }
                     }
                 }
+                else if (stateID == 21)
+                {
+                    TrangThaiMoi = "Chuyên viên đã trình báo cáo xác minh";
+                    TrangThaiIDMoi = 206;
 
-                CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
+                    if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    }
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    }
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đang xác minh";
+                    }
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode()
+                                || (IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                                || (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                                )
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    }
+                }
+                else if (stateID == 9)
+                {
+                    TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    TrangThaiIDMoi = 207;
+                    if (IdentityHelper.RoleID == 1)
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                        TrangThaiIDMoi = 207;
+                    }
+                }
+                else if (stateID == 10)
+                {
+                    TrangThaiMoi = "Đang thi hành quyết định giải quyết";
+                    TrangThaiIDMoi = 300;
+                    //if (chucNangId == ChucNangEnum.CapNhatQuyetDinhGiaiQuyet.GetHashCode())
+                    //{
+                    //    TrangThaiMoi = "Chưa cập nhập";
+                    //    TrangThaiIDMoi = 300;
+                    //}
+                    if (ketQuaID != 0)
+                    {
+                        TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
+                        TrangThaiIDMoi = 301;
+                    }
+
+                    if (huongGiaiQuyetID != (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                    {
+                        if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
+                        {
+                            TrangThaiIDMoi = 401;
+                            TrangThaiMoi = "Đã chuyển đơn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.HuongDan)
+                        {
+                            TrangThaiIDMoi = 402;
+                            TrangThaiMoi = "Đã hướng dẫn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.RaVanBanDonDoc || huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 403;
+                            TrangThaiMoi = "Đã đôn đốc";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 404;
+                            TrangThaiMoi = "Đã chỉ đạo";
+                        }
+                        else
+                        {
+                            TrangThaiIDMoi = 405;
+                            TrangThaiMoi = "Đã hoàn thành";
+                        }
+                    }
+                }
             }
+
+            CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
         }
 
         public void SBN( // sở ban ngành, phòng thuộc huyện, phòng thuộc sở
@@ -559,174 +611,201 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 TrangThaiMoi = "Chưa xử lý";
                 TrangThaiIDMoi = 100;
             }
-            else if (stateName == Constant.CV_TiepNhan || stateID == 11)
+            else
             {
-                if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
+                if (stateName == Constant.CV_TiepNhan || stateID == 11)
                 {
-                    TrangThaiMoi = "Đã xử lý";
-                    TrangThaiIDMoi = 101;
-                    if (nextStateID == 11 || trangThaiDuyet == 2)
+                    if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
                     {
-                        TrangThaiMoi = "Xử lý lại";
-                        TrangThaiIDMoi = 102;
+                        TrangThaiMoi = "Đã xử lý";
+                        TrangThaiIDMoi = 101;
+                        if (nextStateID == 11 || trangThaiDuyet == 2)
+                        {
+                            TrangThaiMoi = "Xử lý lại";
+                            TrangThaiIDMoi = 102;
+                        }
+                    }
+                    else
+                    {
+                        TrangThaiMoi = "Chưa xử lý";
+                        TrangThaiIDMoi = 100;
                     }
                 }
-                else
+                else if (stateID == 5)
                 {
-                    TrangThaiMoi = "Chưa xử lý";
-                    TrangThaiIDMoi = 100;
-                }
-            }
-            else if (stateID == 5)
-            {
-                TrangThaiIDMoi = 103;
-                TrangThaiMoi = "Trưởng phòng chưa duyệt";
-                if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
-                {
-                    TrangThaiMoi = "Đã trình";
-                }
-                if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
-                {
-                    TrangThaiMoi = "Chưa duyệt";
-                }
-            }
-            else if (stateID == 6)
-            {
-                TrangThaiIDMoi = 104;
-                TrangThaiMoi = "Trưởng phòng đã duyệt";
-                if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
-                {
-                    TrangThaiMoi = "Đã duyệt";
-                }
-                if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
-                {
-                    TrangThaiMoi = "Chưa duyệt";
-                }
-            }
-            else if (stateID == 7)
-            {
-                if (trangThaiDuyet == 0)
-                {
-                    TrangThaiMoi = "Trưởng phòng đã duyệt";
-                    TrangThaiIDMoi = 105;
-                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
+                    TrangThaiIDMoi = 103;
+                    TrangThaiMoi = "Trưởng phòng chưa duyệt";
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
                     {
                         TrangThaiMoi = "Đã trình";
                     }
-                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
                     {
                         TrangThaiMoi = "Chưa duyệt";
                     }
                 }
-                else if (trangThaiDuyet == 1)
+                else if (stateID == 6)
                 {
-                    TrangThaiMoi = "Lãnh đạo đã duyệt";
-                    TrangThaiIDMoi = 106;
+                    TrangThaiIDMoi = 104;
+                    TrangThaiMoi = "Trưởng phòng đã duyệt";
                     if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
                     {
                         TrangThaiMoi = "Đã duyệt";
                     }
                     if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
                     {
-                        TrangThaiMoi = "Đã duyệt và chưa giao xác minh";
+                        TrangThaiMoi = "Chưa duyệt";
+                    }
+                }
+                else if (stateID == 7)
+                {
+                    if (trangThaiDuyet == 0)
+                    {
+                        TrangThaiMoi = "Trưởng phòng đã duyệt";
+                        TrangThaiIDMoi = 105;
+                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
+                        {
+                            TrangThaiMoi = "Đã trình";
+                        }
+                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
+                        {
+                            TrangThaiMoi = "Chưa duyệt";
+                        }
+                    }
+                    else if (trangThaiDuyet == 1)
+                    {
+                        TrangThaiMoi = "Lãnh đạo đã duyệt";
+                        TrangThaiIDMoi = 106;
+                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
+                        {
+                            TrangThaiMoi = "Đã duyệt";
+                        }
+                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
+                        {
+                            TrangThaiMoi = "Đã duyệt và chưa giao xác minh";
+                            TrangThaiIDMoi = 202;
+                        }
+                    }
+                }
+                else if (stateID == 19)
+                {
+                    TrangThaiMoi = "Đang xác minh";
+                    TrangThaiIDMoi = 203;
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa giao xác minh";
+                        TrangThaiIDMoi = 203;
+                    }
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode() && stateID == 19
+                    // tuandhh bổ sung cấp lãnh đạo phòng chỉ dành cho btd tỉnh, btd huyện lãnh đạo phân cho ai thì cấp đó xác minh
+                    && IdentityHelper.CapHanhChinh != EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa giao xác minh";
                         TrangThaiIDMoi = 202;
                     }
                 }
-            }
-            else if (stateID == 19)
-            {
-                TrangThaiMoi = "Đang xác minh";
-                TrangThaiIDMoi = 203;
-
-                if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                else if (stateID == 8)
                 {
-                    TrangThaiMoi = "Chưa giao xác minh";
-                    TrangThaiIDMoi = 203;
-                }
-
-                if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode() && stateID == 19
-                // tuandhh bổ sung cấp lãnh đạo phòng chỉ dành cho btd tỉnh, btd huyện lãnh đạo phân cho ai thì cấp đó xác minh
-                && IdentityHelper.CapHanhChinh != EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
-                {
-                    TrangThaiMoi = "Chưa giao xác minh";
-                    TrangThaiIDMoi = 202;
-                }
-            }
-            else if (stateID == 8)
-            {
-                //TrangThaiMoi = "Chuyên viên đang xác minh";
-                TrangThaiMoi = "Đang xác minh";
-                TrangThaiIDMoi = 204;
-                if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
-                {
-                    if (ngayCapNhatTheoDoiXuLy == DateTime.MinValue)
-                    {
-                        TrangThaiMoi = "Chưa xác minh";
-                        TrangThaiIDMoi = 204;
-                    }
-                    else
-                    {
-                        TrangThaiMoi = "Đã xác minh";
-                        TrangThaiIDMoi = 205;
-                    }
-                }
-            }
-            else if (stateID == 21)
-            {
-                TrangThaiMoi = "Chuyên viên đã trình báo cáo xác minh";
-                TrangThaiIDMoi = 206;
-                if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode())
-                {
-                    TrangThaiMoi = "Đã trình báo cáo xác minh";
-                }
-                if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
-                {
-                    TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                }
-                if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                {
+                    //TrangThaiMoi = "Chuyên viên đang xác minh";
                     TrangThaiMoi = "Đang xác minh";
+                    TrangThaiIDMoi = 204;
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        if (ngayCapNhatTheoDoiXuLy == DateTime.MinValue)
+                        {
+                            TrangThaiMoi = "Chưa xác minh";
+                            TrangThaiIDMoi = 204;
+                        }
+                        else
+                        {
+                            TrangThaiMoi = "Đã xác minh";
+                            TrangThaiIDMoi = 205;
+                        }
+                    }
                 }
-
-                if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode()
-                            || (IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                            || (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                            )
+                else if (stateID == 21)
                 {
-                    TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    TrangThaiMoi = "Chuyên viên đã trình báo cáo xác minh";
+                    TrangThaiIDMoi = 206;
+                    if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    }
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    }
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đang xác minh";
+                    }
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode()
+                                || (IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                                || (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                                )
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    }
                 }
-            }
-            else if (stateID == 9)
-            {
-                TrangThaiMoi = "Đã trình báo cáo xác minh";
-                TrangThaiIDMoi = 207;
-                if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                else if (stateID == 9)
                 {
                     TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    TrangThaiIDMoi = 207;
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    }
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    }
                 }
-                if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                else if (stateID == 10)
                 {
-                    TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                }
-            }
-            else if (stateID == 10)
-            {
-                TrangThaiMoi = "Đang thi hành quyết định giải quyết";
-                TrangThaiIDMoi = 300;
-                //if (chucNangId == ChucNangEnum.CapNhatQuyetDinhGiaiQuyet.GetHashCode())
-                //{
-                //    TrangThaiMoi = "Chưa cập nhập";
-                //    TrangThaiIDMoi = 300;
-                //}
-                if (ketQuaID != 0)
-                {
-                    TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
-                    TrangThaiIDMoi = 301;
+                    TrangThaiMoi = "Đang thi hành quyết định giải quyết";
+                    TrangThaiIDMoi = 300;
+                    
+                    if (ketQuaID != 0)
+                    {
+                        TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
+                        TrangThaiIDMoi = 301;
+                    }
+
+                    if (huongGiaiQuyetID != (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                    {
+                        if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
+                        {
+                            TrangThaiIDMoi = 401;
+                            TrangThaiMoi = "Đã chuyển đơn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.HuongDan)
+                        {
+                            TrangThaiIDMoi = 402;
+                            TrangThaiMoi = "Đã hướng dẫn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.RaVanBanDonDoc || huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 403;
+                            TrangThaiMoi = "Đã đôn đốc";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 404;
+                            TrangThaiMoi = "Đã chỉ đạo";
+                        }
+                        else
+                        {
+                            TrangThaiIDMoi = 405;
+                            TrangThaiMoi = "Đã hoàn thành";
+                        }
+                    }
                 }
             }
             CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
         }
-
         public void BTDCapHuyen(
             int? huongGiaiQuyetID,
             string stateName,
@@ -750,152 +829,172 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             }
             else
             {
-                if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                if (stateName == Constant.CV_TiepNhan || stateID == 11)
                 {
-                    if (stateName == Constant.CV_TiepNhan || stateID == 11)
+                    if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
                     {
-                        if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
+                        TrangThaiMoi = "Đã xử lý";
+                        TrangThaiIDMoi = 101;
+                        if (nextStateID == 11 || trangThaiDuyet == 2)
                         {
-                            TrangThaiMoi = "Đã xử lý";
-                            TrangThaiIDMoi = 101;
-                            if (nextStateID == 11 || trangThaiDuyet == 2)
-                            {
-                                TrangThaiMoi = "Xử lý lại";
-                                TrangThaiIDMoi = 102;
-                            }
-                        }
-                        else
-                        {
-                            TrangThaiMoi = "Chưa xử lý";
-                            TrangThaiIDMoi = 100;
+                            TrangThaiMoi = "Xử lý lại";
+                            TrangThaiIDMoi = 102;
                         }
                     }
-                    else if (stateID == 6)
+                    else
                     {
-                        TrangThaiIDMoi = 103;
-                        TrangThaiMoi = "Trưởng ban chưa duyệt";
+                        TrangThaiMoi = "Chưa xử lý";
+                        TrangThaiIDMoi = 100;
+                    }
+                }
+                else if (stateID == 6)
+                {
+                    TrangThaiIDMoi = 103;
+                    TrangThaiMoi = "Trưởng ban chưa duyệt";
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã trình";
+                    }
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt";
+                    }
+                }
+                else if (stateID == 7)
+                {
+                    if (trangThaiDuyet == 0)
+                    {
+                        TrangThaiIDMoi = 104;
+                        TrangThaiMoi = "Đã duyệt";
+                        if (lanhDaoDuyet2ID > 0)
+                        {
+                            TrangThaiMoi = "Đã trình";
+                            TrangThaiIDMoi = 105;
+                        }
+                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode() && IdentityHelper.ChuTichUBND == 1)
+                        {
+                            if (lanhDaoDuyet2ID > 0)
+                            {
+                                TrangThaiMoi = "Chưa duyệt";
+                                TrangThaiIDMoi = 105;
+                            }
+                            else
+                            {
+                                TrangThaiMoi = "Chưa duyệt";
+                                TrangThaiIDMoi = 104;
+                            }
+                        }
                         if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
                         {
                             TrangThaiMoi = "Đã trình";
-                        }
-                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
-                        {
-                            TrangThaiMoi = "Chưa duyệt";
-                        }
-                    }
-                    else if (stateID == 7)
-                    {
-                        if (trangThaiDuyet == 0)
-                        {
-                            TrangThaiIDMoi = 104;
-                            TrangThaiMoi = "Đã duyệt";
-                            if (lanhDaoDuyet2ID > 0)
-                            {
-                                TrangThaiMoi = "Đã trình";
-                                TrangThaiIDMoi = 105;
-                            }
-                            if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode() && IdentityHelper.ChuTichUBND == 1)
-                            {
-                                if (lanhDaoDuyet2ID > 0)
-                                {
-                                    TrangThaiMoi = "Chưa duyệt";
-                                    TrangThaiIDMoi = 105;
-                                }
-                                else
-                                {
-                                    TrangThaiMoi = "Chưa duyệt";
-                                    TrangThaiIDMoi = 104;
-                                }
-                            }
-                            if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
-                            {
-                                TrangThaiMoi = "Đã trình";
-                                TrangThaiIDMoi = 105;
-                            }
-                            
-                        }
-                        else if (trangThaiDuyet == 1)
-                        {
-                            TrangThaiIDMoi = 106;
-                            TrangThaiMoi = "Đã duyệt";
+                            TrangThaiIDMoi = 105;
                         }
 
-                        //if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode() && IdentityHelper.ChuTichUBND == 1)
-                        //{
-                        //    if (tringDuThao == 0)
-                        //    {
-                        //        TrangThaiMoi = "Chưa duyệt";
-                        //        TrangThaiIDMoi = 105;
-                        //    }
-                        //    else if (tringDuThao == 1)
-                        //    {
-                        //        TrangThaiIDMoi = 106;
-                        //        TrangThaiMoi = "Đã duyệt và chưa ban hành quyết định giao xác minh";
-                        //    }
-                        //}
                     }
-                    else if (stateID == 18)
+                    else if (trangThaiDuyet == 1)
                     {
-                        TrangThaiMoi = "Chưa giao xác minh";
-                        TrangThaiIDMoi = 202;
+                        TrangThaiIDMoi = 106;
+                        TrangThaiMoi = "Đã duyệt";
                     }
-                    else if (stateID == 8)
+
+                    //if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode() && IdentityHelper.ChuTichUBND == 1)
+                    //{
+                    //    if (tringDuThao == 0)
+                    //    {
+                    //        TrangThaiMoi = "Chưa duyệt";
+                    //        TrangThaiIDMoi = 105;
+                    //    }
+                    //    else if (tringDuThao == 1)
+                    //    {
+                    //        TrangThaiIDMoi = 106;
+                    //        TrangThaiMoi = "Đã duyệt và chưa ban hành quyết định giao xác minh";
+                    //    }
+                    //}
+                }
+                else if (stateID == 18)
+                {
+                    TrangThaiMoi = "Chưa giao xác minh";
+                    TrangThaiIDMoi = 202;
+                }
+                else if (stateID == 8)
+                {
+                    //TrangThaiMoi = "Chuyên viên đang xác minh";
+                    TrangThaiMoi = "Đang xác minh";
+                    TrangThaiIDMoi = 204;
+                    if (ngayCapNhatTheoDoiXuLy == DateTime.MinValue)
                     {
-                        //TrangThaiMoi = "Chuyên viên đang xác minh";
-                        TrangThaiMoi = "Đang xác minh";
+                        TrangThaiMoi = "Chưa xác minh";
                         TrangThaiIDMoi = 204;
-                        if (ngayCapNhatTheoDoiXuLy == DateTime.MinValue)
+                    }
+                    else
+                    {
+                        TrangThaiMoi = "Đang xác minh";
+                        TrangThaiIDMoi = 205;
+                    }
+                }
+                else if (stateID == 22)
+                {
+                    TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    TrangThaiIDMoi = 206;
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                        TrangThaiIDMoi = 207;
+                    }
+                }
+                else if (stateID == 9)
+                {
+                    TrangThaiMoi = "Chưa ban hành quyết định";
+                    TrangThaiIDMoi = 209;
+                }
+                else if (stateID == 10)
+                {
+                    TrangThaiMoi = "Đang thi hành quyết định giải quyết";
+                    TrangThaiIDMoi = 300;
+                    //if (chucNangId == ChucNangEnum.CapNhatQuyetDinhGiaiQuyet.GetHashCode())
+                    //{
+                    //    TrangThaiMoi = "Chưa cập nhập";
+                    //    TrangThaiIDMoi = 300;
+                    //}
+                    if (ketQuaID != 0)
+                    {
+                        TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
+                        TrangThaiIDMoi = 301;
+                    }
+
+                    if (huongGiaiQuyetID != (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                    {
+                        if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
                         {
-                            TrangThaiMoi = "Chưa xác minh";
-                            TrangThaiIDMoi = 204;
+                            TrangThaiIDMoi = 401;
+                            TrangThaiMoi = "Đã chuyển đơn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.HuongDan)
+                        {
+                            TrangThaiIDMoi = 402;
+                            TrangThaiMoi = "Đã hướng dẫn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.RaVanBanDonDoc || huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 403;
+                            TrangThaiMoi = "Đã đôn đốc";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 404;
+                            TrangThaiMoi = "Đã chỉ đạo";
                         }
                         else
                         {
-                            TrangThaiMoi = "Đang xác minh";
-                            TrangThaiIDMoi = 205;
-                        }
-                    }
-                    else if (stateID == 22)
-                    {
-                        TrangThaiMoi = "Đã trình báo cáo xác minh";
-                        TrangThaiIDMoi = 206;
-
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                        {
-                            TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                            TrangThaiIDMoi = 207;
-                        }
-                    }
-                    else if (stateID == 9)
-                    {
-                        TrangThaiMoi = "Chưa ban hành quyết định";
-                        TrangThaiIDMoi = 209;
-                    }
-                    else if (stateID == 10)
-                    {
-                        TrangThaiMoi = "Đang thi hành quyết định giải quyết";
-                        TrangThaiIDMoi = 300;
-                        //if (chucNangId == ChucNangEnum.CapNhatQuyetDinhGiaiQuyet.GetHashCode())
-                        //{
-                        //    TrangThaiMoi = "Chưa cập nhập";
-                        //    TrangThaiIDMoi = 300;
-                        //}
-                        if (ketQuaID != 0)
-                        {
-                            TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
-                            TrangThaiIDMoi = 301;
-                        }
-
-                        if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
-                        {
-                            TrangThaiIDMoi = 103;
-                            TrangThaiMoi = "Đã trình";
+                            TrangThaiIDMoi = 405;
+                            TrangThaiMoi = "Đã hoàn thành";
                         }
                     }
                 }
-
-                CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
             }
+
+            CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
         }
 
         public void CapXa(
@@ -920,30 +1019,195 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             }
             else
             {
-                if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                if (stateName == Constant.CV_TiepNhan || stateID == 11)
                 {
-                    if (stateName == Constant.CV_TiepNhan || stateID == 11)
+                    if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
                     {
-                        if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
+                        TrangThaiMoi = "Đã xử lý";
+                        TrangThaiIDMoi = 101;
+                        if (nextStateID == 11 || trangThaiDuyet == 2)
                         {
-                            TrangThaiMoi = "Đã xử lý";
-                            TrangThaiIDMoi = 101;
-                            if (nextStateID == 11 || trangThaiDuyet == 2)
-                            {
-                                TrangThaiMoi = "Xử lý lại";
-                                TrangThaiIDMoi = 102;
-                            }
+                            TrangThaiMoi = "Xử lý lại";
+                            TrangThaiIDMoi = 102;
+                        }
+                    }
+                    else
+                    {
+                        TrangThaiMoi = "Chưa xử lý";
+                        TrangThaiIDMoi = 100;
+                    }
+                }
+                else if (stateID == 6)
+                {
+                    TrangThaiIDMoi = 103;
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã trình";
+                    }
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt";
+                    }
+                }
+                else if (stateID == 7)
+                {
+                    TrangThaiIDMoi = 104;
+                    TrangThaiMoi = "Đã duyệt";
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã duyệt và chưa giao xác minh";
+                        TrangThaiIDMoi = 202;
+                    }
+                }
+                else if (stateID == 8)
+                {
+                    //TrangThaiMoi = "Chuyên viên đang xác minh";
+                    TrangThaiMoi = "Đang xác minh";
+                    TrangThaiIDMoi = 204;
+                    if (ngayCapNhatTheoDoiXuLy == DateTime.MinValue)
+                    {
+                        TrangThaiMoi = "Chưa xác minh";
+                        TrangThaiIDMoi = 204;
+                    }
+                    else
+                    {
+                        TrangThaiMoi = "Đang xác minh";
+                        TrangThaiIDMoi = 205;
+                    }
+                }
+                else if (stateID == 21)
+                {
+                    TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    TrangThaiIDMoi = 206;
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                        TrangThaiIDMoi = 207;
+                    }
+                }
+                else if (stateID == 10)
+                {
+                    TrangThaiMoi = "Đang thi hành quyết định giải quyết";
+                    TrangThaiIDMoi = 300;
+                    //if (chucNangId == ChucNangEnum.CapNhatQuyetDinhGiaiQuyet.GetHashCode())
+                    //{
+                    //    TrangThaiMoi = "Chưa cập nhập";
+                    //    TrangThaiIDMoi = 300;
+                    //}
+                    if (ketQuaID != 0)
+                    {
+                        TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
+                        TrangThaiIDMoi = 301;
+                    }
+
+                    if (huongGiaiQuyetID != (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                    {
+                        if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
+                        {
+                            TrangThaiIDMoi = 401;
+                            TrangThaiMoi = "Đã chuyển đơn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.HuongDan)
+                        {
+                            TrangThaiIDMoi = 402;
+                            TrangThaiMoi = "Đã hướng dẫn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.RaVanBanDonDoc || huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 403;
+                            TrangThaiMoi = "Đã đôn đốc";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 404;
+                            TrangThaiMoi = "Đã chỉ đạo";
                         }
                         else
                         {
-                            TrangThaiMoi = "Chưa xử lý";
-                            TrangThaiIDMoi = 100;
+                            TrangThaiIDMoi = 405;
+                            TrangThaiMoi = "Đã hoàn thành";
                         }
                     }
-                    else if (stateID == 6)
+                }
+            }
+
+            CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
+        }
+
+        public void PhongThuocHuyen( // sở ban ngành, phòng thuộc huyện, phòng thuộc sở
+           int? huongGiaiQuyetID,
+           string stateName,
+           int stateID,
+           int nextStateID,
+           int trangThaiDuyet,
+           int tringDuThao,
+           IdentityHelper IdentityHelper,
+           DateTime ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
+           int? chuyenGiaiQuyetID = null,
+           int? ketQuaID = null
+        )
+        {
+            TrangThaiIDMoi = 0;
+            CheckTrangThai = false;
+            if (huongGiaiQuyetID == 0)
+            {
+                TrangThaiMoi = "Chưa xử lý";
+                TrangThaiIDMoi = 100;
+            }
+            else
+            {
+                if (stateName == Constant.CV_TiepNhan || stateID == 11)
+                {
+                    if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
                     {
-                        TrangThaiIDMoi = 103;
-                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
+                        TrangThaiMoi = "Đã xử lý";
+                        TrangThaiIDMoi = 101;
+                        if (nextStateID == 11 || trangThaiDuyet == 2)
+                        {
+                            TrangThaiMoi = "Xử lý lại";
+                            TrangThaiIDMoi = 102;
+                        }
+                    }
+                    else
+                    {
+                        TrangThaiMoi = "Chưa xử lý";
+                        TrangThaiIDMoi = 100;
+                    }
+                }
+                else if (stateID == 5)
+                {
+                    TrangThaiIDMoi = 103;
+                    TrangThaiMoi = "Trưởng phòng chưa duyệt";
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã trình";
+                    }
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt";
+                    }
+                }
+                else if (stateID == 6)
+                {
+                    TrangThaiIDMoi = 104;
+                    TrangThaiMoi = "Trưởng phòng đã duyệt";
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã duyệt";
+                    }
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt";
+                    }
+                }
+                else if (stateID == 7)
+                {
+                    if (trangThaiDuyet == 0)
+                    {
+                        TrangThaiMoi = "Trưởng phòng đã duyệt";
+                        TrangThaiIDMoi = 105;
+                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
                         {
                             TrangThaiMoi = "Đã trình";
                         }
@@ -952,21 +1216,47 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             TrangThaiMoi = "Chưa duyệt";
                         }
                     }
-                    else if (stateID == 7)
+                    else if (trangThaiDuyet == 1)
                     {
-                        TrangThaiIDMoi = 104;
-                        TrangThaiMoi = "Đã duyệt";
+                        TrangThaiMoi = "Lãnh đạo đã duyệt";
+                        TrangThaiIDMoi = 106;
+                        if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDaoPhong.GetHashCode())
+                        {
+                            TrangThaiMoi = "Đã duyệt";
+                        }
                         if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
                         {
                             TrangThaiMoi = "Đã duyệt và chưa giao xác minh";
                             TrangThaiIDMoi = 202;
                         }
                     }
-                    else if (stateID == 8)
+                }
+                else if (stateID == 19)
+                {
+                    TrangThaiMoi = "Đang xác minh";
+                    TrangThaiIDMoi = 203;
+
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
                     {
-                        //TrangThaiMoi = "Chuyên viên đang xác minh";
-                        TrangThaiMoi = "Đang xác minh";
-                        TrangThaiIDMoi = 204;
+                        TrangThaiMoi = "Chưa giao xác minh";
+                        TrangThaiIDMoi = 202;
+                    }
+
+                    //if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode() && stateID == 19
+                    //// tuandhh bổ sung cấp lãnh đạo phòng chỉ dành cho btd tỉnh, btd huyện lãnh đạo phân cho ai thì cấp đó xác minh
+                    //&& IdentityHelper.CapHanhChinh != EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
+                    //{
+                    //    TrangThaiMoi = "Chưa giao xác minh";
+                    //    TrangThaiIDMoi = 202;
+                    //}
+                }
+                else if (stateID == 8)
+                {
+                    //TrangThaiMoi = "Chuyên viên đang xác minh";
+                    TrangThaiMoi = "Đang xác minh";
+                    TrangThaiIDMoi = 204;
+                    if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
+                    {
                         if (ngayCapNhatTheoDoiXuLy == DateTime.MinValue)
                         {
                             TrangThaiMoi = "Chưa xác minh";
@@ -974,46 +1264,91 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         }
                         else
                         {
-                            TrangThaiMoi = "Đang xác minh";
+                            TrangThaiMoi = "Đã xác minh";
                             TrangThaiIDMoi = 205;
                         }
                     }
-                    else if (stateID == 21)
+                }
+                else if (stateID == 22)
+                {
+                    TrangThaiMoi = "Chuyên viên đã trình báo cáo xác minh";
+                    TrangThaiIDMoi = 206;
+                    if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode())
                     {
                         TrangThaiMoi = "Đã trình báo cáo xác minh";
-                        TrangThaiIDMoi = 206;
-
-                        if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                        {
-                            TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                            TrangThaiIDMoi = 207;
-                        }
                     }
-                    else if (stateID == 10)
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
                     {
-                        TrangThaiMoi = "Đang thi hành quyết định giải quyết";
-                        TrangThaiIDMoi = 300;
-                        //if (chucNangId == ChucNangEnum.CapNhatQuyetDinhGiaiQuyet.GetHashCode())
-                        //{
-                        //    TrangThaiMoi = "Chưa cập nhập";
-                        //    TrangThaiIDMoi = 300;
-                        //}
-                        if (ketQuaID != 0)
-                        {
-                            TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
-                            TrangThaiIDMoi = 301;
-                        }
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    }
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đang xác minh";
+                    }
 
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode()
+                                || (IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                                || (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                                )
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    }
+                }
+                else if (stateID == 9)
+                {
+                    TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    TrangThaiIDMoi = 207;
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                    {
+                        TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    }
+                    if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                    {
+                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    }
+                }
+                else if (stateID == 10)
+                {
+                    TrangThaiMoi = "Đang thi hành quyết định giải quyết";
+                    TrangThaiIDMoi = 300;
+                    if (ketQuaID != 0)
+                    {
+                        TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
+                        TrangThaiIDMoi = 301;
+                    }
+
+                    if (huongGiaiQuyetID != (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                    {
                         if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
                         {
-                            TrangThaiIDMoi = 103;
-                            TrangThaiMoi = "Đã trình";
+                            TrangThaiIDMoi = 401;
+                            TrangThaiMoi = "Đã chuyển đơn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.HuongDan)
+                        {
+                            TrangThaiIDMoi = 402;
+                            TrangThaiMoi = "Đã hướng dẫn";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.RaVanBanDonDoc || huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 403;
+                            TrangThaiMoi = "Đã đôn đốc";
+                        }
+                        else if (huongGiaiQuyetID == (int)HuongGiaiQuyetEnum.CongVanChiDao)
+                        {
+                            TrangThaiIDMoi = 404;
+                            TrangThaiMoi = "Đã chỉ đạo";
+                        }
+                        else
+                        {
+                            TrangThaiIDMoi = 405;
+                            TrangThaiMoi = "Đã hoàn thành";
                         }
                     }
                 }
-
-                CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
             }
+            CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
         }
+
     }
 }
