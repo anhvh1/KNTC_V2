@@ -283,9 +283,19 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         Where(x => x.SuDungPM == true).ToList();
                     List<XaInfo> xaList = new List<XaInfo>();
                     List<BaoCaoPhanAnhKienNghiInfo> dtListFull = new BaoCaoPhanAnhKienNghi().GetBaoCao(startDate, endDate, cqListCapXa.ToList()).ToList();
+
+
                     foreach (HuyenInfo huyenInfo in huyenList)
                     {
+                        BaoCaoPhanAnhKienNghiInfo bc2cInfo2huyen = new BaoCaoPhanAnhKienNghiInfo
+                        {
+                            DonVi=huyenInfo.TenDayDu,                            
+                            CoQuanID=huyenInfo.HuyenID,                            
+                        };                        
+                        
+                        resultList.Add(bc2cInfo2huyen);                        
                         List<CoQuanInfo> cqList = cqListCapXa.Where(x => x.HuyenID == huyenInfo.HuyenID && x.SuDungPM == true).ToList();
+
                         //List<BaoCaoPhanAnhKienNghiInfo> dtListFull = new BaoCaoPhanAnhKienNghi().GetBaoCao(startDate, endDate, cqList.ToList()).ToList();
                         foreach (CoQuanInfo cqInfo in cqList)
                         {
@@ -354,10 +364,15 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                             bc2cInfo.SlCol27 += bc2cInfo2.SlCol27;
                             bc2cInfo.SlCol28 += bc2cInfo2.SlCol28;
                             #endregion
+
+                            TinhTong(ref bc2cInfo2huyen, bc2cInfo2);
+
                         }
 
-
+                        
                     }
+
+
                 }
 
                 #region Cong so lieu tong
