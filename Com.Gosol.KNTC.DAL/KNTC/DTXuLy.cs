@@ -1287,6 +1287,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         Info.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         Info.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
                         Info.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
+                        Info.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
+
 
                         Info.NextStateID = Utils.ConvertToInt32(dr["NextStateID"], 0);
 
@@ -2192,14 +2194,19 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                     while (dr.Read())
                     {
                         DTXuLyInfo Info = GetDataDTDuyetXuLy(dr);
-                        Info.LoaiQuyTrinh = Utils.ConvertToInt32(dr["LoaiQuyTrinh"], 0);
-                        Info.StateID = Utils.ConvertToInt32(dr["StateID"], 0);
                         Info.NgayQuaHan = Utils.ConvertToDateTime(dr["HanXuLyDueDate"], DateTime.MaxValue);
                         Info.HanXuLy = Format.FormatDate(Info.NgayQuaHan);
                         Info.TransitionID = Utils.ConvertToInt32(dr["TransitionID"], 0);
                         Info.NhomKNID = Utils.ConvertToInt32(dr["NhomKNID"], 0);
-                        Info.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
+
+                        Info.LoaiQuyTrinh = Utils.ConvertToInt32(dr["LoaiQuyTrinh"], 0);
                         Info.HuongGiaiQuyetID = Utils.ConvertToInt32(dr["HuongGiaiQuyetID"], 0);
+                        Info.StateID = Utils.ConvertToInt32(dr["StateID"], 0);
+                        Info.TrangThaiDuyet = Utils.ConvertToInt32(dr["TrangThaiDuyet"], 0);
+                        Info.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
+                        Info.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
+                        Info.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
+                        Info.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
                         //Info.Count = Utils.ConvertToInt32(dr["CountNum"], 0);
                         if (Info.NhomKNID > 0)
                         {
@@ -2342,13 +2349,19 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                     while (dr.Read())
                     {
                         DTXuLyInfo Info = GetDataDTDuyetXuLy(dr);
-                        Info.StateID = Utils.ConvertToInt32(dr["StateID"], 0);
                         Info.NgayQuaHan = Utils.ConvertToDateTime(dr["HanXuLyDueDate"], DateTime.MaxValue);
                         Info.HanXuLy = Format.FormatDate(Info.NgayQuaHan);
                         Info.TransitionID = Utils.ConvertToInt32(dr["TransitionID"], 0);
                         Info.NhomKNID = Utils.ConvertToInt32(dr["NhomKNID"], 0);
+
+                        Info.LoaiQuyTrinh = Utils.ConvertToInt32(dr["LoaiQuyTrinh"], 0);
+                        Info.HuongGiaiQuyetID = Utils.ConvertToInt32(dr["HuongGiaiQuyetID"], 0);
+                        Info.StateID = Utils.ConvertToInt32(dr["StateID"], 0);
+                        Info.TrangThaiDuyet = Utils.ConvertToInt32(dr["TrangThaiDuyet"], 0);
                         Info.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         Info.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
+                        Info.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
+                        Info.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
 
                         //Info.Count = Utils.ConvertToInt32(dr["CountNum"], 0);
                         if (Info.NhomKNID > 0)
@@ -2583,6 +2596,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                             Info.listDoiTuongKN = new DoiTuongKN().GetByNhomKNID(Info.NhomKNID).ToList();
                         }
 
+                        Info.LanhDaoDuyet2ID = Utils.ConvertToInt32(dr["LanhDaoDuyet2ID"], 0);
                         Info.LoaiQuyTrinh = Utils.ConvertToInt32(dr["LoaiQuyTrinh"], 0);
                         Info.HuongGiaiQuyetID = Utils.ConvertToInt32(dr["HuongGiaiQuyetID"], 0);
                         Info.StateID = Utils.ConvertToInt32(dr["StateID"], 0);
@@ -2590,6 +2604,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         Info.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         Info.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
                         Info.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
+                        Info.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
 
                         ListInfo.Add(Info);
                     }
@@ -2635,6 +2650,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         Info.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         Info.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
                         Info.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
+                        Info.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
 
                         ListInfo.Add(Info);
                     }

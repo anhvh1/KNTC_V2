@@ -494,9 +494,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         donThuInfo.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;
                         donThuInfo.CheckTrangThai = renderTrangThai.CheckTrangThai;
 
-                        if (donThuInfo.StateID == 8)
+                        if (donThuInfo.StateID == 8 || (donThuInfo.StateID == 19 && IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && !(IdentityHelper.BanTiepDan ?? false)))
                         {
-
                             if (donThuInfo.NgayCapNhatStr != "")
                             {
                                 donThuInfo.TenTrangThai = "Đang xác minh";
@@ -1617,7 +1616,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     // bổ sung nghiệp vụ cấp phòng thuộc huyện thì trình lên lãnh đạo cấp dưới duyệt giải quyết
                     if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
                     {
-                        commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon).FirstOrDefault(x=>x.Equals("TDoanTrinhLDCapDuoiDuyetGQ", StringComparison.OrdinalIgnoreCase));
+                        commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon).FirstOrDefault(x => x.Equals("TDoanTrinhLDCapDuoiDuyetGQ", StringComparison.OrdinalIgnoreCase));
                     }
                 }
                 else
