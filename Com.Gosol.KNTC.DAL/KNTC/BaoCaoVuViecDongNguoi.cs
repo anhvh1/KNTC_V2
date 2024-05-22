@@ -178,13 +178,21 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                     {
                         List<CoQuanInfo> cqList = cqListCapXa.Where(x => x.HuyenID == huyenInfo.HuyenID).ToList();
                         doc =
-                           new XDocument(
-                           new XElement("LogConfig", cqList.Select(x =>
-          new XElement("SystemLog", new XElement("CoQuan", new XAttribute("CoQuanID", x.CoQuanID),
-                         new XAttribute("CapID", x.CapID), new XAttribute("CoQuanChaID", x.CoQuanChaID),
-                         new XAttribute("SuDungPM", x.SuDungPM))))));
+                            new XDocument(
+                                new XElement("LogConfig", cqList.Select(x =>
+                                new XElement("SystemLog", new XElement("CoQuan", new XAttribute("CoQuanID", x.CoQuanID),
+                                new XAttribute("CapID", x.CapID), new XAttribute("CoQuanChaID", x.CoQuanChaID),
+                                new XAttribute("SuDungPM", x.SuDungPM))))));
 
                         doc.Save(filename);
+                        BaoCaoVuViecDongNguoiInfo bc2aInfo2Huyen = new BaoCaoVuViecDongNguoiInfo()
+                        {
+                            DonVi = huyenInfo.TenHuyen,
+                            CoQuanID = huyenInfo.HuyenID,
+                            XLDKhieuKienDN = dtList.Where(x => cqList.Select(y => y.CoQuanID).Contains(x.CoQuanID)).Sum(x => x.XLDKhieuKienDN),
+                            DonNhieuNguoiDungTen = dtList.Where(x => cqList.Select(y => y.CoQuanID).Contains(x.CoQuanID)).Sum(x => x.DonNhieuNguoiDungTen),
+                        };
+                        resultList.Add(bc2aInfo2Huyen);
                         foreach (CoQuanInfo cqInfo in cqList)
                         {
                             BaoCaoVuViecDongNguoiInfo bc2aInfo2 = new BaoCaoVuViecDongNguoiInfo();
