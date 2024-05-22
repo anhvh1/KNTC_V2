@@ -1532,42 +1532,52 @@ namespace GO.API.Controllers.BacCao
                     IdentityHelper.XaID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "XaID").Value, 0);
                     IdentityHelper.RoleID = EnumChucVu.LanhDao.GetHashCode();
                     BaseResultModel Data = new BaseResultModel();
+
+                    // BÁO CÁO TỔNG HỢP KẾT QUẢ GIẢI QUYẾT ĐƠN KIẾN NGHỊ, PHẢN ÁNH
                     if (p.Type == 1)
                     {
                         Data = _BaoCaoBUS.THKQGiaiQuyetDonKienNghiPhanAnh(p, ContentRootPath, IdentityHelper);
                     }
+                    // BÁO CÁO THỐNG KÊ THEO LOẠI KHIẾU TỐ
                     else if (p.Type == 2)
                     {
                         Data = _BaoCaoBUS.BaoCaoThongKeTheoLoaiKhieuTo(p, ContentRootPath, IdentityHelper);
                     }
+                    // BÁO CÁO THỐNG KÊ THEO CƠ QUAN CHUYỂN ĐƠN
                     else if (p.Type == 3)
                     {
-                        if(p.CapBaoCao == 2)
+                        if (p.CapBaoCao == 2)
                         {
                             Data = _BaoCaoBUS.ThongKeTheoCOQuanChuyenDon_GetDSCoQuanNhanDon(p, ContentRootPath, IdentityHelper);
                         }
                         else Data = _BaoCaoBUS.ThongKeTheoCOQuanChuyenDon(p, ContentRootPath, IdentityHelper);
                     }
+                    // BÁO CÁO THỐNG KÊ THEO ĐỊA CHỈ CHỦ ĐƠN
                     else if (p.Type == 4)
                     {
                         Data = _BaoCaoBUS.ThongKeTheoDiaChiChuDon(p, ContentRootPath, IdentityHelper);
                     }
+                    // BÁO CÁO THỐNG KÊ THEO NƠI PHÁT SINH
                     else if (p.Type == 5)
                     {
                         Data = _BaoCaoBUS.ThongKeTheoNoiPhatSinh(p, ContentRootPath, IdentityHelper);
                     }
+                    // BÁO CÁO THỐNG KÊ VỤ VIỆC ĐÔNG NGƯỜI
                     else if (p.Type == 6)
                     {
                         Data = _BaoCaoBUS.ThongKeTheoVuViecDongNguoi(p, ContentRootPath, IdentityHelper);
                     }
+                    // BÁO CÁO THỐNG KÊ RÚT ĐƠN
                     else if (p.Type == 7)
                     {
                         Data = _BaoCaoBUS.ThongKeTheoRutDon(p, ContentRootPath, IdentityHelper);
                     }
+                    // BÁO CÁO TỔNG HỢP TÌNH HÌNH TIẾP DÂN, XỬ LÝ ĐƠN VÀ GIẢI QUYẾT ĐƠN THEO ĐƠN VỊ
                     else if (p.Type == 8)
                     {
                         Data = _BaoCaoBUS.TongHopTinhHinhTCD_XL_GQD(p, ContentRootPath, IdentityHelper);
                     }
+                    // BÁO CÁO XỬ LÝ CÔNG VIỆC
                     else if (p.Type == 9)
                     {
                         Data = _BaoCaoBUS.BaoCaoXuLyCongViec(p, ContentRootPath, IdentityHelper);
@@ -1576,42 +1586,52 @@ namespace GO.API.Controllers.BacCao
                     {
                         Data = _BaoCaoBUS.ThongKeDonChuyenGiaiQuyet(p, ContentRootPath, IdentityHelper);
                     }
+                    // THKQ TIẾP CÔNG DÂN THƯỜNG XUYÊN, ĐỊNH KỲ VÀ ĐỘT XUẤT
                     else if (p.Type == 11)
                     {
                         Data = _BaoCaoBUS.TCD01(p, ContentRootPath, IdentityHelper.RoleID ?? 0, IdentityHelper.CapID ?? 0, IdentityHelper.CoQuanID ?? 0, IdentityHelper.CanBoID ?? 0, IdentityHelper.TinhID ?? 0, IdentityHelper.HuyenID ?? 0);
                     }
+                    // THKQ PHÂN LOẠI, XỬ LÝ ĐƠN QUA TIẾP CÔNG DÂN
                     else if (p.Type == 12)
                     {
                         Data = _BaoCaoBUS.TCD02(p, ContentRootPath, IdentityHelper.RoleID ?? 0, IdentityHelper.CapID ?? 0, IdentityHelper.CoQuanID ?? 0, IdentityHelper.CanBoID ?? 0, IdentityHelper.TinhID ?? 0, IdentityHelper.HuyenID ?? 0);
                     }
+                    // THKQ XỬ LÝ ĐƠN
                     else if (p.Type == 13)
                     {
                         Data = _BaoCaoBUS.XLD01(p, ContentRootPath, IdentityHelper.RoleID ?? 0, IdentityHelper.CapID ?? 0, IdentityHelper.CoQuanID ?? 0, IdentityHelper.CanBoID ?? 0, IdentityHelper.TinhID ?? 0, IdentityHelper.HuyenID ?? 0);
                     }
+                    // THKQ XỬ LÝ ĐƠN KHIẾU NẠI
                     else if (p.Type == 14)
                     {
                         Data = _BaoCaoBUS.XLD02(p, ContentRootPath, IdentityHelper.RoleID ?? 0, IdentityHelper.CapID ?? 0, IdentityHelper.CoQuanID ?? 0, IdentityHelper.CanBoID ?? 0, IdentityHelper.TinhID ?? 0, IdentityHelper.HuyenID ?? 0);
                     }
+                    // THKQ XỬ LÝ ĐƠN TỐ CÁO
                     else if (p.Type == 15)
                     {
                         Data = _BaoCaoBUS.XLD03(p, ContentRootPath, IdentityHelper.RoleID ?? 0, IdentityHelper.CapID ?? 0, IdentityHelper.CoQuanID ?? 0, IdentityHelper.CanBoID ?? 0, IdentityHelper.TinhID ?? 0, IdentityHelper.HuyenID ?? 0);
                     }
+                    // THKQ XỬ LÝ ĐƠN KIẾN NGHỊ, PHẢN ÁNH
                     else if (p.Type == 16)
                     {
                         Data = _BaoCaoBUS.XLD04(p, ContentRootPath, IdentityHelper.RoleID ?? 0, IdentityHelper.CapID ?? 0, IdentityHelper.CoQuanID ?? 0, IdentityHelper.CanBoID ?? 0, IdentityHelper.TinhID ?? 0, IdentityHelper.HuyenID ?? 0);
                     }
+                    // THKQ GIẢI QUYẾT THUỘC THẨM QUYỀN
                     else if (p.Type == 17)
                     {
                         Data = Data = _BaoCaoBUS.KQGQ01(p, ContentRootPath, IdentityHelper.RoleID ?? 0, IdentityHelper.CapID ?? 0, IdentityHelper.CoQuanID ?? 0, IdentityHelper.CanBoID ?? 0, IdentityHelper.TinhID ?? 0, IdentityHelper.HuyenID ?? 0);
                     }
+                    // THKQ THI HÀNH QUYẾT ĐỊNH GIẢI QUYẾT KHIẾU NẠI
                     else if (p.Type == 18)
                     {
                         Data = Data = _BaoCaoBUS.KQGQ02(p, ContentRootPath, IdentityHelper.RoleID ?? 0, IdentityHelper.CapID ?? 0, IdentityHelper.CoQuanID ?? 0, IdentityHelper.CanBoID ?? 0, IdentityHelper.TinhID ?? 0, IdentityHelper.HuyenID ?? 0);
                     }
+                    // THKQ GIẢI QUYẾT TỐ CÁO THUỘC THẨM QUYỀN
                     else if (p.Type == 19)
                     {
                         Data = Data = _BaoCaoBUS.KQGQ03(p, ContentRootPath, IdentityHelper.RoleID ?? 0, IdentityHelper.CapID ?? 0, IdentityHelper.CoQuanID ?? 0, IdentityHelper.CanBoID ?? 0, IdentityHelper.TinhID ?? 0, IdentityHelper.HuyenID ?? 0);
                     }
+                    // THKQ THỰC HIỆN KẾT LUẬN NỘI DUNG TỐ CÁO
                     else if (p.Type == 20)
                     {
                         Data = Data = _BaoCaoBUS.KQGQ04(p, ContentRootPath, IdentityHelper.RoleID ?? 0, IdentityHelper.CapID ?? 0, IdentityHelper.CoQuanID ?? 0, IdentityHelper.CanBoID ?? 0, IdentityHelper.TinhID ?? 0, IdentityHelper.HuyenID ?? 0);

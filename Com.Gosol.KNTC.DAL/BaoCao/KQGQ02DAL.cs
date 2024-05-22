@@ -1,6 +1,8 @@
-﻿using Com.Gosol.KNTC.DAL.HeThong;
+﻿using Com.Gosol.KNTC.DAL.DanhMuc;
+using Com.Gosol.KNTC.DAL.HeThong;
 using Com.Gosol.KNTC.DAL.KNTC;
 using Com.Gosol.KNTC.Models.BaoCao;
+using Com.Gosol.KNTC.Models.DanhMuc;
 using Com.Gosol.KNTC.Models.KNTC;
 using Com.Gosol.KNTC.Ultilities;
 using Microsoft.AspNetCore.Http;
@@ -354,7 +356,7 @@ namespace Com.Gosol.KNTC.DAL.BaoCao
                 dr["TenCoQuan"] = "Toàn tỉnh";
                 dr["CssClass"] = "font-weight:bold;text-transform: uppercase";
                 dr["CapID"] = CapCoQuanViewChiTiet.ToanTinh.GetHashCode();
-                dr["ThuTu"] = 5;
+                dr["ThuTu"] = 1000;// 5;
                 dr["CoQuanID"] = 0;
                 foreach (DataRow dro in dt.Rows)
                 {
@@ -399,7 +401,7 @@ namespace Com.Gosol.KNTC.DAL.BaoCao
                     dr["TenCoQuan"] = "UBND Cấp Tỉnh";
                     dr["CssClass"] = "font-weight:bold;text-transform: uppercase";
                     dr["CapID"] = CapCoQuanViewChiTiet.CapUBNDTinh.GetHashCode();
-                    dr["ThuTu"] = 4.5;
+                    dr["ThuTu"] = 2000;// 4.5;
                     dr["CoQuanID"] = 0;
                     //DataTable dtnew = BaoCao2b_DataTable_New();
                     foreach (DataRow dro in dt.Rows)
@@ -430,57 +432,58 @@ namespace Com.Gosol.KNTC.DAL.BaoCao
 
                             dr["slCol34"] = Utils.ConvertToDouble(dr["slCol34"], 0) +
                                    Utils.ConvertToDouble(dro["slCol34"], 0);
+                            dro["ThuTu"] = 2000 + 1;
                         }
                     }
                     dt.Rows.Add(dr);
                 }
-                if (capInfo.CapID == (int)CapQuanLy.ToanHuyen)
-                {
-                    DataRow dr = dt.NewRow();
-                    //dr["TenCoQuan"] = "<b style='text-transform: uppercase'>" + "Toàn huyện" + "</b>";
-                    //dr["CssClass"] = "highlight";
-                    dr["TenCoQuan"] = "Toàn huyện";
-                    dr["CssClass"] = "font-weight:bold;text-transform: uppercase";
-                    dr["CapID"] = CapCoQuanViewChiTiet.ToanHuyen.GetHashCode();
-                    dr["ThuTu"] = 2.75;
-                    dr["CoQuanID"] = 0;
-                    //DataTable dtnew = BaoCao2b_DataTable_New();
-                    foreach (DataRow dro in dt.Rows)
-                    {
-                        if (/*/*Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.CapUBNDTinh ||*/ /*Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.CapSoNganh*/
-                           /*|*/ Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.CapUBNDHuyen || Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.CapUBNDXa
-                            || Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.ToanHuyen)
-                        {
-                            for (var i = 1; i <= 37; i++)
-                            {
+                //if (capInfo.CapID == (int)CapQuanLy.ToanHuyen)
+                //{
+                //    DataRow dr = dt.NewRow();
+                //    //dr["TenCoQuan"] = "<b style='text-transform: uppercase'>" + "Toàn huyện" + "</b>";
+                //    //dr["CssClass"] = "highlight";
+                //    dr["TenCoQuan"] = "Toàn huyện";
+                //    dr["CssClass"] = "font-weight:bold;text-transform: uppercase";
+                //    dr["CapID"] = CapCoQuanViewChiTiet.ToanHuyen.GetHashCode();
+                //    dr["ThuTu"] = 2.75;
+                //    dr["CoQuanID"] = 0;
+                //    //DataTable dtnew = BaoCao2b_DataTable_New();
+                //    foreach (DataRow dro in dt.Rows)
+                //    {
+                //        if (/*/*Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.CapUBNDTinh ||*/ /*Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.CapSoNganh*/
+                //           /*|*/ Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.CapUBNDHuyen || Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.CapUBNDXa
+                //            || Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.ToanHuyen)
+                //        {
+                //            for (var i = 1; i <= 37; i++)
+                //            {
 
-                                if (dro["Col" + i + "Data"] == null)
-                                {
-                                    dro["Col" + i + "Data"] = 0;
+                //                if (dro["Col" + i + "Data"] == null)
+                //                {
+                //                    dro["Col" + i + "Data"] = 0;
 
-                                }
-                                dr["Col" + i + "Data"] = Utils.ConvertToDouble(dr["Col" + i + "Data"], 0) +
-                                    Utils.ConvertToDouble(dro["Col" + i + "Data"], 0);
-                            }
+                //                }
+                //                dr["Col" + i + "Data"] = Utils.ConvertToDouble(dr["Col" + i + "Data"], 0) +
+                //                    Utils.ConvertToDouble(dro["Col" + i + "Data"], 0);
+                //            }
 
-                            dr["slCol15"] = Utils.ConvertToDouble(dr["slCol15"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol15"], 0);
+                //            dr["slCol15"] = Utils.ConvertToDouble(dr["slCol15"], 0) +
+                //                   Utils.ConvertToDouble(dro["slCol15"], 0);
 
-                            dr["slCol17"] = Utils.ConvertToDouble(dr["slCol17"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol17"], 0);
+                //            dr["slCol17"] = Utils.ConvertToDouble(dr["slCol17"], 0) +
+                //                   Utils.ConvertToDouble(dro["slCol17"], 0);
 
-                            dr["slCol20"] = Utils.ConvertToDouble(dr["slCol20"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol20"], 0);
+                //            dr["slCol20"] = Utils.ConvertToDouble(dr["slCol20"], 0) +
+                //                   Utils.ConvertToDouble(dro["slCol20"], 0);
 
-                            dr["slCol30"] = Utils.ConvertToDouble(dr["slCol30"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol30"], 0);
+                //            dr["slCol30"] = Utils.ConvertToDouble(dr["slCol30"], 0) +
+                //                   Utils.ConvertToDouble(dro["slCol30"], 0);
 
-                            dr["slCol34"] = Utils.ConvertToDouble(dr["slCol34"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol34"], 0);
-                        }
-                    }
-                    dt.Rows.Add(dr);
-                }
+                //            dr["slCol34"] = Utils.ConvertToDouble(dr["slCol34"], 0) +
+                //                   Utils.ConvertToDouble(dro["slCol34"], 0);
+                //        }
+                //    }
+                //    dt.Rows.Add(dr);
+                //}
                 else if (capInfo.CapID == (int)CapQuanLy.CapSoNganh)
                 {
                     //DataRow dr = dt.NewRow();
@@ -530,7 +533,7 @@ namespace Com.Gosol.KNTC.DAL.BaoCao
                     dr["TenCoQuan"] = "UBND Cấp Huyện";
                     dr["CssClass"] = "font-weight:bold;text-transform: uppercase";
                     dr["CapID"] = CapCoQuanViewChiTiet.CapUBNDHuyen.GetHashCode();
-                    dr["ThuTu"] = 2.5;
+                    dr["ThuTu"] = 5000;// 2.5;
                     dr["CoQuanID"] = 0;
                     //DataTable dtnew = BaoCao2b_DataTable_New();
                     foreach (DataRow dro in dt.Rows)
@@ -566,7 +569,7 @@ namespace Com.Gosol.KNTC.DAL.BaoCao
                             dr["slCol34"] = Utils.ConvertToDouble(dr["slCol34"], 0) +
                                    Utils.ConvertToDouble(dro["slCol34"], 0);
 
-
+                            dro["ThuTu"] = 5000 + 1;
                         }
                     }
                     dt.Rows.Add(dr);
@@ -579,49 +582,74 @@ namespace Com.Gosol.KNTC.DAL.BaoCao
                     dr["TenCoQuan"] = "UBND Cấp Xã";
                     dr["CssClass"] = "font-weight:bold;text-transform: uppercase";
                     dr["CapID"] = CapCoQuanViewChiTiet.CapUBNDXa.GetHashCode();
-                    dr["ThuTu"] = 1.5;
+                    dr["ThuTu"] = 6000;// 1.5;
                     dr["CoQuanID"] = 0;
                     //DataTable dtnew = BaoCao2b_DataTable_New();
-                    foreach (DataRow dro in dt.Rows)
+
+                    // lấy danh sách huyện
+                    var danhSachXa = dt.AsEnumerable().Where(row => Utils.ConvertToInt32(row.Field<string>("CapID"), 0) == (int)CapQuanLy.CapUBNDXa).ToList();
+                    if (danhSachXa != null && danhSachXa.Count > 0)
                     {
-                        if (Utils.ConvertToInt32(dro["CapID"], 0) == (int)CapQuanLy.CapUBNDXa)
+                        var danhSachHuyenID = (from r in danhSachXa.AsEnumerable() select r["CoQuanChaID"]).Distinct().ToList();
+                        var danhSachHuyen = new List<DanhMucCoQuanDonViModelPartial>();
+                        if (danhSachHuyenID != null && danhSachHuyenID.Count > 0)
                         {
-                            for (var i = 1; i <= 37; i++)
+                            danhSachHuyen = new DanhMucCoQuanDonViDAL().DanhSachUBNDHuyen();
+                        }
+                        var stt = 100;
+                        foreach (var item in danhSachHuyen)
+                        {
+                            DataRow dr1 = dt.NewRow();
+                            dr1["TenCoQuan"] = item.Ten.Replace("UBND", "");
+                            dr1["CssClass"] = "font-weight: bold; text-transform: uppercase";
+                            dr1["CapID"] = CapCoQuanViewChiTiet.CapUBNDXa.GetHashCode();
+                            dr1["ThuTu"] = 6000 + stt;
+                            dr1["CoQuanID"] = 0;
+                            dt.Rows.Add(dr1);
+                            foreach (DataRow dro in dt.Rows)
                             {
-                                if (dro["Col" + i + "Data"] == null)
+                                if (Utils.ConvertToInt32(dro["CoQuanChaID"], 0) == item.ID)
                                 {
-                                    dro["Col" + i + "Data"] = 0;
+                                    for (var i = 1; i <= 37; i++)
+                                    {
+                                        if (dro["Col" + i + "Data"] == null)
+                                        {
+                                            dro["Col" + i + "Data"] = 0;
 
+                                        }
+                                        dr["Col" + i + "Data"] = Utils.ConvertToDouble(dr["Col" + i + "Data"], 0) +
+                                            Utils.ConvertToDouble(dro["Col" + i + "Data"], 0);
+                                        dr1["Col" + i + "Data"] = Utils.ConvertToDouble(dr1["Col" + i + "Data"], 0) +
+                                            Utils.ConvertToDouble(dro["Col" + i + "Data"], 0);
+                                    }
+
+                                    dr["slCol15"] = Utils.ConvertToDouble(dr["slCol15"], 0) +
+                                           Utils.ConvertToDouble(dro["slCol15"], 0);
+
+                                    dr["slCol17"] = Utils.ConvertToDouble(dr["slCol17"], 0) +
+                                           Utils.ConvertToDouble(dro["slCol17"], 0);
+
+                                    dr["slCol20"] = Utils.ConvertToDouble(dr["slCol20"], 0) +
+                                           Utils.ConvertToDouble(dro["slCol20"], 0);
+
+                                    dr["slCol25"] = Utils.ConvertToDouble(dr["slCol25"], 0) +
+                                           Utils.ConvertToDouble(dro["slCol25"], 0);
+
+                                    dr["slCol30"] = Utils.ConvertToDouble(dr["slCol30"], 0) +
+                                           Utils.ConvertToDouble(dro["slCol30"], 0);
+
+                                    dr["slCol34"] = Utils.ConvertToDouble(dr["slCol34"], 0) +
+                                           Utils.ConvertToDouble(dro["slCol34"], 0);
+                                    dro["ThuTu"] = Utils.ConvertToInt32(dr1["ThuTu"], 0) + 1;
                                 }
-                                dr["Col" + i + "Data"] = Utils.ConvertToDouble(dr["Col" + i + "Data"], 0) +
-                                    Utils.ConvertToDouble(dro["Col" + i + "Data"], 0);
                             }
-
-                            dr["slCol15"] = Utils.ConvertToDouble(dr["slCol15"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol15"], 0);
-
-                            dr["slCol17"] = Utils.ConvertToDouble(dr["slCol17"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol17"], 0);
-
-                            dr["slCol20"] = Utils.ConvertToDouble(dr["slCol20"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol20"], 0);
-
-                            dr["slCol25"] = Utils.ConvertToDouble(dr["slCol25"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol25"], 0);
-
-                            dr["slCol30"] = Utils.ConvertToDouble(dr["slCol30"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol30"], 0);
-
-                            dr["slCol34"] = Utils.ConvertToDouble(dr["slCol34"], 0) +
-                                   Utils.ConvertToDouble(dro["slCol34"], 0);
-
-
+                            stt = stt + 100;
                         }
                     }
                     dt.Rows.Add(dr);
                 }
             }
-            dt.DefaultView.Sort = "ThuTu desc";
+            dt.DefaultView.Sort = "ThuTu";
             dt = dt.DefaultView.ToTable();
         }
         public static void CalculateBaoCaoCapSo(string ContentRootPath, int RoleID, int CoQuanDangNhapID, int CanBoDangNhapID, int TinhDangNhapID, ref List<BaoCao2cInfo> resultList, DateTime startDate, DateTime endDate, ref DataTable dt)
