@@ -410,11 +410,14 @@ namespace Com.Gosol.KNTC.API.Controllers.HeThong
                         NguoiDung.TrangThaiGiaoXacMinh = TrangThaiGiaoXacMinh;
                         NguoiDung.ListCap = GetListCap(NguoiDung?.CapID, NguoiDung?.CoQuanID ?? 0);
 
+                        var roles = new Roles(NguoiDung);
+
                         return Ok(new
                         {
                             Status = 1,
                             User = NguoiDung,
-                            ListRole = ListChucNang
+                            ListRole = ListChucNang,
+                            Roles = roles,
                         });
                     }
                     else

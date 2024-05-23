@@ -194,6 +194,7 @@ namespace Com.Gosol.KNTC.API.Controllers.HeThong
 
                     NguoiDung.TrangThaiGiaoXacMinh = TrangThaiGiaoXacMinh;
                     claims.Add(new Claim("TrangThaiGiaoXacMinh", TrangThaiGiaoXacMinh.ToString()));
+
                     //claims.Add(new Claim("expires_at", new DateTime(2020,01,07,13,45,00).ToString()));
                     var tokenHandler = new JwtSecurityTokenHandler();
                     var key = Encoding.ASCII.GetBytes(_AppSettings.Value.AudienceSecret);
@@ -226,11 +227,14 @@ namespace Com.Gosol.KNTC.API.Controllers.HeThong
                         var temp = _NguoiDungBUS.UpdateThoiGianlogin(NguoiDung, ref messErr);
                     }
 
+                    var roles = new Roles(NguoiDung);
+
                     return Ok(new
                     {
                         Status = 1,
                         User = NguoiDung,
-                        ListRole = ListChucNang
+                        ListRole = ListChucNang,
+                        Roles = roles,
                     });
                 }
                 else
