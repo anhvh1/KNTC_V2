@@ -604,6 +604,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                 while (dr.Read())
                 {
                     CoQuanInfo coQuanInfo = GetData(dr);
+                    coQuanInfo.BanTiepDan = Utils.ConvertToBoolean(dr["BanTiepDan"], false);
                     coQuans.Add(coQuanInfo);
                 }
                 dr.Close();

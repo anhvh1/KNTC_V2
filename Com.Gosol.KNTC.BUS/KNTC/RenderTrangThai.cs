@@ -1039,7 +1039,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 }
                 else if (stateID == 6)
                 {
-                    TrangThaiIDMoi = 103;
+                    TrangThaiIDMoi = 105;
                     if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.ChuyenVien.GetHashCode())
                     {
                         TrangThaiMoi = "Đã trình";
@@ -1051,7 +1051,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 }
                 else if (stateID == 7)
                 {
-                    TrangThaiIDMoi = 104;
+                    TrangThaiIDMoi = 106;
                     TrangThaiMoi = "Đã duyệt";
                     if ((IdentityHelper?.RoleID ?? 0) == RoleEnum.LanhDao.GetHashCode())
                     {
