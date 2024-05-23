@@ -63,6 +63,7 @@ namespace Com.Gosol.KNTC.Models.HeThong
         public List<NhomNguoiDungModel> DanhSachNhomNguoiDung { get; set; }
         public List<int> DanhSachCaLamViecID { get; set; }
         public bool? LaCanBo { get; set; }
+        public int? ChuTichUBND { get; set; }
         public HeThongCanBoModel() { }
         public HeThongCanBoModel(int CanBoID, string TenCanBo, DateTime NgaySinh, int GioiTinh, string DiaChi, int ChucVuID, int QuyenKy, string Email, string DienThoai,
             int PhongBanID, int CoQuanID, int RoleID, int QuanTridonVi, int CoQuanCuID, int CanBoCuID, int XemTaiLieuMat, string AnhHoSo, string HoKhau,

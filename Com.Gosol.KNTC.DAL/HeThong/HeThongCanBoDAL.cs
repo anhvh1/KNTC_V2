@@ -457,6 +457,7 @@ namespace Com.Gosol.KNTC.DAL.HeThong
                     //new SqlParameter(PARAM_HoKhau,  SqlDbType.NVarChar),
                     //new SqlParameter(PARAM_MaCB,  SqlDbType.NVarChar),
                     new SqlParameter(PARAM_CanBoID,SqlDbType.Int),
+                    new SqlParameter("ChuTichUBND",SqlDbType.Int),
                     //new SqlParameter(PARAM_CapQuanLy,SqlDbType.Int),
                     //new SqlParameter("VaiTro",SqlDbType.NVarChar),
                     //new SqlParameter(PARAM_CMND, SqlDbType.NVarChar),
@@ -484,6 +485,7 @@ namespace Com.Gosol.KNTC.DAL.HeThong
             //parameters[12].Value = HeThongCanBoModel.CoQuanCuID ?? Convert.DBNull;
             //parameters[13].Value = HeThongCanBoModel.CanBoCuID ?? Convert.DBNull;
             parameters[11].Value = HeThongCanBoModel.XemTaiLieuMat ?? Convert.DBNull;
+            parameters[12].Value = HeThongCanBoModel.ChuTichUBND ?? Convert.DBNull;
             //parameters[15].Value = EnumTrangThaiNhanVien.DangLam.GetHashCode();
             //parameters[16].Value = HeThongCanBoModel.AnhHoSo ?? Convert.DBNull;
             //parameters[17].Value = HeThongCanBoModel.HoKhau ?? Convert.DBNull;
@@ -1278,6 +1280,8 @@ namespace Com.Gosol.KNTC.DAL.HeThong
                             new SqlParameter(PARAM_XemTaiLieuMat,  SqlDbType.Int),
                             new SqlParameter(PARAM_TrangThaiID,  SqlDbType.Int),
                             new SqlParameter("SSOID", SqlDbType.NVarChar),
+                            new SqlParameter("ChuTichUBND",  SqlDbType.Int),
+
                             //new SqlParameter(PARAM_AnhHoSo,  SqlDbType.NVarChar),
                             //new SqlParameter(PARAM_HoKhau,  SqlDbType.NVarChar),
                             //new SqlParameter(PARAM_MaCB,  SqlDbType.NVarChar),
@@ -1315,6 +1319,7 @@ namespace Com.Gosol.KNTC.DAL.HeThong
             parameters[13].Value = HeThongCanBoModel.XemTaiLieuMat ?? Convert.DBNull;
             parameters[14].Value = HeThongCanBoModel.TrangThaiID ?? Convert.DBNull;
             parameters[15].Value = HeThongCanBoModel.SSOID ?? Convert.DBNull;
+            parameters[16].Value = HeThongCanBoModel.ChuTichUBND ?? Convert.DBNull;
             //parameters[17].Value = HeThongCanBoModel.AnhHoSo ?? Convert.DBNull;
             //parameters[18].Value = HeThongCanBoModel.HoKhau ?? Convert.DBNull;
             //parameters[19].Value = HeThongCanBoModel.MaCB;
@@ -1602,6 +1607,7 @@ namespace Com.Gosol.KNTC.DAL.HeThong
                         canBo.SSOID = Utils.ConvertToString(dr["SSOID"], string.Empty);
                         canBo.TrangThaiTaiKhoan = Utils.ConvertToNullableInt32(dr["TrangThaiTaiKhoan"], null);
                         canBo.DanhSachNhomNguoiDungID = new PhanQuyenDAL().GetNhomNguoiDungByNguoiDungID(canBo.NguoiDungID ?? 0);
+                        canBo.ChuTichUBND = Utils.ConvertToInt32(dr["ChuTichUBND"], 0);
                         break;
                     }
                     dr.Close();
