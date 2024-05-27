@@ -368,10 +368,6 @@ namespace Com.Gosol.KNTC.API.Controllers.HeThong
                             {
                                 if (NguoiDung?.RoleID == RoleEnum.LanhDao.GetHashCode())
                                 {
-                                    TrangThaiGiaoXacMinh = 1;
-                                }
-                                else if (NguoiDung?.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
-                                {
                                     TrangThaiGiaoXacMinh = 2;
                                 }
                                 else TrangThaiGiaoXacMinh = 0;

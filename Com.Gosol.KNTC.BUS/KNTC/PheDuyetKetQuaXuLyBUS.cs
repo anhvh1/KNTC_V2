@@ -1416,6 +1416,13 @@ namespace Com.Gosol.KNTC.BUS.KNTC
 
         public IList<CoQuanInfo> GetCoQuanChuyenDon(IdentityHelper IdentityHelper)
         {
+            // BTD tỉnh => Trưởng ban tiếp dân chuyển đơn
+            // BTD huyện => Chủ tịch huyện chuyển đơn
+            // Phòng thuộc huyện => lãnh đạo phòng chuyển đơn
+            // SBN => lãnh đạo sở chuyển đơn
+            // Phòng thuộc sở => lãnh đạo sở chuyển đơn
+            // Xã => chủ tịch xã chuyển đơn
+
             var ListAllCQ = new CoQuan().GetAllCoQuan();
             List<CoQuanInfo> cqList = new List<CoQuanInfo>();
             if (IdentityHelper.SuDungQuyTrinhPhucTap == false)
@@ -1423,11 +1430,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 return ListAllCQ;
             }
 
-            if (IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode())
+            if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapUBNDXa.GetHashCode())
             {
-                cqList = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).ToList();
+                var cr = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).FirstOrDefault();
+                cqList = new CoQuan().GetCoQuanByParentID(cr.CoQuanChaID).Where(x => x.CapID == CapQuanLy.CapUBNDXa.GetHashCode()).ToList();
             }
-            else if (IdentityHelper.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode())
+            else if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapUBNDHuyen.GetHashCode())
             {
                 if (IdentityHelper.ChuTichUBND == 1)
                 {
@@ -1435,35 +1443,67 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     var pr = ListAllCQ.Where(x => x.CoQuanID == cr.CoQuanChaID).FirstOrDefault();
                     cqList = new CoQuan().GetCoQuanByParentID(IdentityHelper.CoQuanID ?? 0).Where(x => x.CapID == CapQuanLy.CapUBNDXa.GetHashCode() || x.CapID == CapQuanLy.CapPhong.GetHashCode()).ToList();
                 }
-                else
-                {
-                    var cr = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).FirstOrDefault();
-                    var pr = ListAllCQ.Where(x => x.CoQuanID == cr.CoQuanChaID).FirstOrDefault();
-                    cqList = new CoQuan().GetCoQuanByParentID(cr.CoQuanChaID).Where(x => x.CapID == CapQuanLy.CapUBNDXa.GetHashCode()).ToList();
-                }
-                //cqList.Add(pr);
             }
-            else
+            else if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
             {
                 var cr = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).FirstOrDefault();
                 var pr = ListAllCQ.Where(x => x.CoQuanID == cr.CoQuanChaID).FirstOrDefault();
-                cqList = ListAllCQ.Where(x => x.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode()).ToList();
-                //cqList.Add(pr);
-                try
-                {
-                    var listThanhTraTinh = new SystemConfigDAL().GetByKey("Thanh_Tra_Tinh_ID").ConfigValue.Split(',').ToList().Select(x => Utils.ConvertToInt32(x.ToString(), 0)).ToList();
-                    if (listThanhTraTinh.Contains(IdentityHelper.CoQuanID.Value))
-                    {
-                        var capSo = ListAllCQ.Where(x => x.CapID == CapQuanLy.CapSoNganh.GetHashCode()).ToList();
-                        cqList.AddRange(capSo);
-                    }
-                }
-                catch (Exception)
-                {
-                }
-
-
+                cqList = new CoQuan().GetCoQuanByParentID(cr.CoQuanChaID).Where(x => x.CapID == CapQuanLy.CapUBNDXa.GetHashCode() || x.CapID == CapQuanLy.CapPhong.GetHashCode()).ToList();
             }
+            else if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapSoNganh.GetHashCode())
+            {
+                cqList = ListAllCQ.Where(x => x.CapID == CapQuanLy.CapSoNganh.GetHashCode() || (x.CapID == CapQuanLy.CapPhong.GetHashCode() && (x.BanTiepDan ?? false))).ToList();
+            }
+            else if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapUBNDTinh.GetHashCode())
+            {
+                if ((IdentityHelper.BanTiepDan ?? false))
+                {
+                    cqList = ListAllCQ.Where(x => (x.CapID == CapQuanLy.CapPhong.GetHashCode() && (x.BanTiepDan ?? false))).ToList();
+
+                }
+            }
+
+            //if (IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode())
+            //{
+            //    cqList = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).ToList();
+            //}
+            //else if (IdentityHelper.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode())
+            //{
+            //    if (IdentityHelper.ChuTichUBND == 1)
+            //    {
+            //        var cr = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).FirstOrDefault();
+            //        var pr = ListAllCQ.Where(x => x.CoQuanID == cr.CoQuanChaID).FirstOrDefault();
+            //        cqList = new CoQuan().GetCoQuanByParentID(IdentityHelper.CoQuanID ?? 0).Where(x => x.CapID == CapQuanLy.CapUBNDXa.GetHashCode() || x.CapID == CapQuanLy.CapPhong.GetHashCode()).ToList();
+            //    }
+            //    else
+            //    {
+            //        var cr = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).FirstOrDefault();
+            //        var pr = ListAllCQ.Where(x => x.CoQuanID == cr.CoQuanChaID).FirstOrDefault();
+            //        cqList = new CoQuan().GetCoQuanByParentID(cr.CoQuanChaID).Where(x => x.CapID == CapQuanLy.CapUBNDXa.GetHashCode()).ToList();
+            //    }
+            //    //cqList.Add(pr);
+            //}
+            //else
+            //{
+            //    var cr = ListAllCQ.Where(x => x.CoQuanID == IdentityHelper.CoQuanID.Value).FirstOrDefault();
+            //    var pr = ListAllCQ.Where(x => x.CoQuanID == cr.CoQuanChaID).FirstOrDefault();
+            //    cqList = ListAllCQ.Where(x => x.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode()).ToList();
+            //    //cqList.Add(pr);
+            //    try
+            //    {
+            //        var listThanhTraTinh = new SystemConfigDAL().GetByKey("Thanh_Tra_Tinh_ID").ConfigValue.Split(',').ToList().Select(x => Utils.ConvertToInt32(x.ToString(), 0)).ToList();
+            //        if (listThanhTraTinh.Contains(IdentityHelper.CoQuanID.Value))
+            //        {
+            //            var capSo = ListAllCQ.Where(x => x.CapID == CapQuanLy.CapSoNganh.GetHashCode()).ToList();
+            //            cqList.AddRange(capSo);
+            //        }
+            //    }
+            //    catch (Exception)
+            //    {
+            //    }
+
+
+            //}
 
             return cqList;
         }

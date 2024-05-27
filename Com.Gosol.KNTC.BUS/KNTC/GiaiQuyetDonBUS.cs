@@ -933,6 +933,10 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         {
                             commandCode = WorkflowInstance.Instance.GetAvailabelCommands(docunmentid).Where(x => x.ToString() == "LDPhanTruongDoanGQ").FirstOrDefault();
                         }
+                        if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == (int)RoleEnum.LanhDao)
+                        {
+                            commandCode = WorkflowInstance.Instance.GetAvailabelCommands(docunmentid).Where(x => x.ToString() == "LDPhanTruongDoanGQ").FirstOrDefault();
+                        }
                     }
 
                     else
@@ -1823,6 +1827,13 @@ namespace Com.Gosol.KNTC.BUS.KNTC
 
             try
             {
+                // tuandhh bổ sung cấp huyện thuộc phòng đoàn tổ xác minh trình lãnh đạo phòng thì gộp state duyệt và ban hành quyết định => cập nhập BC,KL,QĐ như cấp SBN
+                if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                {
+                    commandCode = WorkflowInstance.Instance.GetAvailabelCommands(xuLyDonID)[0];
+                    WorkflowInstance.Instance.ExecuteCommand(xuLyDonID, canboid, commandCode, hanGiaiQuyet, "");
+                }
+
                 //String fileDataStr = fileUrl;
                 //if (fileDataStr != string.Empty)
                 //{

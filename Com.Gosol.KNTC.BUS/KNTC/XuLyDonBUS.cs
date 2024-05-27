@@ -1162,7 +1162,23 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         commandCode = commandList.Where(x => x.ToString() == "TrinhKetQuaXL").FirstOrDefault();
                     }
                     else
-                        commandCode = commandList.Where(x => x.ToString() == "TiepDanTrinhTP").FirstOrDefault();
+                    {
+                        if (lanhdao != null)
+                        {
+                            if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode() && lanhdao.RoleID == RoleEnum.LanhDao.GetHashCode())
+                            {
+                                stateIdGop = 6;
+                            }
+
+                            if (lanhdao.RoleID == RoleEnum.LanhDao.GetHashCode())
+                            {
+                                commandList = WorkflowInstance.Instance.GetCommandsByStateID(stateIdGop ?? 0);
+                                commandCode = commandList.Where(x => x.ToString() == "DuyetXL").FirstOrDefault();
+                            }
+                            else
+                                commandCode = commandList.Where(x => x.ToString() == "TiepDanTrinhTP").FirstOrDefault();
+                        }
+                    }
                 }
                 else
                 {
@@ -1320,9 +1336,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     if (info.LanhDaoID > 0)
                     {
                         // chuyên viên trình trực tiếp lãnh đạo SBN
-                        if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapSoNganh.GetHashCode()
+                        if ((IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapSoNganh.GetHashCode()
                             && IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode()
-                            && lanhdao != null && lanhdao.RoleID == RoleEnum.LanhDao.GetHashCode()
+                            && lanhdao != null && lanhdao.RoleID == RoleEnum.LanhDao.GetHashCode())
+                            || (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && !(IdentityHelper.BanTiepDan ?? false)
+                            && IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode()
+                            && lanhdao != null && lanhdao.RoleID == RoleEnum.LanhDao.GetHashCode())
                             )
                         {
                             new XuLyDonDAL().UpdateLanhDaoDuyet(idxulydon, null, info.LanhDaoID);
@@ -1375,27 +1394,27 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         }
                         else if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())// trưởng ban tiếp dân huyện
                         {
-                            Data = Data.Where(x => x.CoQuanID == cq.CoQuanChaID && x.RoleID == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
+                            Data = Data.Where(x => x.CoQuanID == cq.CoQuanChaID && x.RoleID == 1 && x.ChuTichUBND == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
                         }
-                        else if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())// chủ tịch ubnd huyện
-                        {
-                            Data = Data.Where(x => x.CoQuanID == cq.CoQuanChaID && x.RoleID == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
-                        }
+                        //else if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())// chủ tịch ubnd huyện
+                        //{
+                        //    Data = Data.Where(x => x.CoQuanID == cq.CoQuanChaID && x.RoleID == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
+                        //}
                     }
                     else
                     {
                         if (IdentityHelper.RoleID == RoleEnum.ChuyenVien.GetHashCode())
                         {
-                            Data = Data.Where(x => x.CoQuanID == IdentityHelper.CoQuanID && x.RoleID == 2 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
+                            Data = Data.Where(x => x.CoQuanID == IdentityHelper.CoQuanID && x.RoleID == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
                         }
                         else if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())// lãnh đạo phòng
                         {
                             Data = Data.Where(x => x.CoQuanID == cq.CoQuanID && x.RoleID == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
                         }
-                        else if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())// lãnh đạo đơn vị
-                        {
-                            Data = Data.Where(x => x.CoQuanID == cq.CoQuanID && x.RoleID == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
-                        }
+                        //else if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())// lãnh đạo đơn vị
+                        //{
+                        //    Data = Data.Where(x => x.CoQuanID == cq.CoQuanID && x.RoleID == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
+                        //}
                     }
                 }
                 else if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocSo.GetHashCode())
