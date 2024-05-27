@@ -1375,7 +1375,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         }
                         else if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())// trưởng ban tiếp dân huyện
                         {
-                            Data = Data.Where(x => x.CoQuanID == cq.CoQuanChaID && x.RoleID == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
+                            Data = Data.Where(x => x.CoQuanID == cq.CoQuanChaID && x.RoleID == 1 && x.ChuTichUBND == 1 && (x.CanBoID != 20 && x.TenCanBo != "Administrator")).ToList();
                         }
                         else if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())// chủ tịch ubnd huyện
                         {
