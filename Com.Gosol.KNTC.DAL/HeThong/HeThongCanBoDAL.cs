@@ -485,7 +485,7 @@ namespace Com.Gosol.KNTC.DAL.HeThong
             //parameters[12].Value = HeThongCanBoModel.CoQuanCuID ?? Convert.DBNull;
             //parameters[13].Value = HeThongCanBoModel.CanBoCuID ?? Convert.DBNull;
             parameters[11].Value = HeThongCanBoModel.XemTaiLieuMat ?? Convert.DBNull;
-            parameters[12].Value = HeThongCanBoModel.ChuTichUBND ?? Convert.DBNull;
+            parameters[13].Value = HeThongCanBoModel.ChuTichUBND ?? Convert.DBNull;
             //parameters[15].Value = EnumTrangThaiNhanVien.DangLam.GetHashCode();
             //parameters[16].Value = HeThongCanBoModel.AnhHoSo ?? Convert.DBNull;
             //parameters[17].Value = HeThongCanBoModel.HoKhau ?? Convert.DBNull;

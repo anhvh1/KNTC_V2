@@ -575,6 +575,7 @@ namespace GO.API.Controllers.KNTC
                     IdentityHelper.RoleID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "RoleID").Value, 0);
                     IdentityHelper.CapThanhTra = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapThanhTra").Value, 0);
                     IdentityHelper.CapUBND = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "CapUBND").Value, false);
+                    IdentityHelper.CapHanhChinh = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapHanhChinh").Value, 0);
 
                     var Data = _GiaiQuyetDonBUS.DuyetBaoCaoXacMinh(IdentityHelper, BaoCaoXacMinhModel);
                     if(IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode() && IdentityHelper.SuDungQuyTrinhGQPhucTap == true)

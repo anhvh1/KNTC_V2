@@ -1231,25 +1231,25 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         }
                     }
                 }
-                else if (stateID == 19)
-                {
-                    TrangThaiMoi = "Đang xác minh";
-                    TrangThaiIDMoi = 203;
+                //else if (stateID == 19)
+                //{
+                //    TrangThaiMoi = "Đang xác minh";
+                //    TrangThaiIDMoi = 203;
 
-                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
-                    {
-                        TrangThaiMoi = "Chưa giao xác minh";
-                        TrangThaiIDMoi = 202;
-                    }
+                //    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                //    {
+                //        TrangThaiMoi = "Chưa giao xác minh";
+                //        TrangThaiIDMoi = 202;
+                //    }
 
-                    //if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode() && stateID == 19
-                    //// tuandhh bổ sung cấp lãnh đạo phòng chỉ dành cho btd tỉnh, btd huyện lãnh đạo phân cho ai thì cấp đó xác minh
-                    //&& IdentityHelper.CapHanhChinh != EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
-                    //{
-                    //    TrangThaiMoi = "Chưa giao xác minh";
-                    //    TrangThaiIDMoi = 202;
-                    //}
-                }
+                //    //if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode() && stateID == 19
+                //    //// tuandhh bổ sung cấp lãnh đạo phòng chỉ dành cho btd tỉnh, btd huyện lãnh đạo phân cho ai thì cấp đó xác minh
+                //    //&& IdentityHelper.CapHanhChinh != EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
+                //    //{
+                //    //    TrangThaiMoi = "Chưa giao xác minh";
+                //    //    TrangThaiIDMoi = 202;
+                //    //}
+                //}
                 else if (stateID == 8)
                 {
                     //TrangThaiMoi = "Chuyên viên đang xác minh";
@@ -1283,29 +1283,24 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     }
                     if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
                     {
-                        TrangThaiMoi = "Đang xác minh";
-                    }
-
-                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode()
-                                || (IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                                || (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                                )
-                    {
                         TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                        TrangThaiIDMoi = 207;
                     }
                 }
                 else if (stateID == 9)
                 {
-                    TrangThaiMoi = "Đã trình báo cáo xác minh";
-                    TrangThaiIDMoi = 207;
-                    if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
-                    {
-                        TrangThaiMoi = "Đã trình báo cáo xác minh";
-                    }
-                    if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
-                    {
-                        TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
-                    }
+                    TrangThaiMoi = "Chưa ban hành quyết định";
+                    TrangThaiIDMoi = 209;
+                    //TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    //TrangThaiIDMoi = 207;
+                    //if (IdentityHelper.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
+                    //{
+                    //    TrangThaiMoi = "Đã trình báo cáo xác minh";
+                    //}
+                    //if (IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                    //{
+                    //    TrangThaiMoi = "Chưa duyệt báo cáo xác minh";
+                    //}
                 }
                 else if (stateID == 10)
                 {
