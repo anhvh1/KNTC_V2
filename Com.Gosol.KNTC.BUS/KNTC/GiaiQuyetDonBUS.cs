@@ -946,7 +946,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 {
                     if (suDungQuyTrinhGQ)
                         // bổ sung cấp huyện: ct huyện phân cấp dưới giải quyết => cấp dưới phân trưởng đoàn
-                        if (IdentityHelper.RoleID == (int)RoleEnum.LanhDao && IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
+                        if (IdentityHelper.RoleID == (int)RoleEnum.LanhDao && IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() || IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapUBNDXa.GetHashCode())
                         {
                             commandCode = WorkflowInstance.Instance.GetAvailabelCommands(docunmentid).Where(x => x.ToString() == "LDCapDuoiPhanTDoanGQ").FirstOrDefault();
                         }

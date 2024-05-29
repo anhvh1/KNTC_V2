@@ -652,6 +652,49 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             return DTInfo;
         }
 
+
+        public XuLyDonInfo GetByXuLyDonID(int xulydonID)
+        {
+
+            XuLyDonInfo DTInfo = null;
+            SqlParameter[] parameters = new SqlParameter[]{
+                new SqlParameter(PARAM_XULYDON_ID,SqlDbType.Int)
+            };
+            parameters[0].Value = xulydonID;
+            try
+            {
+                using (SqlDataReader dr = SQLHelper.ExecuteReader(SQLHelper.appConnectionStrings, CommandType.StoredProcedure, GET_BY_ID, parameters))
+                {
+
+                    if (dr.Read())
+                    {
+                        DTInfo.NgayCQKhacChuyenDonDen = Utils.ConvertToDateTime(dr["NgayCQKhacChuyenDonDen"], DateTime.MinValue);
+                        DTInfo.CQNgoaiHeThong = Utils.ConvertToString(dr["CQNgoaiHeThong"], string.Empty);
+                        DTInfo.TenCanBoPhuTrach = Utils.GetString(dr["TenCanBoPhuTrach"], string.Empty);
+                        DTInfo.TenCoQuanGiaiQuyet = Utils.GetString(dr["TenCoQuanGiaiQuyet"], string.Empty);
+                        DTInfo.TenCoQuanGiaiQuyet = Utils.GetString(dr["TenCoQuanGiaiQuyet"], string.Empty);
+                        DTInfo.CBDuocChonXL = Utils.ConvertToInt32(dr["CBDuocChonXL"], 0);
+                        DTInfo.QTTiepNhanDon = Utils.ConvertToInt32(dr["QTTiepNhanDon"], 0);
+                        DTInfo.SoLan = Utils.ConvertToInt32(dr["SoLan"], 0);
+                        DTInfo.DonThuGocID = Utils.ConvertToInt32(dr["DonThuGocID"], 0);
+                        DTInfo.NgayThuLy = Utils.ConvertToDateTime(dr["NgayThuLy"], DateTime.MinValue);
+                        DTInfo.NgayXuLy = Utils.ConvertToDateTime(dr["NgayXuLy"], DateTime.MinValue);
+                        DTInfo.CoQuanID = Utils.ConvertToInt32(dr["CoQuanID"], 0);
+                        DTInfo.XuLyDonChuyenID = Utils.ConvertToInt32(dr["XuLyDonChuyenID"], 0);
+                        DTInfo.LanGiaiQuyet = Utils.ConvertToInt32(dr["LanGiaiQuyet"], 0);
+                        DTInfo.XuLyDonGocID = Utils.ConvertToInt32(dr["DonThuGocID"], 0);
+                        DTInfo.YKienXuLy = Utils.ConvertToString(dr["YKienXuLy"], string.Empty);
+                    }
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return DTInfo;
+        }
+
         //Lay theo ID, join TiepDanKhongDon
         public XuLyDonInfo GetJoinTiepDanByID(int xulydonID)
         {
@@ -916,7 +959,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
         {
 
             object val = null;
-            
+
             SqlParameter[] parameters = new SqlParameter[]{
                 new SqlParameter("XuLyDonID", SqlDbType.Int),
                 new SqlParameter("TrinhDuThao", SqlDbType.Int),
@@ -2249,7 +2292,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         DTInfo.TenCQPhan = Utils.GetString(dr["TenCQPhan"], string.Empty);
                         DTInfo.LanGiaiQuyet = Utils.ConvertToInt32(dr["LanGiaiQuyet"], 0);
 
-                        if(DTInfo.TenCoQuanGQ != "")
+                        if (DTInfo.TenCoQuanGQ != "")
                         {
                             DTInfo.TenCoQuanXacMinh = DTInfo.TenCoQuanGQ;
                         }
@@ -2990,7 +3033,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                 {
                     query.Load(dr);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -3522,7 +3565,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             };
             parameters[0].Value = XuLyDonID ?? Convert.DBNull;
             parameters[1].Value = TrangThaiDuyet ?? Convert.DBNull;
-         
+
             using (SqlConnection conn = new SqlConnection(SQLHelper.appConnectionStrings))
             {
 
@@ -3592,7 +3635,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                 new SqlParameter("TrangThaiKhoa", SqlDbType.Int),
             };
             parameters[0].Value = XuLyDonID ?? Convert.DBNull;
-            parameters[1].Value = TrangThai ?? Convert.DBNull;    
+            parameters[1].Value = TrangThai ?? Convert.DBNull;
 
             using (SqlConnection conn = new SqlConnection(SQLHelper.appConnectionStrings))
             {
@@ -3653,6 +3696,97 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             }
             return Utils.ConvertToInt32(val, 0);
         }
+
+        public XuLyDonInfo GetByXuLyDonID_V2(int xulydonID)
+        {
+            XuLyDonInfo DTInfo = null;
+            SqlParameter[] parameters = new SqlParameter[]{
+                new SqlParameter(PARAM_XULYDON_ID,SqlDbType.Int)
+            };
+            parameters[0].Value = xulydonID;
+            try
+            {
+                using (SqlDataReader dr = SQLHelper.ExecuteReader(SQLHelper.appConnectionStrings, CommandType.StoredProcedure, "v2_NV_XuLyDon_GetByXuLyDonID", parameters))
+                {
+
+                    if (dr.Read())
+                    {
+                        return MapXuLyDonFromReader(dr);
+                    }
+                    dr.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return DTInfo;
+        }
+
+        // Phương thức map dữ liệu từ SqlDataReader vào đối tượng XulyDon
+        private XuLyDonInfo MapXuLyDonFromReader(SqlDataReader reader)
+        {
+            XuLyDonInfo xulyDon = new XuLyDonInfo();
+            // Map từng trường dữ liệu vào đối tượng XulyDon tương ứng
+            xulyDon.XuLyDonID = Utils.ConvertToInt32(reader["XuLyDonID"], 0);
+            xulyDon.DonThuID = Utils.ConvertToInt32(reader["DonThuID"], 0);
+            xulyDon.SoLan = Utils.ConvertToInt32(reader["SoLan"], 0);
+            xulyDon.LanGiaiQuyet = Utils.ConvertToInt32(reader["LanGiaiQuyet"], 0);
+            xulyDon.SoDonThu = Utils.GetString(reader["SoDonThu"], string.Empty);
+            xulyDon.NgayNhapDon = Utils.ConvertToDateTime(reader["NgayNhapDon"], DateTime.MinValue); 
+            xulyDon.NgayQuaHan = Utils.ConvertToDateTime(reader["NgayQuaHan"], DateTime.MinValue);
+            xulyDon.NguonDonDenID = Utils.ConvertToInt32(reader["NguonDonDen"], 0);
+            xulyDon.CQChuyenDonDenID = Utils.ConvertToInt32(reader["CQChuyenDonDenID"], 0);
+            xulyDon.SoCongVan = Utils.GetString(reader["SoCongVan"], string.Empty);
+            xulyDon.NgayCQKhacChuyenDonDen = Utils.ConvertToDateTime(reader["NgayCQKhacChuyenDonDen"], DateTime.MinValue);
+            xulyDon.NgayChuyenDon = Utils.ConvertToDateTime(reader["NgayChuyenDon"], DateTime.MinValue);
+            xulyDon.ThuocThamQuyen = Utils.ConvertToBoolean(reader["ThuocThamQuyen"], false);
+            xulyDon.DuDieuKien = Utils.ConvertToBoolean(reader["DuDieuKien"], false);
+            xulyDon.HuongGiaiQuyetID = Utils.ConvertToInt32(reader["HuongGiaiQuyetID"], 0);
+            xulyDon.NoiDungHuongDan = Utils.GetString(reader["NoiDungHuongDan"], string.Empty);
+            xulyDon.CQChuyenDonID = Utils.ConvertToInt32(reader["CQChuyenDonID"], 0);
+            xulyDon.CanBoXuLyID = Utils.ConvertToInt32(reader["CanBoXuLyID"], 0);
+            xulyDon.CanBoKyID = Utils.ConvertToInt32(reader["CanBoKyID"], 0);
+            xulyDon.CQDaGiaiQuyetID = Utils.GetString(reader["CQDaGiaiQuyetID"], string.Empty);
+            xulyDon.CQGiaiQuyetTiepID = Utils.ConvertToInt32(reader["CQGiaiQuyetTiepID"], 0);
+            xulyDon.TrangThaiDonID = Utils.ConvertToInt32(reader["TrangThaiDonID"], 0);
+            xulyDon.PhanTichKQID = Utils.ConvertToInt32(reader["PhanTichKQID"], 0);
+            xulyDon.CanBoTiepNhapID = Utils.ConvertToInt32(reader["CanBoTiepNhapID"], 0);
+            xulyDon.CoQuanID = Utils.ConvertToInt32(reader["CoQuanID"], 0);
+            xulyDon.NgayThuLy = Utils.ConvertToDateTime(reader["NgayThuLy"], DateTime.MinValue);
+            xulyDon.DuAnID = Utils.ConvertToInt32(reader["DuAnID"], 0);
+            xulyDon.NgayXuLy = Utils.ConvertToDateTime(reader["NgayXuLy"], DateTime.MinValue);
+            xulyDon.MaHoSoMotCua = Utils.GetString(reader["MaHoSoMotCua"], string.Empty);
+            xulyDon.SoBienNhanMotCua = Utils.GetString(reader["SoBienNhanMotCua"], string.Empty);
+            xulyDon.NgayHenTraMotCua = Utils.ConvertToDateTime(reader["NgayHenTraMotCua"], DateTime.MinValue);
+            xulyDon.SoCVBaoCaoGQ = Utils.GetString(reader["SoCVBaoCaoGQ"], string.Empty);
+            xulyDon.NgayCVBaoCaoGQ = Utils.ConvertToDateTime(reader["NgayCVBaoCaoGQ"], DateTime.MinValue);
+            xulyDon.CQNgoaiHeThong = Utils.GetString(reader["CQNgoaiHeThong"], string.Empty);
+            xulyDon.CBDuocChonXL = Utils.ConvertToInt32(reader["CBDuocChonXL"], 0);
+            xulyDon.QTTiepNhanDon = Utils.ConvertToInt32(reader["QTTiepNhanDon"], 0);
+            xulyDon.DonThuGocID = Utils.ConvertToInt32(reader["DonThuGocID"], 0);
+            xulyDon.ViewerVBDonDoc = Utils.ConvertToBoolean(reader["ViewerVBDonDoc"], false);
+            xulyDon.XuLyDonChuyenID = Utils.ConvertToInt32(reader["DonThuGocID"], 0);
+            xulyDon.TrinhDuThao = Utils.ConvertToInt32(reader["TrinhDuThao"], 0);
+            xulyDon.NoiDungBanHanhXM = Utils.GetString(reader["NoiDungBanHanhXM"], string.Empty);
+            xulyDon.NoiDungBanHanhGQ = Utils.GetString(reader["NoiDungBanHanhGQ"], string.Empty);
+            xulyDon.HanXL = reader["HanXL"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["HanXL"]);
+            xulyDon.CQChuyenTiep = Utils.ConvertToInt32(reader["CQChuyenTiep"], 0);
+            xulyDon.CanBoBanHanh = Utils.ConvertToInt32(reader["CanBoBanHanh"], 0);
+            xulyDon.NgayBanHanh = reader["NgayBanHanh"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["NgayBanHanh"]);
+            xulyDon.LanhDaoDuyet1ID = Utils.ConvertToInt32(reader["LanhDaoDuyet1ID"], 0);
+            xulyDon.LanhDaoDuyet2ID = Utils.ConvertToInt32(reader["LanhDaoDuyet2ID"], 0);
+            xulyDon.QuyTrinhXLD = Utils.GetString(reader["QuyTrinhXLD"], string.Empty);
+            xulyDon.QuyTrinhGQ = Utils.GetString(reader["QuyTrinhGQ"], string.Empty);
+            xulyDon.CoQuanNgoaiHeThong = Utils.ConvertToBoolean(reader["CoQuanNgoaiHeThong"], false);
+            xulyDon.CoQuanTheoDoiDonDoc = Utils.ConvertToBoolean(reader["CoQuanTheoDoiDonDoc"], false);
+            xulyDon.TrangThaiKhoa = Utils.ConvertToBoolean(reader["TrangThaiKhoa"], false);
+            xulyDon.DuocTraCuu = Utils.ConvertToBoolean(reader["DuocTraCuu"], false);
+            xulyDon.TrangThaiDuyet = Utils.ConvertToBoolean(reader["TrangThaiDuyet"], false);
+
+            return xulyDon;
+        }
+
 
     }
 }
