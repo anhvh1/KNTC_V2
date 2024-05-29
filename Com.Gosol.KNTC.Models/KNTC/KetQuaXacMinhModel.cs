@@ -21,5 +21,7 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public string NoiDung { get; set; }
         public DateTime? HanGiaiQuyet { get; set; }
         public List<DanhSachHoSoTaiLieu> DanhSachHoSoTaiLieu { get; set; }
+        public int? LoaiQuyTrinh { get; set; }
+
     }
 }

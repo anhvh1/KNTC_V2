@@ -1828,7 +1828,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             try
             {
                 // tuandhh bổ sung cấp huyện thuộc phòng đoàn tổ xác minh trình lãnh đạo phòng thì gộp state duyệt và ban hành quyết định => cập nhập BC,KL,QĐ như cấp SBN
-                if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode() && BaoCaoXacMinh.LoaiQuyTrinh == 6)
                 {
                     commandCode = WorkflowInstance.Instance.GetAvailabelCommands(xuLyDonID)[0];
                     WorkflowInstance.Instance.ExecuteCommand(xuLyDonID, canboid, commandCode, hanGiaiQuyet, "");
