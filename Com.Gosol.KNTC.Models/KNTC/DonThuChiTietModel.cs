@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Com.Gosol.KNTC.Model.HeThong;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,15 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public List<FileHoSoInfo> FileHoSo { get; set; }
         public List<TransitionHistoryInfo> TienTrinhXuLy { get; set; }
         public List<DanhSachHoSoTaiLieu> DanhSachHoSoTaiLieu { get; set; }
+
+        public XuLyDonInfo XuLyDon { get; set; }
+        public CanBoInfo LanhDaoDuyet1 { get; set; }
+        public CanBoInfo LanhDaoDuyet2 { get; set; }
+        public List<ChuyenGiaiQuyetInfo> DanhSachCoQuanGiaiQuyet { get; set; }
+        public List<PhanTPPhanGQModel> PhanTPPhanGQModels { get; set; }
+        public List<VaiTroGiaiQuyetInfo> VaiTroGiaiQuyetInfos { get; set; }
+        public List<CoQuanInfo> CoQuanChuyenDonDi { get; set; }
+        public List<CoQuanInfo> CoQuanChuyenDonDen { get; set; }
 
     }
 

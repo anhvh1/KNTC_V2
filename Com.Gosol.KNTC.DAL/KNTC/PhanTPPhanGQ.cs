@@ -76,6 +76,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                     while (dr.Read())
                     {
                         PhanTPPhanGQModel info = GetData(dr);
+                        info.TenCanBo = Utils.ConvertToString(dr["TenCanBo"], string.Empty);
                         resultList.Add(info);
                     }
                     dr.Close();

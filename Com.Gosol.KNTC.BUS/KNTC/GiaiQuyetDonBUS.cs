@@ -946,7 +946,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 {
                     if (suDungQuyTrinhGQ)
                         // bổ sung cấp huyện: ct huyện phân cấp dưới giải quyết => cấp dưới phân trưởng đoàn
-                        if (IdentityHelper.RoleID == (int)RoleEnum.LanhDao && IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
+                        if (IdentityHelper.RoleID == (int)RoleEnum.LanhDao && IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() || IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapUBNDXa.GetHashCode())
                         {
                             commandCode = WorkflowInstance.Instance.GetAvailabelCommands(docunmentid).Where(x => x.ToString() == "LDCapDuoiPhanTDoanGQ").FirstOrDefault();
                         }
@@ -1828,7 +1828,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             try
             {
                 // tuandhh bổ sung cấp huyện thuộc phòng đoàn tổ xác minh trình lãnh đạo phòng thì gộp state duyệt và ban hành quyết định => cập nhập BC,KL,QĐ như cấp SBN
-                if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode())
+                if (IdentityHelper.CapHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode() && BaoCaoXacMinh.LoaiQuyTrinh == 6)
                 {
                     commandCode = WorkflowInstance.Instance.GetAvailabelCommands(xuLyDonID)[0];
                     WorkflowInstance.Instance.ExecuteCommand(xuLyDonID, canboid, commandCode, hanGiaiQuyet, "");

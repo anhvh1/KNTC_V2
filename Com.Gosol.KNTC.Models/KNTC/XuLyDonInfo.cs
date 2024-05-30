@@ -125,6 +125,22 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public int FileBaoCaoXacMinhID { get; set; }
         public string GroupUID { get; set; }
         public int TrinhDuThao { get; set; }
+
+        public string NoiDungBanHanhXM { get; set; }
+        public string NoiDungBanHanhGQ { get; set; }
+        public DateTime? HanXL { get; set; }
+        public int CQChuyenTiep { get; set; }
+        public int CanBoBanHanh { get; set; }
+        public DateTime? NgayBanHanh { get; set; }
+        public int LanhDaoDuyet1ID { get; set; }
+        public int LanhDaoDuyet2ID { get; set; }
+        public string QuyTrinhXLD { get; set; }
+        public string QuyTrinhGQ { get; set; }
+        public bool CoQuanNgoaiHeThong { get; set; }
+        public bool CoQuanTheoDoiDonDoc { get; set; }
+        public bool TrangThaiKhoa { get; set; }
+        public bool DuocTraCuu { get; set; }
+        public bool TrangThaiDuyet { get; set; }
     }
 
     public class XuLyDonLog

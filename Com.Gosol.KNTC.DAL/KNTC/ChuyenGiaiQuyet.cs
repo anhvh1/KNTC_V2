@@ -796,5 +796,44 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             }
             return cgqList;
         }
+
+        public List<ChuyenGiaiQuyetInfo> GetListChuyenGiaiQuyet(int xulydonID)
+        {
+
+            var list = new List<ChuyenGiaiQuyetInfo>();
+            SqlParameter[] parameters = new SqlParameter[]{
+                new SqlParameter(PARAM_XULYDONID,SqlDbType.Int)
+
+            };
+            parameters[0].Value = xulydonID;
+
+            try
+            {
+                using (SqlDataReader dr = SQLHelper.ExecuteReader(SQLHelper.appConnectionStrings, CommandType.StoredProcedure, "v2_NV_ChuyenGiaiQuyet_GetDanhSachChuyenGiaiQuyet", parameters))
+                {
+                    while (dr.Read())
+                    {
+                        var model = new ChuyenGiaiQuyetInfo();
+                        model.CoQuanGiaiQuyetID = Utils.ConvertToInt32(dr["CoQuanGiaiQuyetID"], 0);
+                        model.CoQuanPhanID = Utils.ConvertToInt32(dr["CoQuanPhanID"], 0);
+                        model.GhiChu = Utils.ConvertToString(dr["GhiChu"], string.Empty);
+                        model.FileUrl = Utils.ConvertToString(dr["FileUrl"], string.Empty);
+                        model.SoQuyetDinh = Utils.ConvertToString(dr["SoQuyetDinh"], string.Empty);
+                        model.QuyetDinh = Utils.ConvertToString(dr["QuyetDinh"], string.Empty);
+                        model.NgayQuyetDinh = Utils.ConvertToNullableDateTime(dr["NgayQuyetDinh"], null);
+                        model.TenCoQuanPhan = Utils.ConvertToString(dr["TenCoQuanPhan"], string.Empty);
+                        model.TenCoQuanGQ = Utils.ConvertToString(dr["TenCoQuanGQ"], string.Empty);
+                        list.Add(model);
+                    }
+                    dr.Close();
+                }
+            }
+            catch
+            {
+
+                throw;
+            }
+            return list;
+        }
     }
 }

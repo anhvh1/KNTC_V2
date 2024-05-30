@@ -13,5 +13,6 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public int PhongBanID { get; set; }
         public int CanBoID { get; set; }
         public DateTime NgayPhanGQ { get; set; }
+        public string TenCanBo { get; set; }
     }
 }

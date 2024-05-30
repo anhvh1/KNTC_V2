@@ -17,6 +17,7 @@ using System.Data.SqlClient;
 using System.Data;
 using Com.Gosol.KNTC.Models.HeThong;
 using DocumentFormat.OpenXml.EMMA;
+using Com.Gosol.KNTC.DAL.HeThong;
 
 namespace Com.Gosol.KNTC.BUS.KNTC
 {
@@ -35,6 +36,18 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             {
                 DonThuChiTietModel DonThuChiTiet = new DonThuChiTietModel();
                 DonThuChiTiet.DonThu = donThuDAL.GetByID(DonThuID, XuLyDonID);
+
+                #region bổ sung thông tin để biết quy trình đơn thư
+                DonThuChiTiet.XuLyDon = new XuLyDonDAL().GetByXuLyDonID_V2(XuLyDonID);
+                DonThuChiTiet.LanhDaoDuyet1 = new CanBoDAL().GetByID(DonThuChiTiet.XuLyDon?.LanhDaoDuyet1ID ?? 0);
+                DonThuChiTiet.LanhDaoDuyet2 = new CanBoDAL().GetByID(DonThuChiTiet.XuLyDon?.LanhDaoDuyet2ID ?? 0);
+                DonThuChiTiet.DanhSachCoQuanGiaiQuyet = new ChuyenGiaiQuyet().GetListChuyenGiaiQuyet(XuLyDonID);
+                DonThuChiTiet.PhanTPPhanGQModels = new PhanTPPhanGQ().GetByXuLyDonID(XuLyDonID).ToList();
+                DonThuChiTiet.VaiTroGiaiQuyetInfos = new VaiTroGiaiQuyet().GetByXuLyDonID(XuLyDonID).ToList();
+                DonThuChiTiet.CoQuanChuyenDonDi = new CoQuan().GetCoQuanByCoQuanID(DonThuChiTiet.XuLyDon.CQChuyenDonID).ToList();
+                DonThuChiTiet.CoQuanChuyenDonDen = new CoQuan().GetCoQuanByCoQuanID(DonThuChiTiet.XuLyDon.CQChuyenDonDenID).ToList();
+                #endregion
+
                 DonThuChiTiet.TiepDanInfo = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().GetTiepDanByXuLyDonID(XuLyDonID);
 
 
