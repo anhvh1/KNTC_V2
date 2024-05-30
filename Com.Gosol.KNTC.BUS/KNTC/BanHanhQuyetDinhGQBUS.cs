@@ -47,6 +47,26 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 {
                     foreach (var item in ListInfo)
                     {
+                        var renderTrangThai = new RenderTrangThai();
+                        renderTrangThai.GetTrangThai(
+                            item.LoaiQuyTrinh,
+                            item.HuongGiaiQuyetID,
+                            "",
+                            item.StateID,
+                            0,
+                            item.TrangThaiDuyet ?? 0,
+                            item.TrinhDuThao,
+                            IdentityHelper,
+                            item.NgayCapNhat,
+                            item.ChuyenGiaiQuyetID,
+                            int.TryParse(item.KetQuaID, out int result)? result : 0,
+                            item.LanhDaoDuyet2ID
+                            );
+                        item.TrangThaiMoi = renderTrangThai.TrangThaiMoi;
+                        item.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;
+                        item.CheckTrangThai = renderTrangThai.CheckTrangThai;
+
+
                         if (item.NguonDonDen == (int)EnumNguonDonDen.BuuChinh)
                         {
                             item.NguonDonDenStr = Constant.NguonDon_BuuChinhs;

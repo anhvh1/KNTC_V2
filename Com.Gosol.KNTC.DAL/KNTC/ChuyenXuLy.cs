@@ -1,5 +1,6 @@
 ﻿using Com.Gosol.KNTC.Models.KNTC;
 using Com.Gosol.KNTC.Ultilities;
+using DocumentFormat.OpenXml.EMMA;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -1466,6 +1467,16 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         cInfo.NgayTiep = Utils.ConvertToDateTime(dr["NgayNhapDon"], DateTime.Now);
                         cInfo.LoaiKhieuTo1ID = Utils.ConvertToInt32(dr["LoaiKhieuTo1ID"], 0);
                         cInfo.TrangThaiKhoa = Utils.ConvertToBoolean(dr["TrangThaiKhoa"], false);
+
+                        cInfo.LoaiQuyTrinh = Utils.ConvertToInt32(dr["LoaiQuyTrinh"], 0);
+                        cInfo.HuongGiaiQuyetID = Utils.ConvertToInt32(dr["HuongGiaiQuyetID"], 0);
+                        cInfo.StateID = Utils.ConvertToInt32(dr["StateID"], 0);
+                        cInfo.TrangThaiDuyet = Utils.ConvertToInt32(dr["TrangThaiDuyet"], 0);
+                        cInfo.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
+                        cInfo.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
+                        cInfo.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
+                        cInfo.LanhDaoDuyet2ID = Utils.ConvertToInt32(dr["LanhDaoDuyet2ID"], 0);
+
                         dsDonThu.Add(cInfo);
                     }
                     dr.Close();

@@ -86,5 +86,18 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public NhomKNInfo NhomKN { get; set; }
         public List<DoiTuongKNInfo> listDoiTuongKN { get; set; }
         public List<DanhSachHoSoTaiLieu> DanhSachHoSoTaiLieu { get; set; }
+
+        public int HuongGiaiQuyetID { get; set; }
+        public string TrangThaiMoi { get; set; }
+        public int TrangThaiIDMoi { get; set; }
+        public bool CheckTrangThai { get; set; }
+        public int LoaiQuyTrinh { get; set; }
+        public int StateID { get; set; }
+        public int? TrangThaiDuyet { get; set; }
+        public int TrinhDuThao { get; set; }
+        public int? ChuyenGiaiQuyetID { get; set; }
+        public int? LanhDaoDuyet2ID { get; set; }
+        public DateTime? NgayTiepNhan { get; set; }
+
     }
 }
