@@ -153,24 +153,10 @@ namespace Com.Gosol.KNTC.Models.HeThong
                         {
                             step5_PDKQXL_DuyetLan2 = true;
 
-                            step8_GQD_GXMLan1 = true;
                             step9_GQD_GXMLan2 = true;
                             step11_GQD_DuyetXM = true;
-
                         }
-
-                        if (model?.RoleID == RoleEnum.LanhDaoPhong.GetHashCode())
-                        {
-                            step3_PDKQXL_DuyetLan1 = true;
-                            step4_PDKQXL_TrinhLan2 = true;
-
-                            step9_GQD_GXMLan2 = true;
-                            step10_GQD_XM = true;
-                            step11_GQD_DuyetXM = true;
-
-                            step13_CapNhap_BCKLQD = true;
-                            step14_ThucThi_BCKLQD = true;
-                        }
+                        
 
                         if (model?.RoleID == RoleEnum.ChuyenVien.GetHashCode())
                         {
