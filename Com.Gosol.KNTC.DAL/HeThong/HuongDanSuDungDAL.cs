@@ -534,7 +534,7 @@ namespace Com.Gosol.KNTC.DAL.HeThong
                 new SqlParameter(@"MaChucNang", SqlDbType.NVarChar),
                 new SqlParameter(@"CapID", SqlDbType.Int),
             };
-            parameters[0].Value = MaChucNang;
+            parameters[0].Value = MaChucNang ?? Convert.DBNull;
             parameters[1].Value = CapID;
 
             try

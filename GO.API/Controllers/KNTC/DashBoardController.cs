@@ -33,7 +33,7 @@ namespace GO.API.Controllers.KNTC
             this._AppSettings = Settings;
         }
 
-        [HttpGet]   
+        [HttpGet]
         [Route("GetDanhSachData")]
         [CustomAuthAttribute(0, AccessLevel.Read)]
         public IActionResult GetDuLieuDashBoard([FromQuery] DashBoardParams p)
@@ -66,7 +66,7 @@ namespace GO.API.Controllers.KNTC
                     }
                     else
                     {
-                        if(p.TuNgay.Length > 8)
+                        if (p.TuNgay.Length > 8)
                         {
                             int Nam = Utils.ConvertToInt32(p.TuNgay.Substring(p.TuNgay.Length - 4, 4), 0);
                             p.TuNgayCungKy = p.TuNgay.Substring(0, 6) + (Nam - 1);
@@ -99,7 +99,6 @@ namespace GO.API.Controllers.KNTC
                 throw;
             }
         }
-
 
         [HttpGet]
         [Route("LayDanhSachCanhBao")]
@@ -134,23 +133,36 @@ namespace GO.API.Controllers.KNTC
                     catch (Exception)
                     {
 
-                    }                
+                    }
 
                     DashBoardModel Data = new DashBoardModel();
                     Data.SoLieuCanhBao = new List<SoLieuCanhBao>();
-                    if((p.CapID == CapQuanLy.CapUBNDTinh.GetHashCode() || p.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode()) && p.ChuTichUBND == 1)
+                    if ((p.CapID == CapQuanLy.CapUBNDTinh.GetHashCode() || p.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode()) && p.ChuTichUBND == 1)
                     {
-                        var soLieu = _DashBoardBUS.DashBoard_ChuTichUBND(p);
+                        //var soLieu = _DashBoardBUS.DashBoard_ChuTichUBND(p);
+                        var soLieu = _DashBoardBUS.GetDataDashBoard_By_User(p);
 
-                        SoLieuCanhBao sl1 = new SoLieuCanhBao();
-                        sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
-                        sl1.MaChucNang = "giai-quyet-don-thu";
-                        sl1.Data = new List<Data>();
-                        sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHanBanHanh));
-                        sl1.Data.Add(new Data("Đến hạn", soLieu.DenHanBanHanh));
-                        sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHanBanHanh));
-                        sl1.Data.Add(new Data("Tổng số", soLieu.QuaHanBanHanh + soLieu.DenHanBanHanh + soLieu.ChuaDenHanBanHanh));
-                        Data.SoLieuCanhBao.Add(sl1);
+                        if (p.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode())
+                        {
+                            SoLieuCanhBao slcpd = new SoLieuCanhBao();
+                            slcpd.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
+                            slcpd.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                            slcpd.Data = new List<Data>();
+                            slcpd.Data.Add(new Data("Cần phê duyệt", soLieu.CanPheDuyet));
+                            slcpd.Data.Add(new Data("Đã phê duyệt", soLieu.DaPheDuyet));
+                            slcpd.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
+                            Data.SoLieuCanhBao.Add(slcpd);
+                        }
+
+                        //SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                        //sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                        //sl1.MaChucNang = "giai-quyet-don-thu";
+                        //sl1.Data = new List<Data>();
+                        //sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHanBanHanh));
+                        //sl1.Data.Add(new Data("Đến hạn", soLieu.DenHanBanHanh));
+                        //sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHanBanHanh));
+                        //sl1.Data.Add(new Data("Tổng số", soLieu.QuaHanBanHanh + soLieu.DenHanBanHanh + soLieu.ChuaDenHanBanHanh));
+                        //Data.SoLieuCanhBao.Add(sl1);
 
                         SoLieuCanhBao sl2 = new SoLieuCanhBao();
                         sl2.TenCanhBao = "Cảnh báo cần ban hành quyết định giao xác minh";
@@ -172,7 +184,7 @@ namespace GO.API.Controllers.KNTC
                     }
                     else if (p.CapID == CapQuanLy.CapUBNDTinh.GetHashCode() && p.BanTiepDan == true)
                     {
-                        if(p.RoleID == 1)
+                        if (p.RoleID == 1)
                         {
                             var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
 
@@ -231,7 +243,7 @@ namespace GO.API.Controllers.KNTC
 
                             SoLieuCanhBao sl3 = new SoLieuCanhBao();
                             sl3.TenCanhBao = "Cảnh báo cần trình duyệt xử lý đơn";
-                            sl3.MaChucNang = "xu-ly-don-thu";         
+                            sl3.MaChucNang = "xu-ly-don-thu";
                             sl3.Data = new List<Data>();
                             sl3.Data.Add(new Data("Cần trình kết quả xử lý đơn", soLieu.CanTrinhKetQua));
                             sl3.Data.Add(new Data("Đã trình kết quả xử lý", soLieu.DaTrinhKetQua));
@@ -419,10 +431,10 @@ namespace GO.API.Controllers.KNTC
                             sl6.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
                             Data.SoLieuCanhBao.Add(sl6);
                         }
-                    }    
+                    }
                     else
                     {
-                        if(p.RoleID == 1)
+                        if (p.RoleID == 1)
                         {
                             var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
 
@@ -542,7 +554,7 @@ namespace GO.API.Controllers.KNTC
                     //var optionToanHuyen = $('<option value = "4">Toàn huyện</option>');
                     //var optionXa = $('<option value = "5">Cấp xã</option>');
                     //mapping du lieu cũ
-                    if(PhamViID == "12")
+                    if (PhamViID == "12")
                     {
                         PhamViID = "2";
                     }
@@ -550,11 +562,11 @@ namespace GO.API.Controllers.KNTC
                     {
                         PhamViID = "3";
                     }
-                    else if(PhamViID == "2")
+                    else if (PhamViID == "2")
                     {
                         PhamViID = "4";
                     }
-                    else if(PhamViID == "3")
+                    else if (PhamViID == "3")
                     {
                         PhamViID = "5";
                     }

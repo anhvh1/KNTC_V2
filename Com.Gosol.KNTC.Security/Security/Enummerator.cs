@@ -113,6 +113,9 @@ namespace Com.Gosol.KNTC.Security
         BCTinhHinhTiepDan = 707,
         BCXuLyCongViec = 708,
 
+
+        DashBoard = 800,
+
     }
 
 };

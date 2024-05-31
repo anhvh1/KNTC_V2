@@ -51,5 +51,10 @@ namespace Com.Gosol.KNTC.BUS.KNTC
         {
             return new DashBoardDAL().DashBoard_CanhBaoGiaiQuyetDon_TP(p);
         }
+
+        public SoLieuModel GetDataDashBoard_By_User(CanhBaoParams p)
+        {
+            return new DashBoardDAL().GetDataDashBoard_By_User(p);
+        }
     }
 }

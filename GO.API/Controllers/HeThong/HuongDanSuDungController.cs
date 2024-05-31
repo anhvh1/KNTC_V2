@@ -157,7 +157,7 @@ namespace Com.Gosol.KKTS.API.Controllers
                 int TotalRow = 0;
                 IList<HuongDanSuDungModel> Data;
                 Data = _HuongDanSuDungBUS.GetPagingBySearch(p, ref TotalRow);
-                if(Data != null && Data.Count > 0)
+                if (Data != null && Data.Count > 0)
                 {
                     var clsCommon = new Commons();
                     string serverPath = clsCommon.GetServerPath(HttpContext);
@@ -166,11 +166,11 @@ namespace Com.Gosol.KKTS.API.Controllers
                         var listFile = _FileDinhKemBUS.GetByNgiepVuID(item.HuongDanSuDungID, EnumLoaiFile.FileHuongDanSuDung.GetHashCode());
                         if (listFile.Count > 0)
                         {
-                            item.UrlFile = clsCommon.GetServerPath(HttpContext) + listFile[0].FileUrl;      
+                            item.UrlFile = clsCommon.GetServerPath(HttpContext) + listFile[0].FileUrl;
                         }
                     }
                 }
-    
+
                 base.Status = 1;
                 base.TotalRow = TotalRow;
                 base.Data = Data;
@@ -220,11 +220,11 @@ namespace Com.Gosol.KKTS.API.Controllers
                         base.Message = Result.Message;
                         return base.GetActionResult();
                     }
-                   
+
 
                     //HuongDanSuDungModel.TenFileGoc = files.FileName;
                     //HuongDanSuDungModel.TenFileHeThong = file.TenFile;
-                    
+
                     Result = _HuongDanSuDungBUS.Insert(HuongDanSuDungModel, CanBoID);
                     FileDinhKem.NghiepVuID = Utils.ConvertToInt32(Result.Data, 0);
 
@@ -271,7 +271,7 @@ namespace Com.Gosol.KKTS.API.Controllers
                 // Cập nhật dữ liệu
                 Result = _HuongDanSuDungBUS.Update(HuongDanSuDungModel, CanBoID);
                 FileDinhKem.NghiepVuID = Utils.ConvertToInt32(HuongDanSuDungModel.HuongDanSuDungID, 0);
-                if(files != null)
+                if (files != null)
                 {
                     //xoa file cu
                     var listFile = _FileDinhKemBUS.GetByNgiepVuID(HuongDanSuDungModel.HuongDanSuDungID, EnumLoaiFile.FileHuongDanSuDung.GetHashCode());
@@ -413,7 +413,7 @@ namespace Com.Gosol.KKTS.API.Controllers
                     var listFile = _FileDinhKemBUS.GetByNgiepVuID(Data.HuongDanSuDungID, EnumLoaiFile.FileHuongDanSuDung.GetHashCode());
                     if (listFile.Count > 0)
                     {
-                        Data.UrlFile = clsCommon.GetServerPath(HttpContext) + listFile[0].FileUrl;                     
+                        Data.UrlFile = clsCommon.GetServerPath(HttpContext) + listFile[0].FileUrl;
                     }
                     base.Data = Data;
                 }
@@ -433,7 +433,7 @@ namespace Com.Gosol.KKTS.API.Controllers
         [HttpGet]
         [CustomAuthAttribute(0, AccessLevel.Create)]
         [Route("GetByMaChucNang")]
-        public IActionResult GetByMaChucNang(string MaChucNang, int? CapID)
+        public IActionResult GetByMaChucNang(string? MaChucNang, int? CapID)
         {
             try
             {
@@ -526,7 +526,7 @@ namespace Com.Gosol.KKTS.API.Controllers
             }
         }
 
-        
+
 
 
         //[HttpGet]

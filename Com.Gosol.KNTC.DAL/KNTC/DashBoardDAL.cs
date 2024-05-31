@@ -478,7 +478,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             catch { throw; }
             return result;
         }
-        public IList<DTXuLyInfo> GetDTCanXuLy_New(int CoQuanID,int CanBoID, List<int> docList)
+        public IList<DTXuLyInfo> GetDTCanXuLy_New(int CoQuanID, int CanBoID, List<int> docList)
         {
             SqlParameter para = new SqlParameter(PARAM_DOCUMENTLIST, SqlDbType.Structured);
             para.TypeName = "IntList";
@@ -625,7 +625,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             DashBoardData.SoLieuTongHop.Add(new Data("Đơn phản ánh, KN", 0));
             DashBoardData.SoLieuTongHop.Add(new Data("Đơn khiếu nại", 0));
             DashBoardData.SoLieuTongHop.Add(new Data("Đơn tố cáo", 0));
-     
+
             List<BCTinhHinhTD_XLD_GQInfo> lsData = new List<BCTinhHinhTD_XLD_GQInfo>();
             DBSuDungPhanMemTongInfo ldInfo = new DBSuDungPhanMemTongInfo();
             //DBGetTinhHinhTD_XLD_GQ(p.CoQuanID ?? 0, p.RoleID ?? 0, p.CapID ?? 0, p.TinhID ?? 0, p.HuyenID ?? 0, p.TuNgay, p.DenNgay, p.CapIDSelect, p.CoQuanIDSelect, ref lsData, ref ldInfo);
@@ -634,375 +634,375 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             //DBGetTinhHinhTD_XLD_GQ(p.CoQuanID ?? 0, p.RoleID ?? 0, p.CapID ?? 0, p.TinhID ?? 0, p.HuyenID ?? 0, p.TuNgayCungKy, p.DenNgayCungKy, p.CapIDSelect, p.CoQuanIDSelect, ref lsDataOld, ref ldInfoOld);           
 
             //Thread t1 = new Thread(() => {
-                DBGetTinhHinhTD_XLD_GQ(p.CoQuanID ?? 0, p.RoleID ?? 0, p.CapID ?? 0, p.TinhID ?? 0, p.HuyenID ?? 0, p.TuNgay, p.DenNgay, p.CapIDSelect, p.CoQuanIDSelect, ref lsData, ref ldInfo);
-                int tong = ldInfo.TongDonThuBHGQ_KNPA + ldInfo.TongDonThuBHGQ_KN + ldInfo.TongDonThuBHGQ_TC;
-                if (tong > 0)
+            DBGetTinhHinhTD_XLD_GQ(p.CoQuanID ?? 0, p.RoleID ?? 0, p.CapID ?? 0, p.TinhID ?? 0, p.HuyenID ?? 0, p.TuNgay, p.DenNgay, p.CapIDSelect, p.CoQuanIDSelect, ref lsData, ref ldInfo);
+            int tong = ldInfo.TongDonThuBHGQ_KNPA + ldInfo.TongDonThuBHGQ_KN + ldInfo.TongDonThuBHGQ_TC;
+            if (tong > 0)
+            {
+                decimal tilePAKN = Math.Round(((decimal)(ldInfo.TongDonThuBHGQ_KNPA * 100) / tong), 2);
+                decimal tileKN = Math.Round(((decimal)(ldInfo.TongDonThuBHGQ_KN * 100) / tong), 2);
+                decimal tileTC = 100 - tilePAKN - tileKN;
+                DashBoardData.SoLieuBieuTron.Add(new Data("Đơn phản ánh, kiến nghị", tilePAKN));
+                DashBoardData.SoLieuBieuTron.Add(new Data("Đơn khiếu nại", tileKN));
+                DashBoardData.SoLieuBieuTron.Add(new Data("Đơn tố cáo", tileTC));
+            }
+
+            if (lsData.Count > 0)
+            {
+                Boolean checkCapToanTinh = false;
+
+                var TongSoLuotTiepToanTinh = new BieuDoCot("Tổng số lượt tiếp", 1, CapQuanLy.CapToanTinh.GetHashCode(), 0, 0, 0, 0, 0);
+                var DonPAKNToanTinh = new BieuDoCot("Đơn PA, KN", 2, CapQuanLy.CapToanTinh.GetHashCode(), 0, 0, 0, 0, 0);
+                var DonKNToanTinh = new BieuDoCot("Đơn khiếu nại", 3, CapQuanLy.CapToanTinh.GetHashCode(), 0, 0, 0, 0, 0);
+                var DonTCToanTinh = new BieuDoCot("Đơn tố cáo", 4, CapQuanLy.CapToanTinh.GetHashCode(), 0, 0, 0, 0, 0);
+
+                foreach (var item in lsData)
                 {
-                    decimal tilePAKN = Math.Round(((decimal)(ldInfo.TongDonThuBHGQ_KNPA * 100) / tong), 2);
-                    decimal tileKN = Math.Round(((decimal)(ldInfo.TongDonThuBHGQ_KN * 100) / tong), 2);
-                    decimal tileTC = 100 - tilePAKN - tileKN;
-                    DashBoardData.SoLieuBieuTron.Add(new Data("Đơn phản ánh, kiến nghị", tilePAKN));
-                    DashBoardData.SoLieuBieuTron.Add(new Data("Đơn khiếu nại", tileKN));
-                    DashBoardData.SoLieuBieuTron.Add(new Data("Đơn tố cáo", tileTC));
-                }
-
-                if (lsData.Count > 0)
-                {
-                    Boolean checkCapToanTinh = false;
-
-                    var TongSoLuotTiepToanTinh = new BieuDoCot("Tổng số lượt tiếp", 1, CapQuanLy.CapToanTinh.GetHashCode(), 0, 0, 0, 0, 0);
-                    var DonPAKNToanTinh = new BieuDoCot("Đơn PA, KN", 2, CapQuanLy.CapToanTinh.GetHashCode(), 0, 0, 0, 0, 0);
-                    var DonKNToanTinh = new BieuDoCot("Đơn khiếu nại", 3, CapQuanLy.CapToanTinh.GetHashCode(), 0, 0, 0, 0, 0);
-                    var DonTCToanTinh = new BieuDoCot("Đơn tố cáo", 4, CapQuanLy.CapToanTinh.GetHashCode(), 0, 0, 0, 0, 0);
-
-                    foreach (var item in lsData)
+                    if (item.CapID == CapQuanLy.CapToanTinh.GetHashCode())
                     {
-                        if (item.CapID == CapQuanLy.CapToanTinh.GetHashCode())
+                        //DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Toàn tỉnh", CapQuanLy.CapToanTinh.GetHashCode(), 0, 0, 0, 0, 0));
+                        checkCapToanTinh = true;
+                    }
+                    else if (item.CapID == CapQuanLy.CapUBNDTinh.GetHashCode())
+                    {
+                        var TongSoLuotTiep = new BieuDoCot("Tổng số lượt tiếp", 1, CapQuanLy.CapUBNDTinh.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonPAKN = new BieuDoCot("Đơn PA, KN", 2, CapQuanLy.CapUBNDTinh.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonKN = new BieuDoCot("Đơn khiếu nại", 3, CapQuanLy.CapUBNDTinh.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonTC = new BieuDoCot("Đơn tố cáo", 4, CapQuanLy.CapUBNDTinh.GetHashCode(), 0, 0, 0, 0, 0);
+                        if (item.LsByCoQuan != null && item.LsByCoQuan.Count > 0)
                         {
-                            //DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Toàn tỉnh", CapQuanLy.CapToanTinh.GetHashCode(), 0, 0, 0, 0, 0));
-                            checkCapToanTinh = true;
-                        }
-                        else if (item.CapID == CapQuanLy.CapUBNDTinh.GetHashCode())
-                        {
-                            var TongSoLuotTiep = new BieuDoCot("Tổng số lượt tiếp", 1, CapQuanLy.CapUBNDTinh.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonPAKN = new BieuDoCot("Đơn PA, KN", 2, CapQuanLy.CapUBNDTinh.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonKN = new BieuDoCot("Đơn khiếu nại", 3, CapQuanLy.CapUBNDTinh.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonTC = new BieuDoCot("Đơn tố cáo", 4, CapQuanLy.CapUBNDTinh.GetHashCode(), 0, 0, 0, 0, 0);
-                            if (item.LsByCoQuan != null && item.LsByCoQuan.Count > 0)
+                            foreach (var cq in item.LsByCoQuan)
                             {
-                                foreach (var cq in item.LsByCoQuan)
-                                {
-                                    TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
-                                    TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
-                                    TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
-                                    TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
+                                TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
+                                TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
+                                TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
+                                TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
 
-                                    DonPAKN.TrongKy += cq.SLPhanAnhKienNghi;
-                                    DonPAKN.DaXuLy += cq.XLDPhanAnhKienNghi;
-                                    DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
-                                    DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
+                                DonPAKN.TrongKy += cq.SLPhanAnhKienNghi;
+                                DonPAKN.DaXuLy += cq.XLDPhanAnhKienNghi;
+                                DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
+                                DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
 
-                                    DonKN.TrongKy += cq.SLKhieuNai;
-                                    DonKN.DaXuLy += cq.XLDKhieuNai;
-                                    DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
-                                    DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
+                                DonKN.TrongKy += cq.SLKhieuNai;
+                                DonKN.DaXuLy += cq.XLDKhieuNai;
+                                DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
+                                DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
 
-                                    DonTC.TrongKy += cq.SLToCao;
-                                    DonTC.DaXuLy += cq.XLDToCao;
-                                    DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
-                                    DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
-                                }
+                                DonTC.TrongKy += cq.SLToCao;
+                                DonTC.DaXuLy += cq.XLDToCao;
+                                DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
+                                DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
                             }
-
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiep.LoaiCot, TongSoLuotTiep.CapID, TongSoLuotTiep.TrongKy, TongSoLuotTiep.CungKy, TongSoLuotTiep.DaXuLy, TongSoLuotTiep.DaGiaiQuyet, TongSoLuotTiep.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKN.LoaiCot, DonPAKN.CapID, DonPAKN.TrongKy, DonPAKN.CungKy, DonPAKN.DaXuLy, DonPAKN.DaGiaiQuyet, DonPAKN.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKN.LoaiCot, DonKN.CapID, DonKN.TrongKy, DonKN.CungKy, DonKN.DaXuLy, DonKN.DaGiaiQuyet, DonKN.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTC.LoaiCot, DonTC.CapID, DonTC.TrongKy, DonTC.CungKy, DonTC.DaXuLy, DonTC.DaGiaiQuyet, DonTC.ChuaGiaiQuyet));
-
-                            TongSoLuotTiepToanTinh.TrongKy += TongSoLuotTiep.TrongKy;
-                            TongSoLuotTiepToanTinh.DaXuLy += TongSoLuotTiep.DaXuLy;
-                            TongSoLuotTiepToanTinh.DaGiaiQuyet += TongSoLuotTiep.DaGiaiQuyet;
-                            TongSoLuotTiepToanTinh.ChuaGiaiQuyet += TongSoLuotTiep.ChuaGiaiQuyet;
-
-                            DonPAKNToanTinh.TrongKy += DonPAKN.TrongKy;
-                            DonPAKNToanTinh.DaXuLy += DonPAKN.DaXuLy;
-                            DonPAKNToanTinh.DaGiaiQuyet += DonPAKN.DaGiaiQuyet;
-                            DonPAKNToanTinh.ChuaGiaiQuyet += DonPAKN.ChuaGiaiQuyet;
-
-                            DonKNToanTinh.TrongKy += DonKN.TrongKy;
-                            DonKNToanTinh.DaXuLy += DonKN.DaXuLy;
-                            DonKNToanTinh.DaGiaiQuyet += DonKN.DaGiaiQuyet;
-                            DonKNToanTinh.ChuaGiaiQuyet += DonKN.ChuaGiaiQuyet;
-
-                            DonTCToanTinh.TrongKy += DonTC.TrongKy;
-                            DonTCToanTinh.DaXuLy += DonTC.DaXuLy;
-                            DonTCToanTinh.DaGiaiQuyet += DonTC.DaGiaiQuyet;
-                            DonTCToanTinh.ChuaGiaiQuyet += DonTC.ChuaGiaiQuyet;
                         }
-                        else if (item.CapID == CapQuanLy.CapSoNganh.GetHashCode())
+
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiep.LoaiCot, TongSoLuotTiep.CapID, TongSoLuotTiep.TrongKy, TongSoLuotTiep.CungKy, TongSoLuotTiep.DaXuLy, TongSoLuotTiep.DaGiaiQuyet, TongSoLuotTiep.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKN.LoaiCot, DonPAKN.CapID, DonPAKN.TrongKy, DonPAKN.CungKy, DonPAKN.DaXuLy, DonPAKN.DaGiaiQuyet, DonPAKN.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKN.LoaiCot, DonKN.CapID, DonKN.TrongKy, DonKN.CungKy, DonKN.DaXuLy, DonKN.DaGiaiQuyet, DonKN.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTC.LoaiCot, DonTC.CapID, DonTC.TrongKy, DonTC.CungKy, DonTC.DaXuLy, DonTC.DaGiaiQuyet, DonTC.ChuaGiaiQuyet));
+
+                        TongSoLuotTiepToanTinh.TrongKy += TongSoLuotTiep.TrongKy;
+                        TongSoLuotTiepToanTinh.DaXuLy += TongSoLuotTiep.DaXuLy;
+                        TongSoLuotTiepToanTinh.DaGiaiQuyet += TongSoLuotTiep.DaGiaiQuyet;
+                        TongSoLuotTiepToanTinh.ChuaGiaiQuyet += TongSoLuotTiep.ChuaGiaiQuyet;
+
+                        DonPAKNToanTinh.TrongKy += DonPAKN.TrongKy;
+                        DonPAKNToanTinh.DaXuLy += DonPAKN.DaXuLy;
+                        DonPAKNToanTinh.DaGiaiQuyet += DonPAKN.DaGiaiQuyet;
+                        DonPAKNToanTinh.ChuaGiaiQuyet += DonPAKN.ChuaGiaiQuyet;
+
+                        DonKNToanTinh.TrongKy += DonKN.TrongKy;
+                        DonKNToanTinh.DaXuLy += DonKN.DaXuLy;
+                        DonKNToanTinh.DaGiaiQuyet += DonKN.DaGiaiQuyet;
+                        DonKNToanTinh.ChuaGiaiQuyet += DonKN.ChuaGiaiQuyet;
+
+                        DonTCToanTinh.TrongKy += DonTC.TrongKy;
+                        DonTCToanTinh.DaXuLy += DonTC.DaXuLy;
+                        DonTCToanTinh.DaGiaiQuyet += DonTC.DaGiaiQuyet;
+                        DonTCToanTinh.ChuaGiaiQuyet += DonTC.ChuaGiaiQuyet;
+                    }
+                    else if (item.CapID == CapQuanLy.CapSoNganh.GetHashCode())
+                    {
+                        var TongSoLuotTiep = new BieuDoCot("Tổng số lượt tiếp", 1, CapQuanLy.CapSoNganh.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonPAKN = new BieuDoCot("Đơn PA, KN", 2, CapQuanLy.CapSoNganh.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonKN = new BieuDoCot("Đơn khiếu nại", 3, CapQuanLy.CapSoNganh.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonTC = new BieuDoCot("Đơn tố cáo", 4, CapQuanLy.CapSoNganh.GetHashCode(), 0, 0, 0, 0, 0);
+                        if (item.LsByCoQuan != null && item.LsByCoQuan.Count > 0)
                         {
-                            var TongSoLuotTiep = new BieuDoCot("Tổng số lượt tiếp", 1, CapQuanLy.CapSoNganh.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonPAKN = new BieuDoCot("Đơn PA, KN", 2, CapQuanLy.CapSoNganh.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonKN = new BieuDoCot("Đơn khiếu nại", 3, CapQuanLy.CapSoNganh.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonTC = new BieuDoCot("Đơn tố cáo", 4, CapQuanLy.CapSoNganh.GetHashCode(), 0, 0, 0, 0, 0);
-                            if (item.LsByCoQuan != null && item.LsByCoQuan.Count > 0)
+                            foreach (var cq in item.LsByCoQuan)
                             {
-                                foreach (var cq in item.LsByCoQuan)
-                                {
-                                    TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
-                                    TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
-                                    TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
-                                    TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
+                                TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
+                                TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
+                                TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
+                                TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
 
-                                    DonPAKN.TrongKy += cq.SLPhanAnhKienNghi;
-                                    DonPAKN.DaXuLy += cq.XLDPhanAnhKienNghi;
-                                    DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
-                                    DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
+                                DonPAKN.TrongKy += cq.SLPhanAnhKienNghi;
+                                DonPAKN.DaXuLy += cq.XLDPhanAnhKienNghi;
+                                DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
+                                DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
 
-                                    DonKN.TrongKy += cq.SLKhieuNai;
-                                    DonKN.DaXuLy += cq.XLDKhieuNai;
-                                    DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
-                                    DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
+                                DonKN.TrongKy += cq.SLKhieuNai;
+                                DonKN.DaXuLy += cq.XLDKhieuNai;
+                                DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
+                                DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
 
-                                    DonTC.TrongKy += cq.SLToCao;
-                                    DonTC.DaXuLy += cq.XLDToCao;
-                                    DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
-                                    DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
-                                }
+                                DonTC.TrongKy += cq.SLToCao;
+                                DonTC.DaXuLy += cq.XLDToCao;
+                                DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
+                                DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
                             }
-
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiep.LoaiCot, TongSoLuotTiep.CapID, TongSoLuotTiep.TrongKy, TongSoLuotTiep.CungKy, TongSoLuotTiep.DaXuLy, TongSoLuotTiep.DaGiaiQuyet, TongSoLuotTiep.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKN.LoaiCot, DonPAKN.CapID, DonPAKN.TrongKy, DonPAKN.CungKy, DonPAKN.DaXuLy, DonPAKN.DaGiaiQuyet, DonPAKN.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKN.LoaiCot, DonKN.CapID, DonKN.TrongKy, DonKN.CungKy, DonKN.DaXuLy, DonKN.DaGiaiQuyet, DonKN.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTC.LoaiCot, DonTC.CapID, DonTC.TrongKy, DonTC.CungKy, DonTC.DaXuLy, DonTC.DaGiaiQuyet, DonTC.ChuaGiaiQuyet));
-
-                            TongSoLuotTiepToanTinh.TrongKy += TongSoLuotTiep.TrongKy;
-                            TongSoLuotTiepToanTinh.DaXuLy += TongSoLuotTiep.DaXuLy;
-                            TongSoLuotTiepToanTinh.DaGiaiQuyet += TongSoLuotTiep.DaGiaiQuyet;
-                            TongSoLuotTiepToanTinh.ChuaGiaiQuyet += TongSoLuotTiep.ChuaGiaiQuyet;
-
-                            DonPAKNToanTinh.TrongKy += DonPAKN.TrongKy;
-                            DonPAKNToanTinh.DaXuLy += DonPAKN.DaXuLy;
-                            DonPAKNToanTinh.DaGiaiQuyet += DonPAKN.DaGiaiQuyet;
-                            DonPAKNToanTinh.ChuaGiaiQuyet += DonPAKN.ChuaGiaiQuyet;
-
-                            DonKNToanTinh.TrongKy += DonKN.TrongKy;
-                            DonKNToanTinh.DaXuLy += DonKN.DaXuLy;
-                            DonKNToanTinh.DaGiaiQuyet += DonKN.DaGiaiQuyet;
-                            DonKNToanTinh.ChuaGiaiQuyet += DonKN.ChuaGiaiQuyet;
-
-                            DonTCToanTinh.TrongKy += DonTC.TrongKy;
-                            DonTCToanTinh.DaXuLy += DonTC.DaXuLy;
-                            DonTCToanTinh.DaGiaiQuyet += DonTC.DaGiaiQuyet;
-                            DonTCToanTinh.ChuaGiaiQuyet += DonTC.ChuaGiaiQuyet;
                         }
-                        else if (item.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode())
+
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiep.LoaiCot, TongSoLuotTiep.CapID, TongSoLuotTiep.TrongKy, TongSoLuotTiep.CungKy, TongSoLuotTiep.DaXuLy, TongSoLuotTiep.DaGiaiQuyet, TongSoLuotTiep.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKN.LoaiCot, DonPAKN.CapID, DonPAKN.TrongKy, DonPAKN.CungKy, DonPAKN.DaXuLy, DonPAKN.DaGiaiQuyet, DonPAKN.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKN.LoaiCot, DonKN.CapID, DonKN.TrongKy, DonKN.CungKy, DonKN.DaXuLy, DonKN.DaGiaiQuyet, DonKN.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTC.LoaiCot, DonTC.CapID, DonTC.TrongKy, DonTC.CungKy, DonTC.DaXuLy, DonTC.DaGiaiQuyet, DonTC.ChuaGiaiQuyet));
+
+                        TongSoLuotTiepToanTinh.TrongKy += TongSoLuotTiep.TrongKy;
+                        TongSoLuotTiepToanTinh.DaXuLy += TongSoLuotTiep.DaXuLy;
+                        TongSoLuotTiepToanTinh.DaGiaiQuyet += TongSoLuotTiep.DaGiaiQuyet;
+                        TongSoLuotTiepToanTinh.ChuaGiaiQuyet += TongSoLuotTiep.ChuaGiaiQuyet;
+
+                        DonPAKNToanTinh.TrongKy += DonPAKN.TrongKy;
+                        DonPAKNToanTinh.DaXuLy += DonPAKN.DaXuLy;
+                        DonPAKNToanTinh.DaGiaiQuyet += DonPAKN.DaGiaiQuyet;
+                        DonPAKNToanTinh.ChuaGiaiQuyet += DonPAKN.ChuaGiaiQuyet;
+
+                        DonKNToanTinh.TrongKy += DonKN.TrongKy;
+                        DonKNToanTinh.DaXuLy += DonKN.DaXuLy;
+                        DonKNToanTinh.DaGiaiQuyet += DonKN.DaGiaiQuyet;
+                        DonKNToanTinh.ChuaGiaiQuyet += DonKN.ChuaGiaiQuyet;
+
+                        DonTCToanTinh.TrongKy += DonTC.TrongKy;
+                        DonTCToanTinh.DaXuLy += DonTC.DaXuLy;
+                        DonTCToanTinh.DaGiaiQuyet += DonTC.DaGiaiQuyet;
+                        DonTCToanTinh.ChuaGiaiQuyet += DonTC.ChuaGiaiQuyet;
+                    }
+                    else if (item.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode())
+                    {
+                        var TongSoLuotTiep = new BieuDoCot("Tổng số lượt tiếp", 1, CapQuanLy.CapUBNDHuyen.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonPAKN = new BieuDoCot("Đơn PA, KN", 2, CapQuanLy.CapUBNDHuyen.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonKN = new BieuDoCot("Đơn khiếu nại", 3, CapQuanLy.CapUBNDHuyen.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonTC = new BieuDoCot("Đơn tố cáo", 4, CapQuanLy.CapUBNDHuyen.GetHashCode(), 0, 0, 0, 0, 0);
+                        if (item.LsByCapCoQuan != null && item.LsByCapCoQuan.Count > 0)
                         {
-                            var TongSoLuotTiep = new BieuDoCot("Tổng số lượt tiếp",1, CapQuanLy.CapUBNDHuyen.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonPAKN = new BieuDoCot("Đơn PA, KN",2, CapQuanLy.CapUBNDHuyen.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonKN = new BieuDoCot("Đơn khiếu nại",3, CapQuanLy.CapUBNDHuyen.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonTC = new BieuDoCot("Đơn tố cáo",4, CapQuanLy.CapUBNDHuyen.GetHashCode(), 0, 0, 0, 0, 0);
-                            if (item.LsByCapCoQuan != null && item.LsByCapCoQuan.Count > 0)
+                            foreach (var huyen in item.LsByCapCoQuan)
                             {
-                                foreach (var huyen in item.LsByCapCoQuan)
+                                if (huyen.LsByCoQuan != null && huyen.LsByCoQuan.Count > 0)
                                 {
-                                    if (huyen.LsByCoQuan != null && huyen.LsByCoQuan.Count > 0)
+                                    foreach (var cq in huyen.LsByCoQuan)
                                     {
-                                        foreach (var cq in huyen.LsByCoQuan)
-                                        {
-                                            TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
-                                            TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
-                                            TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
-                                            TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
+                                        TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
+                                        TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
+                                        TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
+                                        TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
 
-                                            DonPAKN.TrongKy += cq.SLPhanAnhKienNghi;
-                                            DonPAKN.DaXuLy += cq.XLDPhanAnhKienNghi;
-                                            DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
-                                            DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
+                                        DonPAKN.TrongKy += cq.SLPhanAnhKienNghi;
+                                        DonPAKN.DaXuLy += cq.XLDPhanAnhKienNghi;
+                                        DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
+                                        DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
 
-                                            DonKN.TrongKy += cq.SLKhieuNai;
-                                            DonKN.DaXuLy += cq.XLDKhieuNai;
-                                            DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
-                                            DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
+                                        DonKN.TrongKy += cq.SLKhieuNai;
+                                        DonKN.DaXuLy += cq.XLDKhieuNai;
+                                        DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
+                                        DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
 
-                                            DonTC.TrongKy += cq.SLToCao;
-                                            DonTC.DaXuLy += cq.XLDToCao;
-                                            DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
-                                            DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
-                                        }
+                                        DonTC.TrongKy += cq.SLToCao;
+                                        DonTC.DaXuLy += cq.XLDToCao;
+                                        DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
+                                        DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
                                     }
                                 }
                             }
-
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiep.LoaiCot, TongSoLuotTiep.CapID, TongSoLuotTiep.TrongKy, TongSoLuotTiep.CungKy, TongSoLuotTiep.DaXuLy, TongSoLuotTiep.DaGiaiQuyet, TongSoLuotTiep.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKN.LoaiCot, DonPAKN.CapID, DonPAKN.TrongKy, DonPAKN.CungKy, DonPAKN.DaXuLy, DonPAKN.DaGiaiQuyet, DonPAKN.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKN.LoaiCot, DonKN.CapID, DonKN.TrongKy, DonKN.CungKy, DonKN.DaXuLy, DonKN.DaGiaiQuyet, DonKN.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTC.LoaiCot, DonTC.CapID, DonTC.TrongKy, DonTC.CungKy, DonTC.DaXuLy, DonTC.DaGiaiQuyet, DonTC.ChuaGiaiQuyet));
-
-                            TongSoLuotTiepToanTinh.TrongKy += TongSoLuotTiep.TrongKy;
-                            TongSoLuotTiepToanTinh.DaXuLy += TongSoLuotTiep.DaXuLy;
-                            TongSoLuotTiepToanTinh.DaGiaiQuyet += TongSoLuotTiep.DaGiaiQuyet;
-                            TongSoLuotTiepToanTinh.ChuaGiaiQuyet += TongSoLuotTiep.ChuaGiaiQuyet;
-
-                            DonPAKNToanTinh.TrongKy += DonPAKN.TrongKy;
-                            DonPAKNToanTinh.DaXuLy += DonPAKN.DaXuLy;
-                            DonPAKNToanTinh.DaGiaiQuyet += DonPAKN.DaGiaiQuyet;
-                            DonPAKNToanTinh.ChuaGiaiQuyet += DonPAKN.ChuaGiaiQuyet;
-
-                            DonKNToanTinh.TrongKy += DonKN.TrongKy;
-                            DonKNToanTinh.DaXuLy += DonKN.DaXuLy;
-                            DonKNToanTinh.DaGiaiQuyet += DonKN.DaGiaiQuyet;
-                            DonKNToanTinh.ChuaGiaiQuyet += DonKN.ChuaGiaiQuyet;
-
-                            DonTCToanTinh.TrongKy += DonTC.TrongKy;
-                            DonTCToanTinh.DaXuLy += DonTC.DaXuLy;
-                            DonTCToanTinh.DaGiaiQuyet += DonTC.DaGiaiQuyet;
-                            DonTCToanTinh.ChuaGiaiQuyet += DonTC.ChuaGiaiQuyet;
                         }
-                        else if (item.CapID == CapQuanLy.CapUBNDXa.GetHashCode())
+
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiep.LoaiCot, TongSoLuotTiep.CapID, TongSoLuotTiep.TrongKy, TongSoLuotTiep.CungKy, TongSoLuotTiep.DaXuLy, TongSoLuotTiep.DaGiaiQuyet, TongSoLuotTiep.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKN.LoaiCot, DonPAKN.CapID, DonPAKN.TrongKy, DonPAKN.CungKy, DonPAKN.DaXuLy, DonPAKN.DaGiaiQuyet, DonPAKN.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKN.LoaiCot, DonKN.CapID, DonKN.TrongKy, DonKN.CungKy, DonKN.DaXuLy, DonKN.DaGiaiQuyet, DonKN.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTC.LoaiCot, DonTC.CapID, DonTC.TrongKy, DonTC.CungKy, DonTC.DaXuLy, DonTC.DaGiaiQuyet, DonTC.ChuaGiaiQuyet));
+
+                        TongSoLuotTiepToanTinh.TrongKy += TongSoLuotTiep.TrongKy;
+                        TongSoLuotTiepToanTinh.DaXuLy += TongSoLuotTiep.DaXuLy;
+                        TongSoLuotTiepToanTinh.DaGiaiQuyet += TongSoLuotTiep.DaGiaiQuyet;
+                        TongSoLuotTiepToanTinh.ChuaGiaiQuyet += TongSoLuotTiep.ChuaGiaiQuyet;
+
+                        DonPAKNToanTinh.TrongKy += DonPAKN.TrongKy;
+                        DonPAKNToanTinh.DaXuLy += DonPAKN.DaXuLy;
+                        DonPAKNToanTinh.DaGiaiQuyet += DonPAKN.DaGiaiQuyet;
+                        DonPAKNToanTinh.ChuaGiaiQuyet += DonPAKN.ChuaGiaiQuyet;
+
+                        DonKNToanTinh.TrongKy += DonKN.TrongKy;
+                        DonKNToanTinh.DaXuLy += DonKN.DaXuLy;
+                        DonKNToanTinh.DaGiaiQuyet += DonKN.DaGiaiQuyet;
+                        DonKNToanTinh.ChuaGiaiQuyet += DonKN.ChuaGiaiQuyet;
+
+                        DonTCToanTinh.TrongKy += DonTC.TrongKy;
+                        DonTCToanTinh.DaXuLy += DonTC.DaXuLy;
+                        DonTCToanTinh.DaGiaiQuyet += DonTC.DaGiaiQuyet;
+                        DonTCToanTinh.ChuaGiaiQuyet += DonTC.ChuaGiaiQuyet;
+                    }
+                    else if (item.CapID == CapQuanLy.CapUBNDXa.GetHashCode())
+                    {
+                        var TongSoLuotTiep = new BieuDoCot("Tổng số lượt tiếp", 1, CapQuanLy.CapUBNDXa.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonPAKN = new BieuDoCot("Đơn PA, KN", 2, CapQuanLy.CapUBNDXa.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonKN = new BieuDoCot("Đơn khiếu nại", 3, CapQuanLy.CapUBNDXa.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonTC = new BieuDoCot("Đơn tố cáo", 4, CapQuanLy.CapUBNDXa.GetHashCode(), 0, 0, 0, 0, 0);
+                        if (item.LsByCapCoQuan != null && item.LsByCapCoQuan.Count > 0)
                         {
-                            var TongSoLuotTiep = new BieuDoCot("Tổng số lượt tiếp",1, CapQuanLy.CapUBNDXa.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonPAKN = new BieuDoCot("Đơn PA, KN",2, CapQuanLy.CapUBNDXa.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonKN = new BieuDoCot("Đơn khiếu nại",3, CapQuanLy.CapUBNDXa.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonTC = new BieuDoCot("Đơn tố cáo",4, CapQuanLy.CapUBNDXa.GetHashCode(), 0, 0, 0, 0, 0);
-                            if (item.LsByCapCoQuan != null && item.LsByCapCoQuan.Count > 0)
+                            foreach (var huyen in item.LsByCapCoQuan)
                             {
-                                foreach (var huyen in item.LsByCapCoQuan)
+                                if (huyen.LsByCoQuan != null && huyen.LsByCoQuan.Count > 0)
                                 {
-                                    if (huyen.LsByCoQuan != null && huyen.LsByCoQuan.Count > 0)
+                                    foreach (var cq in huyen.LsByCoQuan)
                                     {
-                                        foreach (var cq in huyen.LsByCoQuan)
-                                        {
-                                            TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
-                                            TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
-                                            TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
-                                            TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
+                                        TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
+                                        TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
+                                        TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
+                                        TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
 
-                                            DonPAKN.TrongKy += cq.TongGQDKNPA;
-                                            DonPAKN.DaXuLy += cq.GQDKNPADaGQ + cq.GQDKNPADangGQ;
-                                            DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
-                                            DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
+                                        DonPAKN.TrongKy += cq.TongGQDKNPA;
+                                        DonPAKN.DaXuLy += cq.GQDKNPADaGQ + cq.GQDKNPADangGQ;
+                                        DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
+                                        DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
 
-                                            DonKN.TrongKy += cq.TongGQDKN;
-                                            DonKN.DaXuLy += cq.GQDKNDaGQ + cq.GQDKNDangGQ;
-                                            DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
-                                            DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
+                                        DonKN.TrongKy += cq.TongGQDKN;
+                                        DonKN.DaXuLy += cq.GQDKNDaGQ + cq.GQDKNDangGQ;
+                                        DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
+                                        DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
 
-                                            DonTC.TrongKy += cq.TongGQDTC;
-                                            DonTC.DaXuLy += cq.GQDTCDaGQ + cq.GQDTCDangGQ;
-                                            DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
-                                            DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
-                                        }
+                                        DonTC.TrongKy += cq.TongGQDTC;
+                                        DonTC.DaXuLy += cq.GQDTCDaGQ + cq.GQDTCDangGQ;
+                                        DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
+                                        DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
                                     }
                                 }
                             }
-                            else if(item.LsByCoQuan != null && item.LsByCoQuan.Count > 0)
-                            {
-                                foreach (var cq in item.LsByCoQuan)
-                                {
-                                    TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
-                                    TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
-                                    TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
-                                    TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
-
-                                    DonPAKN.TrongKy += cq.SLPhanAnhKienNghi;
-                                    DonPAKN.DaXuLy += cq.XLDPhanAnhKienNghi;
-                                    DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
-                                    DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
-
-                                    DonKN.TrongKy += cq.SLKhieuNai;
-                                    DonKN.DaXuLy += cq.XLDKhieuNai;
-                                    DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
-                                    DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
-
-                                    DonTC.TrongKy += cq.SLToCao;
-                                    DonTC.DaXuLy += cq.XLDToCao;
-                                    DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
-                                    DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
-                                }
-                            }
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiep.LoaiCot, TongSoLuotTiep.CapID, TongSoLuotTiep.TrongKy, TongSoLuotTiep.CungKy, TongSoLuotTiep.DaXuLy, TongSoLuotTiep.DaGiaiQuyet, TongSoLuotTiep.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKN.LoaiCot, DonPAKN.CapID, DonPAKN.TrongKy, DonPAKN.CungKy, DonPAKN.DaXuLy, DonPAKN.DaGiaiQuyet, DonPAKN.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKN.LoaiCot, DonKN.CapID, DonKN.TrongKy, DonKN.CungKy, DonKN.DaXuLy, DonKN.DaGiaiQuyet, DonKN.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTC.LoaiCot, DonTC.CapID, DonTC.TrongKy, DonTC.CungKy, DonTC.DaXuLy, DonTC.DaGiaiQuyet, DonTC.ChuaGiaiQuyet));
-
-                            TongSoLuotTiepToanTinh.TrongKy += TongSoLuotTiep.TrongKy;
-                            TongSoLuotTiepToanTinh.DaXuLy += TongSoLuotTiep.DaXuLy;
-                            TongSoLuotTiepToanTinh.DaGiaiQuyet += TongSoLuotTiep.DaGiaiQuyet;
-                            TongSoLuotTiepToanTinh.ChuaGiaiQuyet += TongSoLuotTiep.ChuaGiaiQuyet;
-
-                            DonPAKNToanTinh.TrongKy += DonPAKN.TrongKy;
-                            DonPAKNToanTinh.DaXuLy += DonPAKN.DaXuLy;
-                            DonPAKNToanTinh.DaGiaiQuyet += DonPAKN.DaGiaiQuyet;
-                            DonPAKNToanTinh.ChuaGiaiQuyet += DonPAKN.ChuaGiaiQuyet;
-
-                            DonKNToanTinh.TrongKy += DonKN.TrongKy;
-                            DonKNToanTinh.DaXuLy += DonKN.DaXuLy;
-                            DonKNToanTinh.DaGiaiQuyet += DonKN.DaGiaiQuyet;
-                            DonKNToanTinh.ChuaGiaiQuyet += DonKN.ChuaGiaiQuyet;
-
-                            DonTCToanTinh.TrongKy += DonTC.TrongKy;
-                            DonTCToanTinh.DaXuLy += DonTC.DaXuLy;
-                            DonTCToanTinh.DaGiaiQuyet += DonTC.DaGiaiQuyet;
-                            DonTCToanTinh.ChuaGiaiQuyet += DonTC.ChuaGiaiQuyet;
                         }
-                        else if (item.CapID == CapQuanLy.CapPhong.GetHashCode())
+                        else if (item.LsByCoQuan != null && item.LsByCoQuan.Count > 0)
                         {
-                            var TongSoLuotTiep = new BieuDoCot("Tổng số lượt tiếp", 1, CapQuanLy.CapPhong.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonPAKN = new BieuDoCot("Đơn PA, KN", 2, CapQuanLy.CapPhong.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonKN = new BieuDoCot("Đơn khiếu nại", 3, CapQuanLy.CapPhong.GetHashCode(), 0, 0, 0, 0, 0);
-                            var DonTC = new BieuDoCot("Đơn tố cáo", 4, CapQuanLy.CapPhong.GetHashCode(), 0, 0, 0, 0, 0);
-                            if (item.LsByCoQuan != null && item.LsByCoQuan.Count > 0)
+                            foreach (var cq in item.LsByCoQuan)
                             {
-                                foreach (var cq in item.LsByCoQuan)
-                                {
-                                    TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
-                                    TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
-                                    TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
-                                    TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
+                                TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
+                                TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
+                                TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
+                                TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
 
-                                    DonPAKN.TrongKy += cq.SLPhanAnhKienNghi;
-                                    DonPAKN.DaXuLy += cq.XLDPhanAnhKienNghi;
-                                    DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
-                                    DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
+                                DonPAKN.TrongKy += cq.SLPhanAnhKienNghi;
+                                DonPAKN.DaXuLy += cq.XLDPhanAnhKienNghi;
+                                DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
+                                DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
 
-                                    DonKN.TrongKy += cq.SLKhieuNai;
-                                    DonKN.DaXuLy += cq.XLDKhieuNai;
-                                    DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
-                                    DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
+                                DonKN.TrongKy += cq.SLKhieuNai;
+                                DonKN.DaXuLy += cq.XLDKhieuNai;
+                                DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
+                                DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
 
-                                    DonTC.TrongKy += cq.SLToCao;
-                                    DonTC.DaXuLy += cq.XLDToCao;
-                                    DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
-                                    DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
-                                }
+                                DonTC.TrongKy += cq.SLToCao;
+                                DonTC.DaXuLy += cq.XLDToCao;
+                                DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
+                                DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
                             }
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiep.LoaiCot, TongSoLuotTiep.CapID, TongSoLuotTiep.TrongKy, TongSoLuotTiep.CungKy, TongSoLuotTiep.DaXuLy, TongSoLuotTiep.DaGiaiQuyet, TongSoLuotTiep.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKN.LoaiCot, DonPAKN.CapID, DonPAKN.TrongKy, DonPAKN.CungKy, DonPAKN.DaXuLy, DonPAKN.DaGiaiQuyet, DonPAKN.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKN.LoaiCot, DonKN.CapID, DonKN.TrongKy, DonKN.CungKy, DonKN.DaXuLy, DonKN.DaGiaiQuyet, DonKN.ChuaGiaiQuyet));
-                            DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTC.LoaiCot, DonTC.CapID, DonTC.TrongKy, DonTC.CungKy, DonTC.DaXuLy, DonTC.DaGiaiQuyet, DonTC.ChuaGiaiQuyet));
-
-                            TongSoLuotTiepToanTinh.TrongKy += TongSoLuotTiep.TrongKy;
-                            TongSoLuotTiepToanTinh.DaXuLy += TongSoLuotTiep.DaXuLy;
-                            TongSoLuotTiepToanTinh.DaGiaiQuyet += TongSoLuotTiep.DaGiaiQuyet;
-                            TongSoLuotTiepToanTinh.ChuaGiaiQuyet += TongSoLuotTiep.ChuaGiaiQuyet;
-
-                            DonPAKNToanTinh.TrongKy += DonPAKN.TrongKy;
-                            DonPAKNToanTinh.DaXuLy += DonPAKN.DaXuLy;
-                            DonPAKNToanTinh.DaGiaiQuyet += DonPAKN.DaGiaiQuyet;
-                            DonPAKNToanTinh.ChuaGiaiQuyet += DonPAKN.ChuaGiaiQuyet;
-
-                            DonKNToanTinh.TrongKy += DonKN.TrongKy;
-                            DonKNToanTinh.DaXuLy += DonKN.DaXuLy;
-                            DonKNToanTinh.DaGiaiQuyet += DonKN.DaGiaiQuyet;
-                            DonKNToanTinh.ChuaGiaiQuyet += DonKN.ChuaGiaiQuyet;
-
-                            DonTCToanTinh.TrongKy += DonTC.TrongKy;
-                            DonTCToanTinh.DaXuLy += DonTC.DaXuLy;
-                            DonTCToanTinh.DaGiaiQuyet += DonTC.DaGiaiQuyet;
-                            DonTCToanTinh.ChuaGiaiQuyet += DonTC.ChuaGiaiQuyet;
                         }
-                    }
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiep.LoaiCot, TongSoLuotTiep.CapID, TongSoLuotTiep.TrongKy, TongSoLuotTiep.CungKy, TongSoLuotTiep.DaXuLy, TongSoLuotTiep.DaGiaiQuyet, TongSoLuotTiep.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKN.LoaiCot, DonPAKN.CapID, DonPAKN.TrongKy, DonPAKN.CungKy, DonPAKN.DaXuLy, DonPAKN.DaGiaiQuyet, DonPAKN.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKN.LoaiCot, DonKN.CapID, DonKN.TrongKy, DonKN.CungKy, DonKN.DaXuLy, DonKN.DaGiaiQuyet, DonKN.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTC.LoaiCot, DonTC.CapID, DonTC.TrongKy, DonTC.CungKy, DonTC.DaXuLy, DonTC.DaGiaiQuyet, DonTC.ChuaGiaiQuyet));
 
-                    if (checkCapToanTinh)
+                        TongSoLuotTiepToanTinh.TrongKy += TongSoLuotTiep.TrongKy;
+                        TongSoLuotTiepToanTinh.DaXuLy += TongSoLuotTiep.DaXuLy;
+                        TongSoLuotTiepToanTinh.DaGiaiQuyet += TongSoLuotTiep.DaGiaiQuyet;
+                        TongSoLuotTiepToanTinh.ChuaGiaiQuyet += TongSoLuotTiep.ChuaGiaiQuyet;
+
+                        DonPAKNToanTinh.TrongKy += DonPAKN.TrongKy;
+                        DonPAKNToanTinh.DaXuLy += DonPAKN.DaXuLy;
+                        DonPAKNToanTinh.DaGiaiQuyet += DonPAKN.DaGiaiQuyet;
+                        DonPAKNToanTinh.ChuaGiaiQuyet += DonPAKN.ChuaGiaiQuyet;
+
+                        DonKNToanTinh.TrongKy += DonKN.TrongKy;
+                        DonKNToanTinh.DaXuLy += DonKN.DaXuLy;
+                        DonKNToanTinh.DaGiaiQuyet += DonKN.DaGiaiQuyet;
+                        DonKNToanTinh.ChuaGiaiQuyet += DonKN.ChuaGiaiQuyet;
+
+                        DonTCToanTinh.TrongKy += DonTC.TrongKy;
+                        DonTCToanTinh.DaXuLy += DonTC.DaXuLy;
+                        DonTCToanTinh.DaGiaiQuyet += DonTC.DaGiaiQuyet;
+                        DonTCToanTinh.ChuaGiaiQuyet += DonTC.ChuaGiaiQuyet;
+                    }
+                    else if (item.CapID == CapQuanLy.CapPhong.GetHashCode())
                     {
-                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiepToanTinh.LoaiCot, TongSoLuotTiepToanTinh.CapID, TongSoLuotTiepToanTinh.TrongKy, TongSoLuotTiepToanTinh.CungKy, TongSoLuotTiepToanTinh.DaXuLy, TongSoLuotTiepToanTinh.DaGiaiQuyet, TongSoLuotTiepToanTinh.ChuaGiaiQuyet));
-                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKNToanTinh.LoaiCot, DonPAKNToanTinh.CapID, DonPAKNToanTinh.TrongKy, DonPAKNToanTinh.CungKy, DonPAKNToanTinh.DaXuLy, DonPAKNToanTinh.DaGiaiQuyet, DonPAKNToanTinh.ChuaGiaiQuyet));
-                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKNToanTinh.LoaiCot, DonKNToanTinh.CapID, DonKNToanTinh.TrongKy, DonKNToanTinh.CungKy, DonKNToanTinh.DaXuLy, DonKNToanTinh.DaGiaiQuyet, DonKNToanTinh.ChuaGiaiQuyet));
-                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTCToanTinh.LoaiCot, DonTCToanTinh.CapID, DonTCToanTinh.TrongKy, DonTCToanTinh.CungKy, DonTCToanTinh.DaXuLy, DonTCToanTinh.DaGiaiQuyet, DonTCToanTinh.ChuaGiaiQuyet));
-                    }
+                        var TongSoLuotTiep = new BieuDoCot("Tổng số lượt tiếp", 1, CapQuanLy.CapPhong.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonPAKN = new BieuDoCot("Đơn PA, KN", 2, CapQuanLy.CapPhong.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonKN = new BieuDoCot("Đơn khiếu nại", 3, CapQuanLy.CapPhong.GetHashCode(), 0, 0, 0, 0, 0);
+                        var DonTC = new BieuDoCot("Đơn tố cáo", 4, CapQuanLy.CapPhong.GetHashCode(), 0, 0, 0, 0, 0);
+                        if (item.LsByCoQuan != null && item.LsByCoQuan.Count > 0)
+                        {
+                            foreach (var cq in item.LsByCoQuan)
+                            {
+                                TongSoLuotTiep.TrongKy += cq.SoDonTiepDan;
+                                TongSoLuotTiep.DaXuLy += cq.SoXLDaXuLy;
+                                TongSoLuotTiep.DaGiaiQuyet += cq.GQDKNDaGQ + cq.GQDKNPADaGQ + cq.GQDTCDaGQ;
+                                TongSoLuotTiep.ChuaGiaiQuyet += cq.ChuaGiaiQuyet;
 
-                    DashBoardData.SoLieuTongHop = new List<Data>();
-                    DashBoardData.SoLieuTongHop.Add(new Data("Lượt tiếp", ldInfo.TongTiepDan));
-                    DashBoardData.SoLieuTongHop.Add(new Data("Đã xử lý", ldInfo.TongXuLyDon));
-                    DashBoardData.SoLieuTongHop.Add(new Data("Đã giải quyết", TongSoLuotTiepToanTinh.DaGiaiQuyet));
-                    DashBoardData.SoLieuTongHop.Add(new Data("Đơn phản ánh, KN", ldInfo.TongDonThuBHGQ_KNPA));
-                    DashBoardData.SoLieuTongHop.Add(new Data("Đơn khiếu nại", ldInfo.TongDonThuBHGQ_KN));
-                    DashBoardData.SoLieuTongHop.Add(new Data("Đơn tố cáo", ldInfo.TongDonThuBHGQ_TC));
+                                DonPAKN.TrongKy += cq.SLPhanAnhKienNghi;
+                                DonPAKN.DaXuLy += cq.XLDPhanAnhKienNghi;
+                                DonPAKN.DaGiaiQuyet += cq.GQDKNPADaGQ;
+                                DonPAKN.ChuaGiaiQuyet += cq.GQDKNPAChuaGQ;
+
+                                DonKN.TrongKy += cq.SLKhieuNai;
+                                DonKN.DaXuLy += cq.XLDKhieuNai;
+                                DonKN.DaGiaiQuyet += cq.GQDKNDaGQ;
+                                DonKN.ChuaGiaiQuyet += cq.GQDKNChuaGQ;
+
+                                DonTC.TrongKy += cq.SLToCao;
+                                DonTC.DaXuLy += cq.XLDToCao;
+                                DonTC.DaGiaiQuyet += cq.GQDTCDaGQ;
+                                DonTC.ChuaGiaiQuyet += cq.GQDTCChuaGQ;
+                            }
+                        }
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiep.LoaiCot, TongSoLuotTiep.CapID, TongSoLuotTiep.TrongKy, TongSoLuotTiep.CungKy, TongSoLuotTiep.DaXuLy, TongSoLuotTiep.DaGiaiQuyet, TongSoLuotTiep.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKN.LoaiCot, DonPAKN.CapID, DonPAKN.TrongKy, DonPAKN.CungKy, DonPAKN.DaXuLy, DonPAKN.DaGiaiQuyet, DonPAKN.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKN.LoaiCot, DonKN.CapID, DonKN.TrongKy, DonKN.CungKy, DonKN.DaXuLy, DonKN.DaGiaiQuyet, DonKN.ChuaGiaiQuyet));
+                        DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTC.LoaiCot, DonTC.CapID, DonTC.TrongKy, DonTC.CungKy, DonTC.DaXuLy, DonTC.DaGiaiQuyet, DonTC.ChuaGiaiQuyet));
+
+                        TongSoLuotTiepToanTinh.TrongKy += TongSoLuotTiep.TrongKy;
+                        TongSoLuotTiepToanTinh.DaXuLy += TongSoLuotTiep.DaXuLy;
+                        TongSoLuotTiepToanTinh.DaGiaiQuyet += TongSoLuotTiep.DaGiaiQuyet;
+                        TongSoLuotTiepToanTinh.ChuaGiaiQuyet += TongSoLuotTiep.ChuaGiaiQuyet;
+
+                        DonPAKNToanTinh.TrongKy += DonPAKN.TrongKy;
+                        DonPAKNToanTinh.DaXuLy += DonPAKN.DaXuLy;
+                        DonPAKNToanTinh.DaGiaiQuyet += DonPAKN.DaGiaiQuyet;
+                        DonPAKNToanTinh.ChuaGiaiQuyet += DonPAKN.ChuaGiaiQuyet;
+
+                        DonKNToanTinh.TrongKy += DonKN.TrongKy;
+                        DonKNToanTinh.DaXuLy += DonKN.DaXuLy;
+                        DonKNToanTinh.DaGiaiQuyet += DonKN.DaGiaiQuyet;
+                        DonKNToanTinh.ChuaGiaiQuyet += DonKN.ChuaGiaiQuyet;
+
+                        DonTCToanTinh.TrongKy += DonTC.TrongKy;
+                        DonTCToanTinh.DaXuLy += DonTC.DaXuLy;
+                        DonTCToanTinh.DaGiaiQuyet += DonTC.DaGiaiQuyet;
+                        DonTCToanTinh.ChuaGiaiQuyet += DonTC.ChuaGiaiQuyet;
+                    }
                 }
 
-                DashBoardData.ListCapID = DashBoardData.SoLieuBieuDoCot.Select(x => x.CapID).Distinct().ToList();
-                DashBoardData.lsData = lsData;
+                if (checkCapToanTinh)
+                {
+                    DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Tổng số lượt tiếp", TongSoLuotTiepToanTinh.LoaiCot, TongSoLuotTiepToanTinh.CapID, TongSoLuotTiepToanTinh.TrongKy, TongSoLuotTiepToanTinh.CungKy, TongSoLuotTiepToanTinh.DaXuLy, TongSoLuotTiepToanTinh.DaGiaiQuyet, TongSoLuotTiepToanTinh.ChuaGiaiQuyet));
+                    DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn PA, KN", DonPAKNToanTinh.LoaiCot, DonPAKNToanTinh.CapID, DonPAKNToanTinh.TrongKy, DonPAKNToanTinh.CungKy, DonPAKNToanTinh.DaXuLy, DonPAKNToanTinh.DaGiaiQuyet, DonPAKNToanTinh.ChuaGiaiQuyet));
+                    DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn khiếu nại", DonKNToanTinh.LoaiCot, DonKNToanTinh.CapID, DonKNToanTinh.TrongKy, DonKNToanTinh.CungKy, DonKNToanTinh.DaXuLy, DonKNToanTinh.DaGiaiQuyet, DonKNToanTinh.ChuaGiaiQuyet));
+                    DashBoardData.SoLieuBieuDoCot.Add(new BieuDoCot("Đơn tố cáo", DonTCToanTinh.LoaiCot, DonTCToanTinh.CapID, DonTCToanTinh.TrongKy, DonTCToanTinh.CungKy, DonTCToanTinh.DaXuLy, DonTCToanTinh.DaGiaiQuyet, DonTCToanTinh.ChuaGiaiQuyet));
+                }
+
+                DashBoardData.SoLieuTongHop = new List<Data>();
+                DashBoardData.SoLieuTongHop.Add(new Data("Lượt tiếp", ldInfo.TongTiepDan));
+                DashBoardData.SoLieuTongHop.Add(new Data("Đã xử lý", ldInfo.TongXuLyDon));
+                DashBoardData.SoLieuTongHop.Add(new Data("Đã giải quyết", TongSoLuotTiepToanTinh.DaGiaiQuyet));
+                DashBoardData.SoLieuTongHop.Add(new Data("Đơn phản ánh, KN", ldInfo.TongDonThuBHGQ_KNPA));
+                DashBoardData.SoLieuTongHop.Add(new Data("Đơn khiếu nại", ldInfo.TongDonThuBHGQ_KN));
+                DashBoardData.SoLieuTongHop.Add(new Data("Đơn tố cáo", ldInfo.TongDonThuBHGQ_TC));
+            }
+
+            DashBoardData.ListCapID = DashBoardData.SoLieuBieuDoCot.Select(x => x.CapID).Distinct().ToList();
+            DashBoardData.lsData = lsData;
             //});
             //t1.Start();
 
@@ -1029,7 +1029,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             //        {
             //            tileTC = 100 - tilePAKN - tileKN;
             //        }
-                    
+
             //        DashBoardData.SoLieuBieuDoTronCungKy.Add(new Data("Đơn phản ánh, kiến nghị", tilePAKN));
             //        DashBoardData.SoLieuBieuDoTronCungKy.Add(new Data("Đơn khiếu nại", tileKN));
             //        DashBoardData.SoLieuBieuDoTronCungKy.Add(new Data("Đơn tố cáo", tileTC));
@@ -1200,7 +1200,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             //            }
             //        }
             //    }
-               
+
             //}
             #endregion
 
@@ -1450,7 +1450,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             {
                 IList<BCTongHopXuLyInfo> xldList = DashBoard_ThongKeXuLyDon_GetByDate(infoQF);
                 IList<BCTongHopXuLyInfo> gqdList = DashBoard_ThongKeGiaiQuyetDon_GetByDate(infoQF);
-               
+
                 //List<KeKhaiDuLieuDauKy_2aInfo> duLieuDauKy2aList = new DAL.BaoCao.KeKhaiDuLieuDauKy_2a().GetByDate(infoQF.TuNgayGoc, infoQF.DenNgayGoc);
                 //List<KeKhaiDuLieuDauKy_2bInfo> duLieuDauKy2bList = new DAL.BaoCao.KeKhaiDuLieuDauKy_2b().GetByDate(infoQF.TuNgayGoc, infoQF.DenNgayGoc);
                 //List<KeKhaiDuLieuDauKy_2cInfo> duLieuDauKy2cList = new DAL.BaoCao.KeKhaiDuLieuDauKy_2c().GetByDate(infoQF.TuNgayGoc, infoQF.DenNgayGoc);
@@ -2662,7 +2662,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             }
 
             return resultList;
-            
+
         }
 
         public SoLieuModel DashBoard_ChuTichUBND(CanhBaoParams p)
@@ -2670,9 +2670,9 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             SoLieuModel Info = new SoLieuModel();
 
             SqlParameter[] parms = new SqlParameter[] {
-                new SqlParameter(PARAM_COQUANID, SqlDbType.Int),             
-                new SqlParameter("@LoaiKhieuToID", SqlDbType.Int),          
-                new SqlParameter(PARAM_DENNGAY, SqlDbType.DateTime),           
+                new SqlParameter(PARAM_COQUANID, SqlDbType.Int),
+                new SqlParameter("@LoaiKhieuToID", SqlDbType.Int),
+                new SqlParameter(PARAM_DENNGAY, SqlDbType.DateTime),
                 new SqlParameter("@CapID", SqlDbType.Int),
             };
             parms[0].Value = p.CoQuanID;
@@ -2680,14 +2680,14 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             parms[2].Value = p.DenNgay ?? Convert.DBNull;
             //parms[2].Value = Utils.ConvertToNullableDateTime(p.DenNgay, null) ?? Convert.DBNull;
             parms[3].Value = p.CapID ?? Convert.DBNull;
-        
+
             try
             {
                 using (SqlDataReader dr = SQLHelper.ExecuteReader(SQLHelper.appConnectionStrings, CommandType.StoredProcedure, "v2_DashBoard_ChuTichUBND", parms))
                 {
                     while (dr.Read())
                     {
-                     
+
                         Info.CanBanHanhGXM = Utils.ConvertToInt32(dr["CanBanHanhGXM"], 0);
                         Info.DaBanHanhGXM = Utils.ConvertToInt32(dr["DaBanHanhGXM"], 0);
                         Info.CanBanHanhGQ = Utils.ConvertToInt32(dr["CanBanHanhGQ"], 0);
@@ -2698,7 +2698,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                     }
                     dr.Close();
                 }
-              
+
             }
             catch
             {
@@ -2954,6 +2954,94 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                 throw;
             }
             return Info;
+        }
+
+        public SoLieuModel GetDataDashBoard_By_User(CanhBaoParams p)
+        {
+            SoLieuModel Info = new SoLieuModel();
+
+            SqlParameter[] parms = new SqlParameter[] {
+                new SqlParameter("@CoQuanID", SqlDbType.Int),
+                new SqlParameter("@LoaiKhieuToID", SqlDbType.Int),
+                new SqlParameter("@DenNgay", SqlDbType.DateTime),
+                new SqlParameter("@TuNgay", SqlDbType.DateTime),
+                new SqlParameter("@CapID", SqlDbType.Int),
+                new SqlParameter("@CanBoID", SqlDbType.Int),
+            };
+            parms[0].Value = p.CoQuanID;
+            parms[1].Value = p.LoaiKhieuToID ?? 0;
+            parms[2].Value = p.DenNgay ?? Convert.DBNull;
+            parms[3].Value = p.TuNgay ?? Convert.DBNull;
+            //parms[2].Value = Utils.ConvertToNullableDateTime(p.DenNgay, null) ?? Convert.DBNull;
+            parms[4].Value = p.CapID ?? Convert.DBNull;
+            parms[5].Value = p.CanBoID ?? Convert.DBNull;
+
+            try
+            {
+                using (SqlDataReader dr = SQLHelper.ExecuteReader(SQLHelper.appConnectionStrings, CommandType.StoredProcedure, "v2_DashBoard_GetDataDashBoard_By_User", parms))
+                {
+                    while (dr.Read())
+                    {
+                        //Info.QuaHanBanHanh = Utils.ConvertToInt32(dr["QuaHanBanHanh"], 0);
+                        //Info.DenHanBanHanh = Utils.ConvertToInt32(dr["DenHanBanHanh"], 0);
+                        //Info.ChuaDenHanBanHanh = Utils.ConvertToInt32(dr["ChuaDenHanBanHanh"], 0);
+
+                        //Info.CanBanHanhGXM = Utils.ConvertToInt32(dr["CanBanHanhGXM"], 0);
+                        //Info.DaBanHanhGXM = Utils.ConvertToInt32(dr["DaBanHanhGXM"], 0);
+
+                        //Info.CanBanHanhGQ = Utils.ConvertToInt32(dr["CanBanHanhGQ"], 0);
+                        //Info.DaBanHanhGQ = Utils.ConvertToInt32(dr["DaBanHanhGQ"], 0);
+
+                        //Info.CanPheDuyet = Utils.ConvertToInt32(dr["CanPheDuyet"], 0);
+                        //Info.DaPheDuyet = Utils.ConvertToInt32(dr["DaPheDuyet"], 0);
+
+                        Info = MapDataReaderToSoLieuModel(dr);
+                    }
+                    dr.Close();
+                }
+
+            }
+            catch
+            {
+
+                throw;
+            }
+            return Info;
+        }
+
+        public SoLieuModel MapDataReaderToSoLieuModel(SqlDataReader dr)
+        {
+            SoLieuModel model = new SoLieuModel();
+
+            // Duyệt qua từng thuộc tính của SoLieuModel
+            foreach (var prop in typeof(SoLieuModel).GetProperties())
+            {
+                string propName = prop.Name;
+
+                // Kiểm tra xem cột có tồn tại trong SqlDataReader hay không
+                if (HasColumn(dr, propName))
+                {
+                    // Gán giá trị từ SqlDataReader vào thuộc tính của model
+                    prop.SetValue(model, Utils.ConvertToInt32(dr[propName], 0));
+                }
+                else
+                {
+                    // Nếu cột không tồn tại, gán giá trị mặc định (0)
+                    prop.SetValue(model, 0);
+                }
+            }
+
+            return model;
+        }
+
+        public bool HasColumn(IDataRecord dr, string columnName)
+        {
+            for (int i = 0; i < dr.FieldCount; i++)
+            {
+                if (dr.GetName(i).Equals(columnName, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
         }
     }
 }
