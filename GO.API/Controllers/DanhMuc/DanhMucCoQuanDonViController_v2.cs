@@ -172,6 +172,28 @@ namespace GO.API.Controllers.DanhMuc
             }
         }
 
+        [HttpGet]
+        [Route("/api/v2/DanhMucCoQuanDonVi/DanhSachCacCapDonVi_HDSD")]
+        [CustomAuthAttribute(0, AccessLevel.Read)]
+        public IActionResult DanhSachCap_HDSD(ThamSoLocDanhMuc_v2 p)
+        {
+            try
+            {
+                var NguoiDungID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "NguoiDungID").Value, 0);
+                var obj = new NameCapCoQuanID();
+
+                var Result = _DanhMucCoQuanDonViBUS_v2.DanhSachCap_HDSD(p);
+                if (Result != null) return Ok(Result);
+                else return NotFound();
+            }
+            catch (Exception ex)
+            {
+                base.Status = -1;
+                base.Message = ConstantLogMessage.API_Error_System;
+                return base.GetActionResult();
+            }
+        }
+
         //-------------
         [HttpGet]
         [Route("/api/v2/DanhMucCoQuanDonVi/DanhSachThamQuyen")]

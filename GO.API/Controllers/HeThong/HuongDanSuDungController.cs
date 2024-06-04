@@ -438,8 +438,26 @@ namespace Com.Gosol.KKTS.API.Controllers
             try
             {
                 int capID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapID").Value, 0);
+                int capHanhChinh = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapHanhChinh").Value, 0);
                 int nguoiDungID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "NguoiDungID").Value, 0);
-                var Data = _HuongDanSuDungBUS.GetByMaChucNang(MaChucNang, CapID ?? capID);
+                var banTiepDan = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "BanTiepDan").Value, false);
+                if (capID == CapQuanLy.CapUBNDTinh.GetHashCode())
+                {
+                    if (banTiepDan)
+                    {
+                        capHanhChinh = EnumCapHanhChinhHDSD.BTDTinh.GetHashCode();
+                    }
+                }
+                else if (capHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
+                {
+                    if (banTiepDan)
+                    {
+                        capHanhChinh = EnumCapHanhChinhHDSD.BTDHuyen.GetHashCode();
+                    }
+                }
+                var id = capHanhChinh;
+
+                var Data = _HuongDanSuDungBUS.GetByMaChucNang(MaChucNang, CapID ?? id);
                 if (Data == null || Data.HuongDanSuDungID < 1)
                 {
                     base.Message = ConstantLogMessage.API_NoData;

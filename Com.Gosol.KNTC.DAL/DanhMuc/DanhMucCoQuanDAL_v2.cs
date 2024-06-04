@@ -14,6 +14,7 @@ using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 using Grpc.Core;
 using Com.Gosol.KNTC.Models;
 using Com.Gosol.KNTC.Models.HeThong;
+using System.ComponentModel;
 
 namespace Com.Gosol.KNTC.DAL.DanhMuc
 {
@@ -503,6 +504,53 @@ namespace Com.Gosol.KNTC.DAL.DanhMuc
             return Result;
         }
         //--------------------
+
+        // cap id
+        public static List<NameCapCoQuanID> ConvertEnumToList()
+        {
+            var enumType = typeof(EnumCapHanhChinhHDSD);
+            if (!enumType.IsEnum)
+                throw new ArgumentException("Lỗi không thể convert enum");
+
+            var list = new List<NameCapCoQuanID>();
+
+            foreach (EnumCapHanhChinhHDSD value in Enum.GetValues(enumType))
+            {
+                var descriptionAttribute = (DescriptionAttribute)Attribute.GetCustomAttribute(
+                    enumType.GetField(value.ToString()), typeof(DescriptionAttribute));
+
+                var nameCapCoQuan = new NameCapCoQuanID
+                {
+                    Cap = (int)value,
+                    TenCap = descriptionAttribute != null ? descriptionAttribute.Description : value.ToString()
+                };
+
+                list.Add(nameCapCoQuan);
+            }
+
+            return list;
+        }
+        public BaseResultModel DanhSachCap_HDSD(ThamSoLocDanhMuc p)
+        {
+            var Result = new BaseResultModel();
+
+            try
+            {
+                List<NameCapCoQuanID> list = ConvertEnumToList();
+                Result.Status = 1;
+                Result.Data = list;
+
+            }
+            catch (Exception ex)
+            {
+                Result.Status = -1;
+                Result.Message = ex.ToString();
+            }
+            return Result;
+        }
+        //--------------------
+
+
         public BaseResultModel CacCapCoQuan(ThamSoLocDanhMuc p)
         {
             var Result = new BaseResultModel();

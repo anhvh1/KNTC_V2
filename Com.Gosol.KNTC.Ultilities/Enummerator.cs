@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Web;
 
 namespace Com.Gosol.KNTC.Ultilities
@@ -172,6 +173,27 @@ namespace Com.Gosol.KNTC.Ultilities
         CapUBNDTinhChiTiet = 16,
         CapSoNganhChiTiet = 17
 
+    }
+
+    public enum EnumCapHanhChinhHDSD
+    {
+        [Description("UBND tỉnh")]
+        CapUBNDTinh = 20,//
+        [Description("Ban tiếp dân tỉnh")]
+        BTDTinh = 21,//
+        [Description("Sở ban ngành")]
+        CapSoNganh = 30,//
+        [Description("Phòng thuộc sở")]
+        CapPhongThuocSo = 31, // phòng thuộc sở, ví dụ phòng thanh tra, phòng nghiệp vụ 1, phòng tài vụ...
+        [Description("UBND huyện")]
+        CapUBNDHuyen = 40,
+        [Description("Ban tiếp dân huyện")]
+        BTDHuyen = 42,
+        [Description("Phòng thuộc huyện")]
+
+        CapPhongThuocHuyen = 41, // phòng thuộc huyện. ví dụ phòng tài nguyên môi trường
+        [Description("UBND xã")]
+        CapUBNDXa = 50,//
     }
 
     // dùng để phân biết cơ quan thuộc cấp nào từ ubnd tỉnh, phòng thuộc ubnd tỉnh, sở, phòng thuộc sở...
