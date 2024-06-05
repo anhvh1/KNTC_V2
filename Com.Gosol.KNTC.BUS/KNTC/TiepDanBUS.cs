@@ -881,7 +881,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
 
             var tiepDan = GetByID(TiepDanInfo.TiepDanKhongDonID ?? 0);
             Result.Status = 1;
-            Result.Message = "Lưu thành công số đơn thư:" + tiepDan.SoDonThu;
+            Result.Message = tiepDan != null ? "Lưu thành công số đơn thư:" + tiepDan?.SoDonThu : "Lưu thành công";
             Result.Data = TiepDanInfo;
             return Result;
         }

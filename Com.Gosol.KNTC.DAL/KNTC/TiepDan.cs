@@ -548,7 +548,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             SqlParameter[] parms = new SqlParameter[]{
                 new SqlParameter(PARAM_DON_THU_ID, SqlDbType.Int),
                 new SqlParameter(PARAM_SO_LAN, SqlDbType.Int),
-                new SqlParameter(PARAM_SO_DON_THU, SqlDbType.NVarChar, 20),
+                new SqlParameter(PARAM_SO_DON_THU, SqlDbType.NVarChar, 255),
                 new SqlParameter(PARAM_NGAY_NHAP_DON, SqlDbType.DateTime),
                 new SqlParameter(PARAM_NGAY_QUA_HAN, SqlDbType.DateTime),
                 new SqlParameter(PARAM_NGUON_DON_DEN_ID, SqlDbType.Int),
