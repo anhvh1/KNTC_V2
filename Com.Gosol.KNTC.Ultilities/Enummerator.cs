@@ -359,8 +359,11 @@ namespace Com.Gosol.KNTC.Ultilities
     }
     public enum EnumLoaiTiepDan : Int32
     {
+        [Description("Thường xuyên")]
         TiepThuongXuyen = 1,
+        [Description("Định kỳ")]
         TiepDinhKy = 2,
+        [Description("Đột xuất")]
         TiepDotXuat = 3
     }
     public enum RoleEnum
@@ -455,4 +458,33 @@ namespace Com.Gosol.KNTC.Ultilities
         Number = 2,
     }
     #endregion
+
+    public static class EnumExtensions
+    {
+        public static string GetDescription(this Enum value)
+        {
+            var type = value.GetType();
+            var fieldInfo = type.GetField(value.ToString());
+            var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            return attributes.Length > 0 ? attributes[0].Description : value.ToString();
+        }
+
+        public static T GetEnumValue<T>(int value) where T : struct, IConvertible
+        {
+            if (!typeof(T).IsEnum)
+            {
+                throw new ArgumentException("T must be an enumerated type");
+            }
+
+            foreach (T enumValue in Enum.GetValues(typeof(T)))
+            {
+                if (Convert.ToInt32(enumValue) == value)
+                {
+                    return enumValue;
+                }
+            }
+
+            throw new ArgumentException("No enum value corresponds to the specified value");
+        }
+    }
 };

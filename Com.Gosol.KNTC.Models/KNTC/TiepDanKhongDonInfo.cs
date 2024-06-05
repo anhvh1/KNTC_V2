@@ -11,6 +11,7 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public int TiepDanKhongDonID { get; set; }
         public int? DanKhongDenID { get; set; }
         public int? LoaiTiepDanID { get; set; }
+        public string TenLoaiTiepDan { get; set; }
         public DateTime NgayTiep { get; set; }
         public string NgayTiepStr { get; set; }
         public string NgayNhapDonStr { get; set; }
