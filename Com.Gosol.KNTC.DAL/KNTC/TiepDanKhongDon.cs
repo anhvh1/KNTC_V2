@@ -101,7 +101,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             TDKDInfo.NgayGapLanhDao = Utils.GetDateTime(dr["NgayGapLanhDao"], Constant.DEFAULT_DATE);
             TDKDInfo.NoiDungTiep = Utils.ConvertToString(dr["NoiDungTiep"].ToString(), string.Empty);
             TDKDInfo.NoiDungDon = Utils.ConvertToString(dr["NoiDungDon"].ToString(), string.Empty);
-            if(TDKDInfo.NoiDungDon == "" && TDKDInfo.NoiDungTiep != null && TDKDInfo.NoiDungTiep.Length > 0)
+            if (TDKDInfo.NoiDungDon == "" && TDKDInfo.NoiDungTiep != null && TDKDInfo.NoiDungTiep.Length > 0)
             {
                 TDKDInfo.NoiDungDon = TDKDInfo.NoiDungTiep;
             }
@@ -409,9 +409,10 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                     while (dr.Read())
                     {
                         TiepDanKhongDonInfo Info = GetDataForShowManage(dr);
-                        Info.CanBoXuLyID = Utils.ConvertToInt32(dr["CanBoXuLyID"], 0);                      
-                        Info.CanBoTiepNhanID = Utils.ConvertToInt32(dr["CanBoTiepNhapID"], 0);                      
-                        Info.LoaiTiepDanID = Utils.ConvertToInt32(dr["LoaiTiepDanID"], 0);                      
+                        Info.CanBoXuLyID = Utils.ConvertToInt32(dr["CanBoXuLyID"], 0);
+                        Info.CanBoTiepNhanID = Utils.ConvertToInt32(dr["CanBoTiepNhapID"], 0);
+                        Info.LoaiTiepDanID = Utils.ConvertToInt32(dr["LoaiTiepDanID"], 0);
+                        Info.TenLoaiTiepDan = (Info.LoaiTiepDanID ?? 0) != 0 ? (EnumExtensions.GetEnumValue<EnumLoaiTiepDan>(Info.LoaiTiepDanID ?? 0)).GetDescription() : "";
                         Info.KetQuaTiep = Utils.GetString(dr["KetQuaTiep"], string.Empty);
                         Info.CQDaGiaiQuyetID = Utils.GetString(dr["CQDaGiaiQuyetID"], string.Empty);
                         Info.HuongGiaiQuyetID = Utils.GetInt32(dr["HuongGiaiQuyetID"], 0);
@@ -446,7 +447,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         }
 
                         Info.DanKhongDenID = Utils.ConvertToInt32(dr["DanKhongDenID"], 0);
-                        if(Info.DanKhongDenID > 0 && Info.TiepDanKhongDonID == 0)
+                        if (Info.DanKhongDenID > 0 && Info.TiepDanKhongDonID == 0)
                         {
                             Info.TiepDanKhongDonID = 1000000000 + Info.DanKhongDenID.Value;
                         }
@@ -497,7 +498,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         //    }
                         //}
                         Info.ThanhPhanThamGia = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().GetThanhPhanThamGia(Info.TiepDanKhongDonID).ToList();
-                        if(Info.NhomKNID > 0)
+                        if (Info.NhomKNID > 0)
                         {
                             Info.NhomKN = new NhomKN().GetByID(Info.NhomKNID);
                             Info.listDoiTuongKN = new DoiTuongKN().GetByNhomKNID(Info.NhomKNID).ToList();
