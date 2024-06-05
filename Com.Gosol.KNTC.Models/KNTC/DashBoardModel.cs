@@ -99,5 +99,14 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public int DenHanBanHanh { get; set; }
         public int ChuaDenHanBanHanh { get; set; }
 
+
+        public int CanCapNhatNDQDGXM { get; set; }
+        public int DaCapNhatNDQDGXM { get; set; }
+        public int CanCapNhatBCQDKL { get; set; }
+        public int DaCapNhatBCQDKL { get; set; }
+
+        public int CanThiHanh { get; set; }
+        public int DaThiHanh { get; set; }
+
     }
 }

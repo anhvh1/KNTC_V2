@@ -121,6 +121,8 @@ namespace GO.API.Controllers.KNTC
                     var SuDungQuyTrinhPhucTap = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQuyTrinhPhucTap").Value, false);
                     var SuDungQuyTrinhGQPhucTap = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQuyTrinhGQPhucTap").Value, false);
 
+                    var capHanhChinh = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapHanhChinh").Value, 0);
+
                     var laThanhTraTinh = false;
                     try
                     {
@@ -137,155 +139,156 @@ namespace GO.API.Controllers.KNTC
 
                     DashBoardModel Data = new DashBoardModel();
                     Data.SoLieuCanhBao = new List<SoLieuCanhBao>();
-                    if ((p.CapID == CapQuanLy.CapUBNDTinh.GetHashCode() || p.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode()) && p.ChuTichUBND == 1)
+                    var soLieuChung = _DashBoardBUS.GetDataDashBoard_By_User(p);
+
+                    if (capHanhChinh == EnumCapHanhChinh.CapUBNDTinh.GetHashCode())
                     {
-                        //var soLieu = _DashBoardBUS.DashBoard_ChuTichUBND(p);
-                        var soLieu = _DashBoardBUS.GetDataDashBoard_By_User(p);
-
-                        if (p.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode())
+                        if (p.BanTiepDan == true) // BTD tỉnh
                         {
-                            SoLieuCanhBao slcpd = new SoLieuCanhBao();
-                            slcpd.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
-                            slcpd.MaChucNang = "phe-duyet-ket-qua-xu-ly";
-                            slcpd.Data = new List<Data>();
-                            slcpd.Data.Add(new Data("Cần phê duyệt", soLieu.CanPheDuyet));
-                            slcpd.Data.Add(new Data("Đã phê duyệt", soLieu.DaPheDuyet));
-                            slcpd.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
-                            Data.SoLieuCanhBao.Add(slcpd);
-                        }
+                            if (p.RoleID == RoleEnum.LanhDao.GetHashCode())
+                            {
+                                //var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
 
-                        //SoLieuCanhBao sl1 = new SoLieuCanhBao();
-                        //sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
-                        //sl1.MaChucNang = "giai-quyet-don-thu";
-                        //sl1.Data = new List<Data>();
-                        //sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHanBanHanh));
-                        //sl1.Data.Add(new Data("Đến hạn", soLieu.DenHanBanHanh));
-                        //sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHanBanHanh));
-                        //sl1.Data.Add(new Data("Tổng số", soLieu.QuaHanBanHanh + soLieu.DenHanBanHanh + soLieu.ChuaDenHanBanHanh));
-                        //Data.SoLieuCanhBao.Add(sl1);
+                                //SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                                //sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                                //sl1.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                                //sl1.Data = new List<Data>();
+                                //sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
+                                //sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
+                                //sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
+                                //sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
+                                //Data.SoLieuCanhBao.Add(sl1);
 
-                        SoLieuCanhBao sl2 = new SoLieuCanhBao();
-                        sl2.TenCanhBao = "Cảnh báo cần ban hành quyết định giao xác minh";
-                        sl2.MaChucNang = "giai-quyet-don-thu";
-                        sl2.Data = new List<Data>();
-                        sl2.Data.Add(new Data("Cần ban hành", soLieu.CanBanHanhGXM));
-                        sl2.Data.Add(new Data("Đã ban hành", soLieu.DaBanHanhGXM));
-                        sl2.Data.Add(new Data("Tổng số", soLieu.CanBanHanhGXM + soLieu.DaBanHanhGXM));
-                        Data.SoLieuCanhBao.Add(sl2);
+                                SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                                sl2.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
+                                sl2.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                                sl2.Data = new List<Data>();
+                                sl2.Data.Add(new Data("Cần phê duyệt", soLieuChung.CanPheDuyet));
+                                sl2.Data.Add(new Data("Đã phê duyệt", soLieuChung.DaPheDuyet));
+                                sl2.Data.Add(new Data("Tổng số", soLieuChung.CanPheDuyet + soLieuChung.DaPheDuyet));
+                                Data.SoLieuCanhBao.Add(sl2);
 
-                        SoLieuCanhBao sl3 = new SoLieuCanhBao();
-                        sl3.TenCanhBao = "Cảnh báo cần ban hành quyết định giải quyết";
-                        sl3.MaChucNang = "giai-quyet-don-thu";
-                        sl3.Data = new List<Data>();
-                        sl3.Data.Add(new Data("Cần ban hành", soLieu.CanBanHanhGQ));
-                        sl3.Data.Add(new Data("Đã ban hành", soLieu.DaBanHanhGQ));
-                        sl3.Data.Add(new Data("Tổng số", soLieu.CanBanHanhGQ + soLieu.DaBanHanhGQ));
-                        Data.SoLieuCanhBao.Add(sl3);
-                    }
-                    else if (p.CapID == CapQuanLy.CapUBNDTinh.GetHashCode() && p.BanTiepDan == true)
-                    {
-                        if (p.RoleID == 1)
-                        {
-                            var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
+                                SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                                sl3.TenCanhBao = "Cảnh báo cần trình dự thảo quyết định giao xác minh";
+                                sl3.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                                sl3.Data = new List<Data>();
+                                sl3.Data.Add(new Data("Cần trình dự thảo", soLieuChung.CanTrinhDuThao));
+                                sl3.Data.Add(new Data("Đã trình dự thảo", soLieuChung.DaTrinhDuThao));
+                                sl3.Data.Add(new Data("Tổng số", soLieuChung.CanTrinhDuThao + soLieuChung.DaTrinhDuThao));
+                                Data.SoLieuCanhBao.Add(sl3);
 
-                            SoLieuCanhBao sl1 = new SoLieuCanhBao();
-                            sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
-                            sl1.MaChucNang = "phe-duyet-ket-qua-xu-ly";
-                            sl1.Data = new List<Data>();
-                            sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
-                            sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
-                            sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
-                            sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
-                            Data.SoLieuCanhBao.Add(sl1);
+                                SoLieuCanhBao sl4 = new SoLieuCanhBao();
+                                sl4.TenCanhBao = "Cảnh báo cập nhật nội dung quyết định giao xác minh";
+                                sl4.MaChucNang = "giao-xac-minh";
+                                sl4.Data = new List<Data>();
+                                sl4.Data.Add(new Data("Cần cập nhật", soLieuChung.CanCapNhatNDQDGXM));
+                                sl4.Data.Add(new Data("Đã cập nhật:", soLieuChung.DaCapNhatNDQDGXM));
+                                sl4.Data.Add(new Data("Tổng số", soLieuChung.CanCapNhatNDQDGXM + soLieuChung.DaCapNhatNDQDGXM));
+                                Data.SoLieuCanhBao.Add(sl4);
 
-                            SoLieuCanhBao sl2 = new SoLieuCanhBao();
-                            sl2.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
-                            sl2.MaChucNang = "phe-duyet-ket-qua-xu-ly";
-                            sl2.Data = new List<Data>();
-                            sl2.Data.Add(new Data("Cần phê duyệt", soLieu.CanPheDuyet));
-                            sl2.Data.Add(new Data("Đã phê duyệt", soLieu.DaPheDuyet));
-                            sl2.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
-                            Data.SoLieuCanhBao.Add(sl2);
+                                SoLieuCanhBao sl5 = new SoLieuCanhBao();
+                                sl5.TenCanhBao = "Cảnh báo cập nhật nội dung báo cáo, kết luận, quyết định giải quyết";
+                                sl5.MaChucNang = "ban-hanh-qd";
+                                sl5.Data = new List<Data>();
+                                sl5.Data.Add(new Data("Cần cập nhật", soLieuChung.CanCapNhatBCQDKL));
+                                sl5.Data.Add(new Data("Đã cập nhật", soLieuChung.DaCapNhatBCQDKL));
+                                sl5.Data.Add(new Data("Tổng số", soLieuChung.CanCapNhatBCQDKL + soLieuChung.DaCapNhatBCQDKL));
+                                Data.SoLieuCanhBao.Add(sl5);
+                            }
+                            else
+                            {
+                                //var soLieu = _DashBoardBUS.DashBoard_CanhBaoXuLyDon(p);
+                                //var soLieuGXM = _DashBoardBUS.DashBoard_CanhBaoCapNhatGiaoXacMinh(p);
+                                //var soLieuGQD = _DashBoardBUS.DashBoard_CanhBaoCapNhatQuyetDinhGiaiQuyet(p);
 
-                            SoLieuCanhBao sl3 = new SoLieuCanhBao();
-                            sl3.TenCanhBao = "Cảnh báo cần trình dự thảo quyết định giao xác minh";
-                            sl3.MaChucNang = "phe-duyet-ket-qua-xu-ly";
-                            sl3.Data = new List<Data>();
-                            sl3.Data.Add(new Data("Cần trình dự thảo", soLieu.CanTrinhDuThao));
-                            sl3.Data.Add(new Data("Đã trình dự thảo", soLieu.DaTrinhDuThao));
-                            sl3.Data.Add(new Data("Tổng số", soLieu.CanTrinhDuThao + soLieu.DaTrinhDuThao));
-                            Data.SoLieuCanhBao.Add(sl3);
+                                //SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                                //sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                                //sl1.MaChucNang = "xu-ly-don-thu";
+                                //sl1.Data = new List<Data>();
+                                //sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
+                                //sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
+                                //sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
+                                //sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
+                                //Data.SoLieuCanhBao.Add(sl1);
+
+                                SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                                sl2.TenCanhBao = "Cảnh báo đơn thư cần xử lý";
+                                sl2.MaChucNang = "xu-ly-don-thu";
+                                sl2.Data = new List<Data>();
+                                sl2.Data.Add(new Data("Cần xử lý đơn", soLieuChung.CanXuLy));
+                                sl2.Data.Add(new Data("Đã xử lý đơn", soLieuChung.DaXuLy));
+                                sl2.Data.Add(new Data("Tổng số", soLieuChung.CanXuLy + soLieuChung.DaXuLy));
+                                Data.SoLieuCanhBao.Add(sl2);
+
+                                SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                                sl3.TenCanhBao = "Cảnh báo cần trình duyệt xử lý đơn";
+                                sl3.MaChucNang = "xu-ly-don-thu";
+                                sl3.Data = new List<Data>();
+                                sl3.Data.Add(new Data("Cần trình kết quả xử lý đơn", soLieuChung.CanTrinhKetQua));
+                                sl3.Data.Add(new Data("Đã trình kết quả xử lý", soLieuChung.DaTrinhKetQua));
+                                sl3.Data.Add(new Data("Tổng số", soLieuChung.CanTrinhKetQua + soLieuChung.DaTrinhKetQua));
+                                Data.SoLieuCanhBao.Add(sl3);
+
+                                //SoLieuCanhBao sl4 = new SoLieuCanhBao();
+                                //sl4.TenCanhBao = "Cảnh báo cập nhật nội dung quyết định giao xác minh";
+                                //sl4.MaChucNang = "giao-xac-minh";
+                                //sl4.Data = new List<Data>();
+                                //sl4.Data.Add(new Data("Cần cập nhật", soLieuGXM.CanCapNhat));
+                                //sl4.Data.Add(new Data("Đã cập nhật:", soLieuGXM.DaCapNhat));
+                                //sl4.Data.Add(new Data("Tổng số", soLieuGXM.CanCapNhat + soLieuGXM.DaCapNhat));
+                                //Data.SoLieuCanhBao.Add(sl4);
+
+                                SoLieuCanhBao sl5 = new SoLieuCanhBao();
+                                sl5.TenCanhBao = "Cảnh báo cập nhật nội dung báo cáo, kết luận, quyết định giải quyết";
+                                sl5.MaChucNang = "ban-hanh-qd";
+                                sl5.Data = new List<Data>();
+                                sl5.Data.Add(new Data("Cần cập nhật", soLieuChung.CanCapNhatBCQDKL));
+                                sl5.Data.Add(new Data("Đã cập nhật", soLieuChung.DaCapNhatBCQDKL));
+                                sl5.Data.Add(new Data("Tổng số", soLieuChung.CanCapNhatBCQDKL + soLieuChung.DaCapNhatBCQDKL));
+                                Data.SoLieuCanhBao.Add(sl5);
+                            }
                         }
                         else
                         {
-                            var soLieu = _DashBoardBUS.DashBoard_CanhBaoXuLyDon(p);
-                            var soLieuGXM = _DashBoardBUS.DashBoard_CanhBaoCapNhatGiaoXacMinh(p);
-                            var soLieuGQD = _DashBoardBUS.DashBoard_CanhBaoCapNhatQuyetDinhGiaiQuyet(p);
+                            if (p.ChuTichUBND == 1)  // chủ tịch tỉnh
+                            {
+                                SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                                sl2.TenCanhBao = "Cảnh báo cần ban hành quyết định giao xác minh";
+                                sl2.MaChucNang = "giai-quyet-don-thu";
+                                sl2.Data = new List<Data>();
+                                sl2.Data.Add(new Data("Cần ban hành", soLieuChung.CanBanHanhGXM));
+                                sl2.Data.Add(new Data("Đã ban hành", soLieuChung.DaBanHanhGXM));
+                                sl2.Data.Add(new Data("Tổng số", soLieuChung.CanBanHanhGXM + soLieuChung.DaBanHanhGXM));
+                                Data.SoLieuCanhBao.Add(sl2);
 
-                            SoLieuCanhBao sl1 = new SoLieuCanhBao();
-                            sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
-                            sl1.MaChucNang = "xu-ly-don-thu";
-                            sl1.Data = new List<Data>();
-                            sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
-                            sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
-                            sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
-                            sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
-                            Data.SoLieuCanhBao.Add(sl1);
-
-                            SoLieuCanhBao sl2 = new SoLieuCanhBao();
-                            sl2.TenCanhBao = "Cảnh báo đơn thư cần xử lý";
-                            sl2.MaChucNang = "xu-ly-don-thu";
-                            sl2.Data = new List<Data>();
-                            sl2.Data.Add(new Data("Cần xử lý đơn", soLieu.CanXuLy));
-                            sl2.Data.Add(new Data("Đã xử lý đơn", soLieu.DaXuLy));
-                            sl2.Data.Add(new Data("Tổng số", soLieu.CanXuLy + soLieu.DaXuLy));
-                            Data.SoLieuCanhBao.Add(sl2);
-
-                            SoLieuCanhBao sl3 = new SoLieuCanhBao();
-                            sl3.TenCanhBao = "Cảnh báo cần trình duyệt xử lý đơn";
-                            sl3.MaChucNang = "xu-ly-don-thu";
-                            sl3.Data = new List<Data>();
-                            sl3.Data.Add(new Data("Cần trình kết quả xử lý đơn", soLieu.CanTrinhKetQua));
-                            sl3.Data.Add(new Data("Đã trình kết quả xử lý", soLieu.DaTrinhKetQua));
-                            sl3.Data.Add(new Data("Tổng số", soLieu.CanTrinhKetQua + soLieu.DaTrinhKetQua));
-                            Data.SoLieuCanhBao.Add(sl3);
-
-                            SoLieuCanhBao sl4 = new SoLieuCanhBao();
-                            sl4.TenCanhBao = "Cảnh báo cập nhật nội dung quyết định giao xác minh";
-                            sl4.MaChucNang = "giao-xac-minh";
-                            sl4.Data = new List<Data>();
-                            sl4.Data.Add(new Data("Cần cập nhật", soLieuGXM.CanCapNhat));
-                            sl4.Data.Add(new Data("Đã cập nhật:", soLieuGXM.DaCapNhat));
-                            sl4.Data.Add(new Data("Tổng số", soLieuGXM.CanCapNhat + soLieuGXM.DaCapNhat));
-                            Data.SoLieuCanhBao.Add(sl4);
-
-                            SoLieuCanhBao sl5 = new SoLieuCanhBao();
-                            sl5.TenCanhBao = "Cảnh báo cập nhật nội dung báo cáo, kết luận, quyết định giải quyết";
-                            sl5.MaChucNang = "ban-hanh-qd";
-                            sl5.Data = new List<Data>();
-                            sl5.Data.Add(new Data("Cần cấp nhật", soLieuGQD.CanCapNhat));
-                            sl5.Data.Add(new Data("Đã cập nhật", soLieuGQD.DaCapNhat));
-                            sl5.Data.Add(new Data("Tổng số", soLieuGQD.CanCapNhat + soLieuGQD.DaCapNhat));
-                            Data.SoLieuCanhBao.Add(sl5);
+                                SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                                sl3.TenCanhBao = "Cảnh báo cần ban hành quyết định giải quyết";
+                                sl3.MaChucNang = "giai-quyet-don-thu";
+                                sl3.Data = new List<Data>();
+                                sl3.Data.Add(new Data("Cần ban hành", soLieuChung.CanBanHanhGQ));
+                                sl3.Data.Add(new Data("Đã ban hành", soLieuChung.DaBanHanhGQ));
+                                sl3.Data.Add(new Data("Tổng số", soLieuChung.CanBanHanhGQ + soLieuChung.DaBanHanhGQ));
+                                Data.SoLieuCanhBao.Add(sl3);
+                            }
                         }
                     }
-                    else if (p.CapID == CapQuanLy.CapSoNganh.GetHashCode() || laThanhTraTinh)
+                    else if (capHanhChinh == EnumCapHanhChinh.CapSoNganh.GetHashCode())
                     {
                         if (p.RoleID == 1)
                         {
-                            var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
+                            //var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
                             var soLieuGQD = _DashBoardBUS.DashBoard_CanhBaoGiaiQuyetDon(p);
 
-                            SoLieuCanhBao sl1 = new SoLieuCanhBao();
-                            sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
-                            sl1.MaChucNang = "giai-quyet-don-thu";
-                            //sl1.MaChucNang = "phe-duyet-ket-qua-xu-ly";
-                            sl1.Data = new List<Data>();
-                            sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
-                            sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
-                            sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
-                            sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
-                            Data.SoLieuCanhBao.Add(sl1);
+                            //SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                            //sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                            //sl1.MaChucNang = "giai-quyet-don-thu";
+                            ////sl1.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                            //sl1.Data = new List<Data>();
+                            //sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
+                            //sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
+                            //sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
+                            //sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
+                            //Data.SoLieuCanhBao.Add(sl1);
 
                             if (SuDungQuyTrinhPhucTap)
                             {
@@ -293,9 +296,9 @@ namespace GO.API.Controllers.KNTC
                                 sl2.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
                                 sl2.MaChucNang = "phe-duyet-ket-qua-xu-ly";
                                 sl2.Data = new List<Data>();
-                                sl2.Data.Add(new Data("Cần phê duyệt", soLieu.CanPheDuyet));
-                                sl2.Data.Add(new Data("Đã phê duyệt", soLieu.DaPheDuyet));
-                                sl2.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
+                                sl2.Data.Add(new Data("Cần phê duyệt", soLieuChung.CanPheDuyet));
+                                sl2.Data.Add(new Data("Đã phê duyệt", soLieuChung.DaPheDuyet));
+                                sl2.Data.Add(new Data("Tổng số", soLieuChung.CanPheDuyet + soLieuChung.DaPheDuyet));
                                 Data.SoLieuCanhBao.Add(sl2);
                             }
 
@@ -303,37 +306,28 @@ namespace GO.API.Controllers.KNTC
                             sl3.TenCanhBao = "Cảnh báo cần giao xác minh";
                             sl3.MaChucNang = "giai-quyet-don-thu";
                             sl3.Data = new List<Data>();
-                            sl3.Data.Add(new Data("Cần giao xác minh", soLieuGQD.CanGiaoXacMinh));
-                            sl3.Data.Add(new Data("Đã giao xác minh", soLieuGQD.DaGiaoXacMinh));
-                            sl3.Data.Add(new Data("Tổng số", soLieuGQD.CanGiaoXacMinh + soLieuGQD.DaGiaoXacMinh));
+                            sl3.Data.Add(new Data("Cần giao xác minh", soLieuChung.CanGiaoXacMinh));
+                            sl3.Data.Add(new Data("Đã giao xác minh", soLieuChung.DaGiaoXacMinh));
+                            sl3.Data.Add(new Data("Tổng số", soLieuChung.CanGiaoXacMinh + soLieuChung.DaGiaoXacMinh));
                             Data.SoLieuCanhBao.Add(sl3);
 
                             SoLieuCanhBao sl4 = new SoLieuCanhBao();
                             sl4.TenCanhBao = "Cảnh báo duyệt báo cáo xác minh";
                             sl4.MaChucNang = "giai-quyet-don-thu";
                             sl4.Data = new List<Data>();
-                            sl4.Data.Add(new Data("Cần duyệt báo cáo xác minh", soLieuGQD.CanDuyetBCXacMinh));
-                            sl4.Data.Add(new Data("Đã duyệt", soLieuGQD.DaDuyetBCXacMinh));
-                            sl4.Data.Add(new Data("Tổng số", soLieuGQD.CanDuyetBCXacMinh + soLieuGQD.DaDuyetBCXacMinh));
+                            sl4.Data.Add(new Data("Cần duyệt báo cáo xác minh", soLieuChung.CanDuyetBCXacMinh));
+                            sl4.Data.Add(new Data("Đã duyệt", soLieuChung.DaDuyetBCXacMinh));
+                            sl4.Data.Add(new Data("Tổng số", soLieuChung.CanDuyetBCXacMinh + soLieuChung.DaDuyetBCXacMinh));
                             Data.SoLieuCanhBao.Add(sl4);
 
                             SoLieuCanhBao sl5 = new SoLieuCanhBao();
-                            sl5.TenCanhBao = "Cảnh báo cần trình báo cáo xác minh";
-                            sl5.MaChucNang = "giai-quyet-don-thu";
+                            sl5.TenCanhBao = "Cảnh báo cập nhật nội dung báo cáo, kết luận, quyết định giải quyết";
+                            sl5.MaChucNang = "ban-hanh-qd";
                             sl5.Data = new List<Data>();
-                            sl5.Data.Add(new Data("Cần trình báo cáo xác minh", soLieuGQD.CanDuyetBCXacMinh));
-                            sl5.Data.Add(new Data("Đã trình", soLieuGQD.DaDuyetBCXacMinh));
-                            sl5.Data.Add(new Data("Tổng số", soLieuGQD.CanDuyetBCXacMinh + soLieuGQD.DaDuyetBCXacMinh));
+                            sl5.Data.Add(new Data("Cần cập nhật", soLieuChung.CanCapNhatBCQDKL));
+                            sl5.Data.Add(new Data("Đã cập nhật", soLieuChung.DaCapNhatBCQDKL));
+                            sl5.Data.Add(new Data("Tổng số", soLieuChung.CanCapNhatBCQDKL + soLieuChung.DaCapNhatBCQDKL));
                             Data.SoLieuCanhBao.Add(sl5);
-
-                            SoLieuCanhBao sl6 = new SoLieuCanhBao();
-                            sl6.TenCanhBao = "Cảnh báo cần ban hành quyết định giải quyết";
-                            sl6.MaChucNang = "giai-quyet-don-thu";
-                            sl6.Data = new List<Data>();
-                            sl6.Data.Add(new Data("Cần ban hành quyết định giải quyết", soLieuGQD.CanBanHanhQDGQ));
-                            sl6.Data.Add(new Data("Đã trình", soLieuGQD.DaBanHanhQDGQ));
-                            sl6.Data.Add(new Data("Tổng số", soLieuGQD.CanBanHanhQDGQ + soLieuGQD.DaBanHanhQDGQ));
-                            Data.SoLieuCanhBao.Add(sl6);
                         }
                         else if (p.RoleID == 2)
                         {
@@ -431,6 +425,461 @@ namespace GO.API.Controllers.KNTC
                             sl6.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
                             Data.SoLieuCanhBao.Add(sl6);
                         }
+                    }
+                    else if (capHanhChinh == EnumCapHanhChinh.CapUBNDHuyen.GetHashCode())
+                    {
+                        if (p.ChuTichUBND == 1)  // chủ tịch tỉnh
+                        {
+                            SoLieuCanhBao slcpd = new SoLieuCanhBao();
+                            slcpd.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
+                            slcpd.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                            slcpd.Data = new List<Data>();
+                            slcpd.Data.Add(new Data("Cần phê duyệt", soLieuChung.CanPheDuyet));
+                            slcpd.Data.Add(new Data("Đã phê duyệt", soLieuChung.DaPheDuyet));
+                            slcpd.Data.Add(new Data("Tổng số", soLieuChung.CanPheDuyet + soLieuChung.DaPheDuyet));
+                            Data.SoLieuCanhBao.Add(slcpd);
+
+                            SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                            sl2.TenCanhBao = "Cảnh báo cần ban hành quyết định giao xác minh";
+                            sl2.MaChucNang = "giai-quyet-don-thu";
+                            sl2.Data = new List<Data>();
+                            sl2.Data.Add(new Data("Cần ban hành", soLieuChung.CanBanHanhGXM));
+                            sl2.Data.Add(new Data("Đã ban hành", soLieuChung.DaBanHanhGXM));
+                            sl2.Data.Add(new Data("Tổng số", soLieuChung.CanBanHanhGXM + soLieuChung.DaBanHanhGXM));
+                            Data.SoLieuCanhBao.Add(sl2);
+
+                            SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                            sl3.TenCanhBao = "Cảnh báo cần ban hành quyết định giải quyết";
+                            sl3.MaChucNang = "giai-quyet-don-thu";
+                            sl3.Data = new List<Data>();
+                            sl3.Data.Add(new Data("Cần ban hành", soLieuChung.CanBanHanhGQ));
+                            sl3.Data.Add(new Data("Đã ban hành", soLieuChung.DaBanHanhGQ));
+                            sl3.Data.Add(new Data("Tổng số", soLieuChung.CanBanHanhGQ + soLieuChung.DaBanHanhGQ));
+                            Data.SoLieuCanhBao.Add(sl3);
+                        }
+                    }
+                    else if (capHanhChinh == EnumCapHanhChinh.CapPhongThuocHuyen.GetHashCode())
+                    {
+                        if (p.BanTiepDan ?? false)
+                        {
+
+                        }
+                        else
+                        {
+
+                        }
+
+                    }
+                    else if (capHanhChinh == EnumCapHanhChinh.CapUBNDXa.GetHashCode())
+                    {
+                        if (p.RoleID == 1)
+                        {
+                            //var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
+                            //var soLieuGQD = _DashBoardBUS.DashBoard_CanhBaoGiaiQuyetDon(p);
+
+                            //SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                            //sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                            //sl1.MaChucNang = "giai-quyet-don-thu";
+                            ////sl1.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                            //sl1.Data = new List<Data>();
+                            //sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
+                            //sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
+                            //sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
+                            //sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
+                            //Data.SoLieuCanhBao.Add(sl1);
+
+                            if (SuDungQuyTrinhPhucTap)
+                            {
+                                SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                                sl2.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
+                                sl2.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                                sl2.Data = new List<Data>();
+                                sl2.Data.Add(new Data("Cần phê duyệt", soLieuChung.CanPheDuyet));
+                                sl2.Data.Add(new Data("Đã phê duyệt", soLieuChung.DaPheDuyet));
+                                sl2.Data.Add(new Data("Tổng số", soLieuChung.CanPheDuyet + soLieuChung.DaPheDuyet));
+                                Data.SoLieuCanhBao.Add(sl2);
+                            }
+
+                            SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                            sl3.TenCanhBao = "Cảnh báo cần giao xác minh";
+                            sl3.MaChucNang = "giai-quyet-don-thu";
+                            sl3.Data = new List<Data>();
+                            sl3.Data.Add(new Data("Cần giao xác minh", soLieuChung.CanGiaoXacMinh));
+                            sl3.Data.Add(new Data("Đã giao xác minh", soLieuChung.DaGiaoXacMinh));
+                            sl3.Data.Add(new Data("Tổng số", soLieuChung.CanGiaoXacMinh + soLieuChung.DaGiaoXacMinh));
+                            Data.SoLieuCanhBao.Add(sl3);
+
+                            SoLieuCanhBao sl4 = new SoLieuCanhBao();
+                            sl4.TenCanhBao = "Cảnh báo duyệt báo cáo xác minh";
+                            sl4.MaChucNang = "giai-quyet-don-thu";
+                            sl4.Data = new List<Data>();
+                            sl4.Data.Add(new Data("Cần duyệt báo cáo xác minh", soLieuChung.CanDuyetBCXacMinh));
+                            sl4.Data.Add(new Data("Đã duyệt", soLieuChung.DaDuyetBCXacMinh));
+                            sl4.Data.Add(new Data("Tổng số", soLieuChung.CanDuyetBCXacMinh + soLieuChung.DaDuyetBCXacMinh));
+                            Data.SoLieuCanhBao.Add(sl4);
+                            
+                        }
+                        
+                        else
+                        {
+                            //var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
+
+                            //SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                            //sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                            //sl1.MaChucNang = "giai-quyet-don-thu";
+                            //sl1.Data = new List<Data>();
+                            //sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
+                            //sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
+                            //sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
+                            //sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
+                            //Data.SoLieuCanhBao.Add(sl1);
+
+                            SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                            sl2.TenCanhBao = "Cảnh báo đơn thư cần xử lý";
+                            sl2.MaChucNang = "xu-ly-don-thu";
+                            sl2.Data = new List<Data>();
+                            sl2.Data.Add(new Data("Cần xử lý đơn", soLieuChung.CanXuLy));
+                            sl2.Data.Add(new Data("Đã xử lý đơn", soLieuChung.DaXuLy));
+                            sl2.Data.Add(new Data("Tổng số", soLieuChung.CanXuLy + soLieuChung.DaXuLy));
+                            Data.SoLieuCanhBao.Add(sl2);
+
+                            SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                            sl3.TenCanhBao = "Cảnh báo cần trình duyệt xử lý đơn";
+                            sl3.MaChucNang = "xu-ly-don-thu";
+                            sl3.Data = new List<Data>();
+                            sl3.Data.Add(new Data("Cần trình kết quả xử lý đơn", soLieuChung.CanTrinhKetQua));
+                            sl3.Data.Add(new Data("Đã trình kết quả xử lý", soLieuChung.DaTrinhKetQua));
+                            sl3.Data.Add(new Data("Tổng số", soLieuChung.CanTrinhKetQua + soLieuChung.DaTrinhKetQua));
+                            Data.SoLieuCanhBao.Add(sl3);
+
+                            //SoLieuCanhBao sl4 = new SoLieuCanhBao();
+                            //sl4.TenCanhBao = "Cảnh báo cập nhật nội dung quyết định giao xác minh";
+                            //sl4.MaChucNang = "giao-xac-minh";
+                            //sl4.Data = new List<Data>();
+                            //sl4.Data.Add(new Data("Cần cập nhật", soLieuGXM.CanCapNhat));
+                            //sl4.Data.Add(new Data("Đã cập nhật:", soLieuGXM.DaCapNhat));
+                            //sl4.Data.Add(new Data("Tổng số", soLieuGXM.CanCapNhat + soLieuGXM.DaCapNhat));
+                            //Data.SoLieuCanhBao.Add(sl4);
+
+                            SoLieuCanhBao sl5 = new SoLieuCanhBao();
+                            sl5.TenCanhBao = "Cảnh báo cập nhật nội dung báo cáo, kết luận, quyết định giải quyết";
+                            sl5.MaChucNang = "ban-hanh-qd";
+                            sl5.Data = new List<Data>();
+                            sl5.Data.Add(new Data("Cần cập nhật", soLieuChung.CanCapNhatBCQDKL));
+                            sl5.Data.Add(new Data("Đã cập nhật", soLieuChung.DaCapNhatBCQDKL));
+                            sl5.Data.Add(new Data("Tổng số", soLieuChung.CanCapNhatBCQDKL + soLieuChung.DaCapNhatBCQDKL));
+                            Data.SoLieuCanhBao.Add(sl5);
+
+                            SoLieuCanhBao sl6 = new SoLieuCanhBao();
+                            sl6.TenCanhBao = "Cảnh báo cần cập nhật kết quản thi hành";
+                            sl6.MaChucNang = "thi-hanh";
+                            sl6.Data = new List<Data>();
+                            sl6.Data.Add(new Data("Cần cập nhật kết quả thi hành:", soLieuChung.CanThiHanh));
+                            sl6.Data.Add(new Data("Đã trình", soLieuChung.DaThiHanh));
+                            sl6.Data.Add(new Data("Tổng số", soLieuChung.CanThiHanh + soLieuChung.DaThiHanh));
+                            Data.SoLieuCanhBao.Add(sl6);
+                        }
+                    }
+
+
+
+                    if ((p.CapID == CapQuanLy.CapUBNDTinh.GetHashCode() || p.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode()) && p.ChuTichUBND == 1)
+                    {
+                        //var soLieu = _DashBoardBUS.DashBoard_ChuTichUBND(p);
+                        var soLieu = _DashBoardBUS.GetDataDashBoard_By_User(p);
+
+                        if (p.CapID == CapQuanLy.CapUBNDHuyen.GetHashCode())
+                        {
+                            SoLieuCanhBao slcpd = new SoLieuCanhBao();
+                            slcpd.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
+                            slcpd.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                            slcpd.Data = new List<Data>();
+                            slcpd.Data.Add(new Data("Cần phê duyệt", soLieu.CanPheDuyet));
+                            slcpd.Data.Add(new Data("Đã phê duyệt", soLieu.DaPheDuyet));
+                            slcpd.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
+                            Data.SoLieuCanhBao.Add(slcpd);
+                        }
+
+                        //SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                        //sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                        //sl1.MaChucNang = "giai-quyet-don-thu";
+                        //sl1.Data = new List<Data>();
+                        //sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHanBanHanh));
+                        //sl1.Data.Add(new Data("Đến hạn", soLieu.DenHanBanHanh));
+                        //sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHanBanHanh));
+                        //sl1.Data.Add(new Data("Tổng số", soLieu.QuaHanBanHanh + soLieu.DenHanBanHanh + soLieu.ChuaDenHanBanHanh));
+                        //Data.SoLieuCanhBao.Add(sl1);
+
+                        SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                        sl2.TenCanhBao = "Cảnh báo cần ban hành quyết định giao xác minh";
+                        sl2.MaChucNang = "giai-quyet-don-thu";
+                        sl2.Data = new List<Data>();
+                        sl2.Data.Add(new Data("Cần ban hành", soLieu.CanBanHanhGXM));
+                        sl2.Data.Add(new Data("Đã ban hành", soLieu.DaBanHanhGXM));
+                        sl2.Data.Add(new Data("Tổng số", soLieu.CanBanHanhGXM + soLieu.DaBanHanhGXM));
+                        Data.SoLieuCanhBao.Add(sl2);
+
+                        SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                        sl3.TenCanhBao = "Cảnh báo cần ban hành quyết định giải quyết";
+                        sl3.MaChucNang = "giai-quyet-don-thu";
+                        sl3.Data = new List<Data>();
+                        sl3.Data.Add(new Data("Cần ban hành", soLieu.CanBanHanhGQ));
+                        sl3.Data.Add(new Data("Đã ban hành", soLieu.DaBanHanhGQ));
+                        sl3.Data.Add(new Data("Tổng số", soLieu.CanBanHanhGQ + soLieu.DaBanHanhGQ));
+                        Data.SoLieuCanhBao.Add(sl3);
+                    }
+                    else if (p.CapID == CapQuanLy.CapUBNDTinh.GetHashCode() && p.BanTiepDan == true)
+                    {
+                        //if (p.RoleID == 1)
+                        //{
+                        //    var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
+
+                        //    SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                        //    sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                        //    sl1.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                        //    sl1.Data = new List<Data>();
+                        //    sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
+                        //    sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
+                        //    sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
+                        //    sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
+                        //    Data.SoLieuCanhBao.Add(sl1);
+
+                        //    SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                        //    sl2.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
+                        //    sl2.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                        //    sl2.Data = new List<Data>();
+                        //    sl2.Data.Add(new Data("Cần phê duyệt", soLieu.CanPheDuyet));
+                        //    sl2.Data.Add(new Data("Đã phê duyệt", soLieu.DaPheDuyet));
+                        //    sl2.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
+                        //    Data.SoLieuCanhBao.Add(sl2);
+
+                        //    SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                        //    sl3.TenCanhBao = "Cảnh báo cần trình dự thảo quyết định giao xác minh";
+                        //    sl3.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                        //    sl3.Data = new List<Data>();
+                        //    sl3.Data.Add(new Data("Cần trình dự thảo", soLieu.CanTrinhDuThao));
+                        //    sl3.Data.Add(new Data("Đã trình dự thảo", soLieu.DaTrinhDuThao));
+                        //    sl3.Data.Add(new Data("Tổng số", soLieu.CanTrinhDuThao + soLieu.DaTrinhDuThao));
+                        //    Data.SoLieuCanhBao.Add(sl3);
+                        //}
+                        //else
+                        //{
+                        //    var soLieu = _DashBoardBUS.DashBoard_CanhBaoXuLyDon(p);
+                        //    var soLieuGXM = _DashBoardBUS.DashBoard_CanhBaoCapNhatGiaoXacMinh(p);
+                        //    var soLieuGQD = _DashBoardBUS.DashBoard_CanhBaoCapNhatQuyetDinhGiaiQuyet(p);
+
+                        //    SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                        //    sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                        //    sl1.MaChucNang = "xu-ly-don-thu";
+                        //    sl1.Data = new List<Data>();
+                        //    sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
+                        //    sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
+                        //    sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
+                        //    sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
+                        //    Data.SoLieuCanhBao.Add(sl1);
+
+                        //    SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                        //    sl2.TenCanhBao = "Cảnh báo đơn thư cần xử lý";
+                        //    sl2.MaChucNang = "xu-ly-don-thu";
+                        //    sl2.Data = new List<Data>();
+                        //    sl2.Data.Add(new Data("Cần xử lý đơn", soLieu.CanXuLy));
+                        //    sl2.Data.Add(new Data("Đã xử lý đơn", soLieu.DaXuLy));
+                        //    sl2.Data.Add(new Data("Tổng số", soLieu.CanXuLy + soLieu.DaXuLy));
+                        //    Data.SoLieuCanhBao.Add(sl2);
+
+                        //    SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                        //    sl3.TenCanhBao = "Cảnh báo cần trình duyệt xử lý đơn";
+                        //    sl3.MaChucNang = "xu-ly-don-thu";
+                        //    sl3.Data = new List<Data>();
+                        //    sl3.Data.Add(new Data("Cần trình kết quả xử lý đơn", soLieu.CanTrinhKetQua));
+                        //    sl3.Data.Add(new Data("Đã trình kết quả xử lý", soLieu.DaTrinhKetQua));
+                        //    sl3.Data.Add(new Data("Tổng số", soLieu.CanTrinhKetQua + soLieu.DaTrinhKetQua));
+                        //    Data.SoLieuCanhBao.Add(sl3);
+
+                        //    SoLieuCanhBao sl4 = new SoLieuCanhBao();
+                        //    sl4.TenCanhBao = "Cảnh báo cập nhật nội dung quyết định giao xác minh";
+                        //    sl4.MaChucNang = "giao-xac-minh";
+                        //    sl4.Data = new List<Data>();
+                        //    sl4.Data.Add(new Data("Cần cập nhật", soLieuGXM.CanCapNhat));
+                        //    sl4.Data.Add(new Data("Đã cập nhật:", soLieuGXM.DaCapNhat));
+                        //    sl4.Data.Add(new Data("Tổng số", soLieuGXM.CanCapNhat + soLieuGXM.DaCapNhat));
+                        //    Data.SoLieuCanhBao.Add(sl4);
+
+                        //    SoLieuCanhBao sl5 = new SoLieuCanhBao();
+                        //    sl5.TenCanhBao = "Cảnh báo cập nhật nội dung báo cáo, kết luận, quyết định giải quyết";
+                        //    sl5.MaChucNang = "ban-hanh-qd";
+                        //    sl5.Data = new List<Data>();
+                        //    sl5.Data.Add(new Data("Cần cấp nhật", soLieuGQD.CanCapNhat));
+                        //    sl5.Data.Add(new Data("Đã cập nhật", soLieuGQD.DaCapNhat));
+                        //    sl5.Data.Add(new Data("Tổng số", soLieuGQD.CanCapNhat + soLieuGQD.DaCapNhat));
+                        //    Data.SoLieuCanhBao.Add(sl5);
+                        //}
+                    }
+                    else if (p.CapID == CapQuanLy.CapSoNganh.GetHashCode() || laThanhTraTinh)
+                    {
+                        //if (p.RoleID == 1)
+                        //{
+                        //    var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
+                        //    var soLieuGQD = _DashBoardBUS.DashBoard_CanhBaoGiaiQuyetDon(p);
+
+                        //    SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                        //    sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                        //    sl1.MaChucNang = "giai-quyet-don-thu";
+                        //    //sl1.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                        //    sl1.Data = new List<Data>();
+                        //    sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
+                        //    sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
+                        //    sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
+                        //    sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
+                        //    Data.SoLieuCanhBao.Add(sl1);
+
+                        //    if (SuDungQuyTrinhPhucTap)
+                        //    {
+                        //        SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                        //        sl2.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
+                        //        sl2.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                        //        sl2.Data = new List<Data>();
+                        //        sl2.Data.Add(new Data("Cần phê duyệt", soLieu.CanPheDuyet));
+                        //        sl2.Data.Add(new Data("Đã phê duyệt", soLieu.DaPheDuyet));
+                        //        sl2.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
+                        //        Data.SoLieuCanhBao.Add(sl2);
+                        //    }
+
+                        //    SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                        //    sl3.TenCanhBao = "Cảnh báo cần giao xác minh";
+                        //    sl3.MaChucNang = "giai-quyet-don-thu";
+                        //    sl3.Data = new List<Data>();
+                        //    sl3.Data.Add(new Data("Cần giao xác minh", soLieuGQD.CanGiaoXacMinh));
+                        //    sl3.Data.Add(new Data("Đã giao xác minh", soLieuGQD.DaGiaoXacMinh));
+                        //    sl3.Data.Add(new Data("Tổng số", soLieuGQD.CanGiaoXacMinh + soLieuGQD.DaGiaoXacMinh));
+                        //    Data.SoLieuCanhBao.Add(sl3);
+
+                        //    SoLieuCanhBao sl4 = new SoLieuCanhBao();
+                        //    sl4.TenCanhBao = "Cảnh báo duyệt báo cáo xác minh";
+                        //    sl4.MaChucNang = "giai-quyet-don-thu";
+                        //    sl4.Data = new List<Data>();
+                        //    sl4.Data.Add(new Data("Cần duyệt báo cáo xác minh", soLieuGQD.CanDuyetBCXacMinh));
+                        //    sl4.Data.Add(new Data("Đã duyệt", soLieuGQD.DaDuyetBCXacMinh));
+                        //    sl4.Data.Add(new Data("Tổng số", soLieuGQD.CanDuyetBCXacMinh + soLieuGQD.DaDuyetBCXacMinh));
+                        //    Data.SoLieuCanhBao.Add(sl4);
+
+                        //    SoLieuCanhBao sl5 = new SoLieuCanhBao();
+                        //    sl5.TenCanhBao = "Cảnh báo cần trình báo cáo xác minh";
+                        //    sl5.MaChucNang = "giai-quyet-don-thu";
+                        //    sl5.Data = new List<Data>();
+                        //    sl5.Data.Add(new Data("Cần trình báo cáo xác minh", soLieuGQD.CanDuyetBCXacMinh));
+                        //    sl5.Data.Add(new Data("Đã trình", soLieuGQD.DaDuyetBCXacMinh));
+                        //    sl5.Data.Add(new Data("Tổng số", soLieuGQD.CanDuyetBCXacMinh + soLieuGQD.DaDuyetBCXacMinh));
+                        //    Data.SoLieuCanhBao.Add(sl5);
+
+                        //    SoLieuCanhBao sl6 = new SoLieuCanhBao();
+                        //    sl6.TenCanhBao = "Cảnh báo cần ban hành quyết định giải quyết";
+                        //    sl6.MaChucNang = "giai-quyet-don-thu";
+                        //    sl6.Data = new List<Data>();
+                        //    sl6.Data.Add(new Data("Cần ban hành quyết định giải quyết", soLieuGQD.CanBanHanhQDGQ));
+                        //    sl6.Data.Add(new Data("Đã trình", soLieuGQD.DaBanHanhQDGQ));
+                        //    sl6.Data.Add(new Data("Tổng số", soLieuGQD.CanBanHanhQDGQ + soLieuGQD.DaBanHanhQDGQ));
+                        //    Data.SoLieuCanhBao.Add(sl6);
+                        //}
+                        //else if (p.RoleID == 2)
+                        //{
+                        //var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
+                        //    var soLieuGQD = _DashBoardBUS.DashBoard_CanhBaoGiaiQuyetDon(p);
+
+                        //    SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                        //    sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                        //    sl1.MaChucNang = "giai-quyet-don-thu";
+                        //    //sl1.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                        //    sl1.Data = new List<Data>();
+                        //    sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
+                        //    sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
+                        //    sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
+                        //    sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
+                        //    Data.SoLieuCanhBao.Add(sl1);
+
+                        //    //SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                        //    //sl2.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
+                        //    //sl2.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                        //    //sl2.Data = new List<Data>();
+                        //    //sl2.Data.Add(new Data("Cần phê duyệt", soLieu.CanPheDuyet));
+                        //    //sl2.Data.Add(new Data("Đã phê duyệt", soLieu.DaPheDuyet));
+                        //    //sl2.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
+                        //    //Data.SoLieuCanhBao.Add(sl2);
+
+                        //    if (SuDungQuyTrinhPhucTap)
+                        //    {
+                        //        SoLieuCanhBao sl2 = new SoLieuCanhBao();
+                        //        sl2.TenCanhBao = "Cảnh báo cần phê duyệt kết quả xử lý";
+                        //        sl2.MaChucNang = "phe-duyet-ket-qua-xu-ly";
+                        //        sl2.Data = new List<Data>();
+                        //        sl2.Data.Add(new Data("Cần phê duyệt", soLieu.CanPheDuyet));
+                        //        sl2.Data.Add(new Data("Đã phê duyệt", soLieu.DaPheDuyet));
+                        //        sl2.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
+                        //        Data.SoLieuCanhBao.Add(sl2);
+                        //    }
+
+                        //    SoLieuCanhBao sl3 = new SoLieuCanhBao();
+                        //    sl3.TenCanhBao = "Cảnh báo cần giao xác minh";
+                        //    sl3.MaChucNang = "giai-quyet-don-thu";
+                        //    sl3.Data = new List<Data>();
+                        //    sl3.Data.Add(new Data("Cần giao xác minh", soLieuGQD.CanGiaoXacMinh));
+                        //    sl3.Data.Add(new Data("Đã giao xác minh", soLieuGQD.DaGiaoXacMinh));
+                        //    sl3.Data.Add(new Data("Tổng số", soLieuGQD.CanGiaoXacMinh + soLieuGQD.DaGiaoXacMinh));
+                        //    Data.SoLieuCanhBao.Add(sl3);
+
+                        //    SoLieuCanhBao sl4 = new SoLieuCanhBao();
+                        //    sl4.TenCanhBao = "Cảnh báo duyệt báo cáo xác minh";
+                        //    sl4.MaChucNang = "giai-quyet-don-thu";
+                        //    sl4.Data = new List<Data>();
+                        //    sl4.Data.Add(new Data("Cần duyệt báo cáo xác minh", soLieuGQD.CanDuyetBCXacMinh));
+                        //    sl4.Data.Add(new Data("Đã duyệt", soLieuGQD.DaDuyetBCXacMinh));
+                        //    sl4.Data.Add(new Data("Tổng số", soLieuGQD.CanDuyetBCXacMinh + soLieuGQD.DaDuyetBCXacMinh));
+                        //    Data.SoLieuCanhBao.Add(sl4);
+
+                        //    SoLieuCanhBao sl5 = new SoLieuCanhBao();
+                        //    sl5.TenCanhBao = "Cảnh báo cần trình báo cáo xác minh";
+                        //    sl5.MaChucNang = "giai-quyet-don-thu";
+                        //    sl5.Data = new List<Data>();
+                        //    sl5.Data.Add(new Data("Cần trình báo cáo xác minh", soLieuGQD.CanDuyetBCXacMinh));
+                        //    sl5.Data.Add(new Data("Đã trình", soLieuGQD.DaDuyetBCXacMinh));
+                        //    sl5.Data.Add(new Data("Tổng số", soLieuGQD.CanDuyetBCXacMinh + soLieuGQD.DaDuyetBCXacMinh));
+                        //    Data.SoLieuCanhBao.Add(sl5);
+                        //}
+                        //else
+                        //{
+                        //    var soLieu = _DashBoardBUS.DashBoard_CanhBaoPheDuyetKetQuaXuLy(p);
+
+                        //    SoLieuCanhBao sl1 = new SoLieuCanhBao();
+                        //    sl1.TenCanhBao = "Cảnh báo vụ việc đến hạn giải quyết";
+                        //    sl1.MaChucNang = "giai-quyet-don-thu";
+                        //    sl1.Data = new List<Data>();
+                        //    sl1.Data.Add(new Data("Quá hạn", soLieu.QuaHan));
+                        //    sl1.Data.Add(new Data("Đến hạn", soLieu.DenHan));
+                        //    sl1.Data.Add(new Data("Chưa đến hạn", soLieu.ChuaDenHan));
+                        //    sl1.Data.Add(new Data("Tổng số", soLieu.QuaHan + soLieu.DenHan + soLieu.ChuaDenHan));
+                        //    Data.SoLieuCanhBao.Add(sl1);
+
+                        //    SoLieuCanhBao sl5 = new SoLieuCanhBao();
+                        //    sl5.TenCanhBao = "Cảnh báo cần trình báo cáo xác minh";
+                        //    sl5.MaChucNang = "giai-quyet-don-thu";
+                        //    sl5.Data = new List<Data>();
+                        //    sl5.Data.Add(new Data("Cần trình báo cáo xác minh", soLieu.CanPheDuyet));
+                        //    sl5.Data.Add(new Data("Đã trình", soLieu.DaPheDuyet));
+                        //    sl5.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
+                        //    Data.SoLieuCanhBao.Add(sl5);
+
+                        //    SoLieuCanhBao sl6 = new SoLieuCanhBao();
+                        //    sl6.TenCanhBao = "Cảnh báo cần cập nhật kết quản thi hành";
+                        //    sl6.MaChucNang = "thi-hanh";
+                        //    sl6.Data = new List<Data>();
+                        //    sl6.Data.Add(new Data("Cần cập nhật kết quả thi hành:", soLieu.CanPheDuyet));
+                        //    sl6.Data.Add(new Data("Đã trình", soLieu.DaPheDuyet));
+                        //    sl6.Data.Add(new Data("Tổng số", soLieu.CanPheDuyet + soLieu.DaPheDuyet));
+                        //    Data.SoLieuCanhBao.Add(sl6);
+                        //}
+                    }
+                    else if (p.CapID == CapQuanLy.CapUBNDXa.GetHashCode())
+                    { 
                     }
                     else
                     {

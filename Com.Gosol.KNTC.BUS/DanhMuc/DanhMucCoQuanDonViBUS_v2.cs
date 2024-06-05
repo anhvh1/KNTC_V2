@@ -253,6 +253,23 @@ namespace Com.Gosol.KNTC.BUS.DanhMuc
             }
             return Result;
         }
+
+        public BaseResultModel DanhSachCap_HDSD(ThamSoLocDanhMuc_v2 p)
+        {
+            var Result = new BaseResultModel();
+            try
+            {
+                Result = DanhMucCoQuanDAL_v2.DanhSachCap_HDSD(p);
+            }
+            catch (Exception ex)
+            {
+                Result.Status = -1;
+                Result.Message = ex.ToString();
+                Result.Data = null;
+            }
+            return Result;
+        }
+
         public BaseResultModel CacCapCoQuan(ThamSoLocDanhMuc p)
         {
             var Result = new BaseResultModel();
