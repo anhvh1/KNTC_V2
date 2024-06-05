@@ -1921,7 +1921,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
 
         public string GetSoDonThu(int coquanID, IdentityHelper IdentityHelper)
         {
-            string soDonThu = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().GetSoDonThu(coquanID);
+            string soDonThuFull = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().GetSoDonThu(coquanID);
             string maCQ = string.Empty;
 
             if (coquanID == IdentityHelper.CoQuanID)
@@ -1933,10 +1933,10 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 CoQuanInfo cqInfo = new CoQuan().GetCoQuanByID(coquanID);
                 maCQ = cqInfo.MaCQ;
             }
-
+            var soDonThu = !string.IsNullOrEmpty(soDonThuFull) ? soDonThuFull.Split('/')[0] : "";
             string numberPart = Regex.Replace(soDonThu.Replace(maCQ, ""), "[^0-9.]", "");
             int soDonMoi = Utils.ConvertToInt32(numberPart, 0) + 1;
-            return maCQ + soDonMoi;
+            return maCQ + soDonMoi + "/" + DateTime.Now.Year.ToString();
         }
 
         private bool ValidationSubmit(int hgqId)

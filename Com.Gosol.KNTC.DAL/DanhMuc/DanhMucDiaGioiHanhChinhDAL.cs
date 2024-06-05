@@ -11,7 +11,7 @@ using Com.Gosol.KNTC.DAL.HeThong;
 
 namespace Com.Gosol.KNTC.DAL.DanhMuc
 {
-    public class DanhMucDiaGioiHanhChinhDAL 
+    public class DanhMucDiaGioiHanhChinhDAL
     {
         private const string INSERTTINH = @"v1_DanhMuc_DiaGioiHanhChinh_InsertTinh";
         private const string UPDATETINH = @"v1_DanhMuc_DiaGioiHanhChinh_UpdateTinh";
@@ -155,7 +155,7 @@ namespace Com.Gosol.KNTC.DAL.DanhMuc
                 return dic;
             }
             List<DanhMucDiaGioiHanhChinhModel> DiaGioi = GetDGHCByID(TinhID);
-            if (DiaGioi.Where(x=>x.HuyenID > 0 && x.TinhID == TinhID).ToList().Count > 0)
+            if (DiaGioi.Where(x => x.HuyenID > 0 && x.TinhID == TinhID).ToList().Count > 0)
             {
                 dic.Add(0, "Địa giới hành chính đã được sử dụng, không thể xóa!");
                 return dic;
@@ -440,14 +440,14 @@ namespace Com.Gosol.KNTC.DAL.DanhMuc
                 dic.Add(0, 0);
                 return dic;
             }
-            var Huyen = new DanhMucDiaGioiHanhChinhDAL().GetDGHCByIDAndCap(DanhMucDiaGioiHanhChinhModel.HuyenID.Value, 2,null);
-            if(string.IsNullOrEmpty(Huyen.Ten) || string.IsNullOrEmpty(Huyen.TenDayDu))
+            var Huyen = new DanhMucDiaGioiHanhChinhDAL().GetDGHCByIDAndCap(DanhMucDiaGioiHanhChinhModel.HuyenID.Value, 2, null);
+            if (string.IsNullOrEmpty(Huyen.Ten) || string.IsNullOrEmpty(Huyen.TenDayDu))
             {
                 dic.Add(0, 0);
                 return dic;
             }
-            var DiaGioi = GetXaByName(DanhMucDiaGioiHanhChinhModel.TenXa);
-            if (DiaGioi.XaID > 0 )
+            var DiaGioi = GetXaByName_V2(DanhMucDiaGioiHanhChinhModel.TenXa);
+            if (DiaGioi != null && DiaGioi.Count(x => x.HuyenID == Huyen.HuyenID) > 0)
             {
                 dic.Add(0, 0);
                 return dic;
@@ -553,7 +553,7 @@ namespace Com.Gosol.KNTC.DAL.DanhMuc
                 return dic;
             }
             var ListCanBoByCoQuanID = new HeThongCanBoDAL().GetAllByCoQuanID(XaID);
-             if (ListCanBoByCoQuanID.Count > 0)
+            if (ListCanBoByCoQuanID.Count > 0)
             {
                 dic.Add(0, "Địa giới hành chính đã được sử dụng, không thể xóa");
                 return dic;
@@ -614,6 +614,39 @@ namespace Com.Gosol.KNTC.DAL.DanhMuc
                 throw;
             }
             return Xa;
+        }
+
+        public List<DanhMucDiaGioiHanhChinhModel> GetXaByName_V2(string TenXa)
+        {
+            if (string.IsNullOrEmpty(TenXa))
+            {
+                return new List<DanhMucDiaGioiHanhChinhModel>();
+            }
+            var listXa = new List<DanhMucDiaGioiHanhChinhModel>();
+            SqlParameter[] parameters = new SqlParameter[]
+              {
+                new SqlParameter("@TenXa",SqlDbType.NVarChar)
+              };
+            parameters[0].Value = TenXa;
+            try
+            {
+
+                using (SqlDataReader dr = SQLHelper.ExecuteReader(SQLHelper.appConnectionStrings, System.Data.CommandType.StoredProcedure, @"v1_DanhMuc_DiaGioiHanhChinh_GetXaByName", parameters))
+                {
+                    while (dr.Read())
+                    {
+                        DanhMucDiaGioiHanhChinhModel diaGioiHanhChinh = new DanhMucDiaGioiHanhChinhModel(Utils.ConvertToInt32(dr["TinhID"], 0), Utils.ConvertToInt32(dr["HuyenID"], 0),
+                               Utils.ConvertToInt32(dr["XaID"], 0), Utils.ConvertToString(dr["TenTinh"], string.Empty), Utils.ConvertToString(dr["TenHuyen"], string.Empty), Utils.ConvertToString(dr["TenXa"], string.Empty), null);
+                        listXa.Add(diaGioiHanhChinh);
+                    }
+                    dr.Close();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return listXa;
         }
 
         //Get List By id And Cap
