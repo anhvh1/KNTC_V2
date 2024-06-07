@@ -1628,6 +1628,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         }
                         Info.CanBoXuLyID = Utils.ConvertToInt32(dr["CanBoXuLyID"], 0);
                         Info.CanBoTiepNhanID = Utils.ConvertToInt32(dr["CanBoTiepNhapID"], 0);
+                        Info.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
 
 
                         //List<DTXuLyInfo> fileYKien = new List<DTXuLyInfo>();
@@ -2929,6 +2930,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         Info.TenLoaiKhieuTo = Utils.ConvertToString(dr["TenLoaiKhieuTo"], string.Empty);
                         Info.TenCoQuan = Utils.ConvertToString(dr["TenCoQuan"], string.Empty);
                         Info.NhomKNID = Utils.GetInt32(dr["NhomKNID"], 0);
+                        Info.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
+
                         if (Info.NhomKNID > 0)
                         {
                             Info.listDoiTuongKN = new DoiTuongKN().GetByNhomKNID(Info.NhomKNID).ToList();

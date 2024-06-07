@@ -1846,7 +1846,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         dt.ThiHanhID = Utils.ConvertToInt32(dr["ThiHanhID"].ToString(), 0);
                         if (dt.ThiHanhID == 0) dt.CoQuanThiHanh = 0;
                         dt.NgayThiHanh = Utils.ConvertToNullableDateTime(dr["NgayThiHanh"], null);
-                        dt.NgayTiepNhan = Utils.ConvertToNullableDateTime(dr["NgayNhapDon"], null);
+                        //dt.NgayTiepNhan = Utils.ConvertToNullableDateTime(dr["NgayNhapDon"], null);
+                        //dt.NgayTiepNhan = Utils.ConvertToNullableDateTime(dr["NgayTiepNhan"], null);
                         //if(dt.ThiHanhID > 0)
                         //{
                         //    dt.TrangThaiID = 1;

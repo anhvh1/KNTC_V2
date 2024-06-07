@@ -178,6 +178,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                             Info.listDoiTuongKN = new DoiTuongKN().GetByNhomKNID(Info.NhomKNID).ToList();
                         }
                         Info.TenCoQuan = Utils.ConvertToString(dr["TenCoQuan"], string.Empty);
+                        Info.NgayTiepNhan = (Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue)).ToShortDateString();
                         ListInfo.Add(Info);
                     }
                     dr.Close();

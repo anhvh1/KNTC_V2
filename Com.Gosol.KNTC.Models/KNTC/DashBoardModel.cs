@@ -108,5 +108,8 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public int CanThiHanh { get; set; }
         public int DaThiHanh { get; set; }
 
+        public int CanXMDonThu { get; set; }
+        public int DaXMDonThu { get; set; }
+
     }
 }
