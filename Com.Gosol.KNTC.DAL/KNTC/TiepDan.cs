@@ -575,7 +575,9 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                 new SqlParameter(PARAM_CBDUOC_CHONXL, SqlDbType.Int),
                 new SqlParameter(PARAM_QTTIEPNHANDON, SqlDbType.Int),
                 new SqlParameter(PARAM_DONTHUGOC_ID, SqlDbType.Int),
-                new SqlParameter(PARAM_LANGIAIQUYET, SqlDbType.Int),   new SqlParameter("@XuLyDonChuyenID", SqlDbType.Int)
+                new SqlParameter(PARAM_LANGIAIQUYET, SqlDbType.Int),   
+                new SqlParameter("@XuLyDonChuyenID", SqlDbType.Int),
+                new SqlParameter("@NgayTiep", SqlDbType.DateTime),
                 };
             return parms;
         }
@@ -645,6 +647,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             if (tdInfo.QTTiepNhanDon == 0) parms[27].Value = DBNull.Value;
             if (tdInfo.DonThuGocID == 0) parms[28].Value = DBNull.Value;
             parms[30].Value = tdInfo.XuLyDonIDGoc ?? Convert.DBNull;
+            parms[31].Value = tdInfo.NgayTiep ?? Convert.DBNull;
         }
 
         private SqlParameter[] GetUpdateParmsXuLyDon()

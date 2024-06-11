@@ -378,7 +378,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 }
                 else //xu ly lai
                 {
-                    new XuLyDonDAL().UpdateTrangThaiDuyet(idxulydon, DuyetXuLyModel.TrangThaiPheDuyet);
+                    //new XuLyDonDAL().UpdateTrangThaiDuyet(idxulydon, DuyetXuLyModel.TrangThaiPheDuyet);
 
                     try
                     {
@@ -563,112 +563,141 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     else
                     {
                         #region lanh dao khong duyet
-                        DateTime hanxuly = Utils.ConvertToDateTime(DuyetXuLyModel.NgayHetHan, DateTime.Now);
+                        //DateTime hanxuly = Utils.ConvertToDateTime(DuyetXuLyModel.NgayHetHan, DateTime.Now);
 
-                        string commandCode = "";
-                        //int phongbanidnew = Utils.ConvertToInt32(ddlPhongBan.SelectedValue, 0);
-                        //int phongbanidold = Utils.ConvertToInt32(hdfPhongBanID.Value, 0);
-                        int phongbanidnew = IdentityHelper.PhongBanID ?? 0;
-                        int phongbanidold = IdentityHelper.PhongBanID ?? 0;
-                        int val = 0;
-                        if (PrevState == Constant.TP_DuyetXuLy)
+                        //string commandCode = "";
+                        ////int phongbanidnew = Utils.ConvertToInt32(ddlPhongBan.SelectedValue, 0);
+                        ////int phongbanidold = Utils.ConvertToInt32(hdfPhongBanID.Value, 0);
+                        //int phongbanidnew = IdentityHelper.PhongBanID ?? 0;
+                        //int phongbanidold = IdentityHelper.PhongBanID ?? 0;
+                        //int val = 0;
+                        //if (PrevState == Constant.TP_DuyetXuLy)
+                        //{
+                        //    #region TP trinh len
+                        //    if (phongbanidnew != phongbanidold)
+                        //    {
+                        //        PhanXuLyInfo info = new PhanXuLyInfo();
+                        //        info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
+                        //        info.PhongBanID = phongbanidnew;
+                        //        info.XuLyDonID = idxulydon;
+                        //        info.NgayPhan = DateTime.Now;
+
+
+                        //        try
+                        //        {
+                        //            val = new PhanXuLy().Insert(info);
+                        //        }
+                        //        catch
+                        //        {
+
+                        //        }
+                        //    }
+                        //    commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[1];
+                        //    #endregion
+                        //}
+                        //else if (PrevState == Constant.CV_XuLy)
+                        //{
+                        //    #region cv trinh len
+                        //    //int canboidnew = Utils.ConvertToInt32(hdfCanBoIDNew.Value, 0);
+                        //    //int canboidold = Utils.ConvertToInt32(hdfCanBoID.Value, 0);
+                        //    int canboidnew = IdentityHelper.CanBoID ?? 0;
+                        //    int canboidold = IdentityHelper.CanBoID ?? 0;
+                        //    if (phongbanidnew != phongbanidold)
+                        //    {
+                        //        PhanXuLyInfo info = new PhanXuLyInfo();
+                        //        info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
+                        //        info.PhongBanID = phongbanidnew;
+                        //        info.CanBoID = canboidnew;
+                        //        info.XuLyDonID = idxulydon;
+                        //        info.NgayPhan = DateTime.Now;
+
+
+                        //        try
+                        //        {
+                        //            val = new PhanXuLy().Insert(info);
+                        //            new XuLyDonDAL().UpdateCanBoXuLy(info.XuLyDonID, info.CanBoID);
+                        //        }
+                        //        catch
+                        //        {
+
+                        //        }
+                        //    }
+                        //    else if (canboidnew != canboidold && canboidnew != 0)
+                        //    {
+                        //        PhanXuLyInfo info = new PhanXuLyInfo();
+                        //        info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
+                        //        info.PhongBanID = phongbanidold;
+                        //        info.CanBoID = canboidnew;
+                        //        info.XuLyDonID = idxulydon;
+                        //        info.NgayPhan = DateTime.Now;
+
+
+                        //        try
+                        //        {
+                        //            val = new PhanXuLy().Insert(info);
+                        //            new XuLyDonDAL().UpdateCanBoXuLy(info.XuLyDonID, info.CanBoID);
+                        //        }
+                        //        catch
+                        //        {
+
+                        //        }
+                        //    }
+
+                        //    commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[2];
+                        //    #endregion
+                        //}
+                        //else if (PrevState == Constant.CV_TiepNhan)
+                        //{
+                        //    #region ???
+                        //    TiepDanInfo info = new TiepDanInfo();
+                        //    try
+                        //    {
+                        //        info = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().GetXuLyDonByXLDID(idxulydon);
+                        //    }
+                        //    catch
+                        //    {
+
+                        //    }
+                        //    if (info.HuongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
+                        //    {
+                        //        new ChuyenXuLy().Delete(idxulydon);
+                        //    }
+
+                        //    commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[5];
+                        //    #endregion
+                        //}
+                        //int canboid = IdentityHelper.CanBoID ?? 0;
+                        //kq = WorkflowInstance.Instance.ExecuteCommand(idxulydon, canboid, commandCode, hanxuly, DuyetXuLyModel.NoiDungPheDuyet);
+                        try
                         {
-                            #region TP trinh len
-                            if (phongbanidnew != phongbanidold)
-                            {
-                                PhanXuLyInfo info = new PhanXuLyInfo();
-                                info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
-                                info.PhongBanID = phongbanidnew;
-                                info.XuLyDonID = idxulydon;
-                                info.NgayPhan = DateTime.Now;
+                            //PhanXuLyInfo info = new PhanXuLyInfo();
+                            //info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
+                            //info.PhongBanID = IdentityHelper.PhongBanID ?? 0;
+                            //info.CanBoID = IdentityHelper.CanBoID ?? 0;
+                            //info.XuLyDonID = idxulydon;
+                            //info.NgayPhan = DateTime.Now;
+
+                            //new PhanXuLy().Insert(info);
+                            //new XuLyDonDAL().UpdateCanBoXuLy(info.XuLyDonID, info.CanBoID);
 
 
-                                try
-                                {
-                                    val = new PhanXuLy().Insert(info);
-                                }
-                                catch
-                                {
-
-                                }
-                            }
-                            commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[1];
-                            #endregion
+                            PhanXuLyInfo info = new PhanXuLyInfo();
+                            info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
+                            info.PhongBanID = IdentityHelper.PhongBanID ?? 0;
+                            info.XuLyDonID = idxulydon;
+                            info.NgayPhan = DateTime.Now;
+                            new PhanXuLy().Insert(info);
+                            //update state
+                            DateTime hanxuly = Utils.ConvertToDateTime(DuyetXuLyModel.NgayHetHan, DateTime.Now);
+                            new XuLyDonDAL().UpdateDocument(info.XuLyDonID, 11, hanxuly);
                         }
-                        else if (PrevState == Constant.CV_XuLy)
+                        catch
                         {
-                            #region cv trinh len
-                            //int canboidnew = Utils.ConvertToInt32(hdfCanBoIDNew.Value, 0);
-                            //int canboidold = Utils.ConvertToInt32(hdfCanBoID.Value, 0);
-                            int canboidnew = IdentityHelper.CanBoID ?? 0;
-                            int canboidold = IdentityHelper.CanBoID ?? 0;
-                            if (phongbanidnew != phongbanidold)
-                            {
-                                PhanXuLyInfo info = new PhanXuLyInfo();
-                                info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
-                                info.PhongBanID = phongbanidnew;
-                                info.CanBoID = canboidnew;
-                                info.XuLyDonID = idxulydon;
-                                info.NgayPhan = DateTime.Now;
 
-
-                                try
-                                {
-                                    val = new PhanXuLy().Insert(info);
-                                    new XuLyDonDAL().UpdateCanBoXuLy(info.XuLyDonID, info.CanBoID);
-                                }
-                                catch
-                                {
-
-                                }
-                            }
-                            else if (canboidnew != canboidold && canboidnew != 0)
-                            {
-                                PhanXuLyInfo info = new PhanXuLyInfo();
-                                info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
-                                info.PhongBanID = phongbanidold;
-                                info.CanBoID = canboidnew;
-                                info.XuLyDonID = idxulydon;
-                                info.NgayPhan = DateTime.Now;
-
-
-                                try
-                                {
-                                    val = new PhanXuLy().Insert(info);
-                                    new XuLyDonDAL().UpdateCanBoXuLy(info.XuLyDonID, info.CanBoID);
-                                }
-                                catch
-                                {
-
-                                }
-                            }
-
-                            commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[2];
-                            #endregion
                         }
-                        else if (PrevState == Constant.CV_TiepNhan)
-                        {
-                            #region ???
-                            TiepDanInfo info = new TiepDanInfo();
-                            try
-                            {
-                                info = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().GetXuLyDonByXLDID(idxulydon);
-                            }
-                            catch
-                            {
 
-                            }
-                            if (info.HuongGiaiQuyetID == (int)HuongGiaiQuyetEnum.ChuyenDon)
-                            {
-                                new ChuyenXuLy().Delete(idxulydon);
-                            }
-
-                            commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[5];
-                            #endregion
-                        }
-                        int canboid = IdentityHelper.CanBoID ?? 0;
-                        kq = WorkflowInstance.Instance.ExecuteCommand(idxulydon, canboid, commandCode, hanxuly, DuyetXuLyModel.NoiDungPheDuyet);
-
+                        Result.Status = 1;
+                        Result.Message = Constant.CONTENT_PHEDUYET_SUCCESS;
                         #endregion
                     }
 
@@ -750,36 +779,65 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     }
                     else
                     {
-                        //int canboidnew = Utils.ConvertToInt32(ddlCanBo.SelectedValue, 0);
-                        //int canboidold = Utils.ConvertToInt32(hdfCanBoID.Value, 0);
-                        //int phongbanidold = Utils.ConvertToInt32(hdfPhongBanID.Value, 0);
-                        int canboidnew = IdentityHelper.CanBoID ?? 0;
-                        int canboidold = IdentityHelper.CanBoID ?? 0;
-                        int phongbanidold = IdentityHelper.PhongBanID ?? 0;
-                        if (canboidnew != canboidold)
+
+                        try
                         {
+                            //PhanXuLyInfo info = new PhanXuLyInfo();
+                            //info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
+                            //info.PhongBanID = IdentityHelper.PhongBanID ?? 0;
+                            //info.CanBoID = IdentityHelper.CanBoID ?? 0;
+                            //info.XuLyDonID = idxulydon;
+                            //info.NgayPhan = DateTime.Now;
+
+                            //new PhanXuLy().Insert(info);
+                            //new XuLyDonDAL().UpdateCanBoXuLy(info.XuLyDonID, info.CanBoID);
+
+
                             PhanXuLyInfo info = new PhanXuLyInfo();
                             info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
-                            info.PhongBanID = phongbanidold;
+                            info.PhongBanID = IdentityHelper.PhongBanID ?? 0;
                             info.XuLyDonID = idxulydon;
                             info.NgayPhan = DateTime.Now;
-                            info.CanBoID = canboidnew;
+                            new PhanXuLy().Insert(info);
+                            //update state
+                            DateTime hanxuly = Utils.ConvertToDateTime(DuyetXuLyModel.NgayHetHan, DateTime.Now);
+                            new XuLyDonDAL().UpdateDocument(info.XuLyDonID, 11, hanxuly);
+                        }
+                        catch
+                        {
 
-                            try
-                            {
-                                new PhanXuLy().Insert(info);
-                                new XuLyDonDAL().UpdateCanBoXuLy(info.XuLyDonID, info.CanBoID);
-                            }
-                            catch
-                            {
-
-                            }
                         }
 
-                        DateTime hanxuly = Utils.ConvertToDateTime(DuyetXuLyModel.NgayHetHan, DateTime.Now);
-                        string commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[1];
-                        int canboid = IdentityHelper.CanBoID ?? 0;
-                        kq = WorkflowInstance.Instance.ExecuteCommand(idxulydon, canboid, commandCode, hanxuly, DuyetXuLyModel.NoiDungPheDuyet);
+                        ////int canboidnew = Utils.ConvertToInt32(ddlCanBo.SelectedValue, 0);
+                        ////int canboidold = Utils.ConvertToInt32(hdfCanBoID.Value, 0);
+                        ////int phongbanidold = Utils.ConvertToInt32(hdfPhongBanID.Value, 0);
+                        //int canboidnew = IdentityHelper.CanBoID ?? 0;
+                        //int canboidold = IdentityHelper.CanBoID ?? 0;
+                        //int phongbanidold = IdentityHelper.PhongBanID ?? 0;
+                        //if (canboidnew != canboidold)
+                        //{
+                        //    PhanXuLyInfo info = new PhanXuLyInfo();
+                        //    info.GhiChu = DuyetXuLyModel.NoiDungPheDuyet;
+                        //    info.PhongBanID = phongbanidold;
+                        //    info.XuLyDonID = idxulydon;
+                        //    info.NgayPhan = DateTime.Now;
+                        //    info.CanBoID = canboidnew;
+
+                        //    try
+                        //    {
+                        //        new PhanXuLy().Insert(info);
+                        //        new XuLyDonDAL().UpdateCanBoXuLy(info.XuLyDonID, info.CanBoID);
+                        //    }
+                        //    catch
+                        //    {
+
+                        //    }
+                        //}
+
+                        //DateTime hanxuly = Utils.ConvertToDateTime(DuyetXuLyModel.NgayHetHan, DateTime.Now);
+                        //string commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[1];
+                        //int canboid = IdentityHelper.CanBoID ?? 0;
+                        //kq = WorkflowInstance.Instance.ExecuteCommand(idxulydon, canboid, commandCode, hanxuly, DuyetXuLyModel.NoiDungPheDuyet);
 
                     }
                     if (showThongBao == true)
@@ -807,7 +865,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     #endregion
                 }
 
-                new XuLyDonDAL().UpdateTrangThaiDuyet(idxulydon, null);
+                //new XuLyDonDAL().UpdateTrangThaiDuyet(idxulydon, null);
             }
 
 

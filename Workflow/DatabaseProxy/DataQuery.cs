@@ -497,7 +497,7 @@ namespace Workflow
             {
                 DatabaseProxy.AddParameter(dbCommand, PARM_DUEDATE, DBNull.Value);
             }
-            DatabaseProxy.AddParameter(dbCommand, PARM_COMMENT, transModel.Comment);
+            DatabaseProxy.AddParameter(dbCommand, PARM_COMMENT, !string.IsNullOrEmpty(transModel.Comment) ? transModel.Comment : string.Empty);
             DatabaseProxy.AddParameter(dbCommand, PARM_USER_ID, transModel.UserID);
             DatabaseProxy.AddParameter(dbCommand, PARM_MODIFIED_DATE, transModel.ModifiedDate);
 

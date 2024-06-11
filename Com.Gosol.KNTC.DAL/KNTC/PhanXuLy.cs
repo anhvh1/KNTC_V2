@@ -41,7 +41,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             parms[1].Value = info.PhongBanID;
             parms[2].Value = info.NgayPhan;
             parms[3].Value = info.CanBoID;
-            parms[4].Value = info.GhiChu;
+            parms[4].Value = !string.IsNullOrEmpty(info.GhiChu) ? info.GhiChu : string.Empty ;
             if (info.PhongBanID == 0)
             {
                 parms[1].Value = DBNull.Value;

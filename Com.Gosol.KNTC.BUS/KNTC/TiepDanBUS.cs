@@ -1936,7 +1936,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             var soDonThu = !string.IsNullOrEmpty(soDonThuFull) ? soDonThuFull.Split('/')[0] : "";
             string numberPart = Regex.Replace(soDonThu.Replace(maCQ, ""), "[^0-9.]", "");
             int soDonMoi = Utils.ConvertToInt32(numberPart, 0) + 1;
-            return maCQ + soDonMoi + "/" + DateTime.Now.Year.ToString();
+            return maCQ + soDonMoi;
         }
 
         private bool ValidationSubmit(int hgqId)
