@@ -1624,7 +1624,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 }
                 else
                 {
-                    xldInfo.SoDonThu = GetSoDonThu(IdentityHelper.CoQuanID ?? 0, IdentityHelper);
+                    xldInfo.SoDonThu = GetSoDonThuByNamTiepNhan(IdentityHelper.CoQuanID ?? 0, IdentityHelper, xldInfo.NgayTiep.Value.Year) + $"/{xldInfo.NgayTiep.Value.Year}";
                     xldInfo.XuLyDonIDGoc = xldID;
                     xldInfo.CanBoTiepNhapID = IdentityHelper.CanBoID;
                     xldID = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().InsertXuLyDon(xldInfo);
