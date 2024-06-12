@@ -1668,6 +1668,26 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             return result;
         }
 
+        public string GetSoDonThuByNamTiepNhan(int coQuanID,int namTiepNhan)
+        {
+            string result = string.Empty;
+            SqlParameter[] parameters = new SqlParameter[] {
+                new SqlParameter(PARAM_CO_QUAN_ID, SqlDbType.Int),
+                new SqlParameter("NamTiepNhan", SqlDbType.Int)
+            };
+            parameters[0].Value = coQuanID;
+            parameters[1].Value = namTiepNhan;
+            using (SqlDataReader dr = SQLHelper.ExecuteReader(SQLHelper.appConnectionStrings, CommandType.StoredProcedure, "NV_XuLyDon_GetSoDonByCoQuanAndNamTiepNhan", parameters))
+            {
+                if (dr.Read())
+                {
+                    result = Utils.GetString(dr["SoDonThu"], string.Empty);
+                }
+                dr.Close();
+            }
+            return result;
+        }
+
         public string GetSoDonThu_New(int coQuanID)
         {
             string result = string.Empty;

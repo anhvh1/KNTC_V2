@@ -846,7 +846,7 @@ namespace GO.API.Controllers.KNTC
         [HttpGet]
         [Route("GetSTTHoSo")]
         [CustomAuthAttribute(0, AccessLevel.Read)]
-        public IActionResult GetSTT()
+        public IActionResult GetSTT(int? namTiepNhan)
         {
             try
             {
@@ -860,7 +860,7 @@ namespace GO.API.Controllers.KNTC
                 IdentityHelper.SuDungQuyTrinhPhucTap = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQuyTrinhPhucTap").Value, false);
                 IdentityHelper.SuDungQuyTrinhGQPhucTap = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQuyTrinhGQPhucTap").Value, false);
                 IdentityHelper.SuDungQTVanThuTiepDan = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQTVanThuTiepDan").Value, false);
-                var result = _TiepDanBUS.GetSoDonThu(IdentityHelper.CoQuanID ?? 0, IdentityHelper);
+                var result = _TiepDanBUS.GetSoDonThuByNamTiepNhan(IdentityHelper.CoQuanID ?? 0, IdentityHelper, namTiepNhan);
                 base.Status = 1;
                 base.Data = result;
                 return base.GetActionResult();

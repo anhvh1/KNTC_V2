@@ -1939,6 +1939,27 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             return maCQ + soDonMoi;
         }
 
+        public string GetSoDonThuByNamTiepNhan(int coquanID, IdentityHelper IdentityHelper, int? namTiepNhan = null)
+        {
+            var namTiepNhanInt = (namTiepNhan ?? 0) == 0 ? DateTime.Now.Year : (int)namTiepNhan;
+            string soDonThuFull = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().GetSoDonThuByNamTiepNhan(coquanID, namTiepNhanInt);
+            string maCQ = string.Empty;
+
+            if (coquanID == IdentityHelper.CoQuanID)
+            {
+                maCQ = IdentityHelper.MaCoQuan;
+            }
+            else
+            {
+                CoQuanInfo cqInfo = new CoQuan().GetCoQuanByID(coquanID);
+                maCQ = cqInfo.MaCQ;
+            }
+            var soDonThu = !string.IsNullOrEmpty(soDonThuFull) ? soDonThuFull.Split('/')[0] : "";
+            string numberPart = Regex.Replace(soDonThu.Replace(maCQ, ""), "[^0-9.]", "");
+            int soDonMoi = Utils.ConvertToInt32(numberPart, 0) + 1;
+            return maCQ + soDonMoi;
+        }
+
         private bool ValidationSubmit(int hgqId)
         {
             if (hgqId == (int)HuongGiaiQuyetEnum.ChuyenDon)
