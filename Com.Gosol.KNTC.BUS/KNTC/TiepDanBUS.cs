@@ -2252,5 +2252,27 @@ namespace Com.Gosol.KNTC.BUS.KNTC
 
             return ListInfo;
         }
+
+        public BaseResultModel CapNhapSoDonThuTheoNam(IdentityHelper IdentityHelper, int namTiepNhan)
+        {
+            var resultModel = new BaseResultModel();
+
+            try
+            {
+                var val = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().CapNhapSoDonThuTheoNamVaCoQuan(IdentityHelper.CoQuanID ?? 0, namTiepNhan);
+            }
+            catch (Exception ex)
+            {
+                resultModel.Status = -1;
+                resultModel.Message = $"Cập nhập thất bại!";
+                resultModel.MessageDetail = ex.Message;
+                throw;
+            }
+
+            resultModel.Status = 1;
+            resultModel.Message = $"Cập nhập thành!";
+            //Result.Data = url;
+            return resultModel;
+        }
     }
 }

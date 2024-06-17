@@ -17,6 +17,7 @@ namespace Com.Gosol.KNTC.API.Formats
         private string _Message;
         protected string Message { get { return string.IsNullOrEmpty(_Message) ? Constant.GetUserMessage(Status) : _Message; } set { _Message = value; } }
         protected object Data { get; set; }
+        protected string MessageDetail { get; set; }
         protected int Status { get; set; }
         protected int TotalRow { get; set; }
         protected int CanBoID { get; }

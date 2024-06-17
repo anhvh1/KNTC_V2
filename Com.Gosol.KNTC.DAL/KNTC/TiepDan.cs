@@ -575,7 +575,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                 new SqlParameter(PARAM_CBDUOC_CHONXL, SqlDbType.Int),
                 new SqlParameter(PARAM_QTTIEPNHANDON, SqlDbType.Int),
                 new SqlParameter(PARAM_DONTHUGOC_ID, SqlDbType.Int),
-                new SqlParameter(PARAM_LANGIAIQUYET, SqlDbType.Int),   
+                new SqlParameter(PARAM_LANGIAIQUYET, SqlDbType.Int),
                 new SqlParameter("@XuLyDonChuyenID", SqlDbType.Int),
                 new SqlParameter("@NgayTiep", SqlDbType.DateTime),
                 };
@@ -1668,7 +1668,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             return result;
         }
 
-        public string GetSoDonThuByNamTiepNhan(int coQuanID,int namTiepNhan)
+        public string GetSoDonThuByNamTiepNhan(int coQuanID, int namTiepNhan)
         {
             string result = string.Empty;
             SqlParameter[] parameters = new SqlParameter[] {
@@ -2671,20 +2671,20 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         {
                             foreach (var item in tdInfo.Children)
                             {
-                                SqlParameter[] parms_td = new SqlParameter[] {                           
-                                    new SqlParameter("TiepDinhKyID", SqlDbType.Int),                        
+                                SqlParameter[] parms_td = new SqlParameter[] {
+                                    new SqlParameter("TiepDinhKyID", SqlDbType.Int),
                                     new SqlParameter("NoiDungTiep", SqlDbType.NVarChar),
                                     new SqlParameter("KetQuaTiep", SqlDbType.NVarChar),
                                     new SqlParameter("KetQuaGQCacNganh", SqlDbType.NVarChar),
                                     new SqlParameter("UyQuyenTiep", SqlDbType.Int),
                                     new SqlParameter("NhomKNID", SqlDbType.Int),
                                 };
- 
+
                                 parms_td[0].Value = TiepDinhKyID;
                                 parms_td[1].Value = item.NoiDungTiep ?? Convert.DBNull;
                                 parms_td[2].Value = item.KetQuaTiep ?? Convert.DBNull;
                                 parms_td[3].Value = item.KetQuaGQCacNganh ?? Convert.DBNull;
-                                parms_td[4].Value = item.UyQuyenTiep ?? Convert.DBNull;   
+                                parms_td[4].Value = item.UyQuyenTiep ?? Convert.DBNull;
                                 parms_td[5].Value = item.NhomKNID ?? Convert.DBNull;
                                 //insert
                                 SQLHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, "v2_NV_CTTiepDanDinhKy_Insert", parms_td);
@@ -2772,7 +2772,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                             {
                                 foreach (var item in tdInfo.Children)
                                 {
-                                    if(item.CTTiepDinhKyID > 0)
+                                    if (item.CTTiepDinhKyID > 0)
                                     {
                                         SqlParameter[] parms_td = new SqlParameter[] {
                                             new SqlParameter("CTTiepDinhKyID", SqlDbType.Int),
@@ -2880,7 +2880,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         if (Info.NhomKNID > 0)
                         {
                             Info.NhomKN = new NhomKN().GetByID(Info.NhomKNID.Value);
-                            if(Info.NhomKN != null)
+                            if (Info.NhomKN != null)
                             {
                                 Info.NhomKN.DanhSachDoiTuongKN = new DoiTuongKN().GetByNhomKNID(Info.NhomKNID.Value).ToList();
                             }
@@ -3120,7 +3120,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
         public IList<TiepDanDinhKyModel> GetThongTinVuViec(int TiepDinhKyID)
         {
             IList<TiepDanDinhKyModel> Result = new List<TiepDanDinhKyModel>();
-           
+
             SqlParameter[] parameters = new SqlParameter[]
             {
               new SqlParameter("@TiepDinhKyID",SqlDbType.Int),
@@ -3152,7 +3152,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                 throw;
             }
 
-           
+
             return Result;
         }
 
@@ -3192,7 +3192,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                 throw;
             }
 
-       
+
             return val;
         }
 
@@ -3233,6 +3233,40 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             }
 
 
+            return val;
+        }
+
+        public int CapNhapSoDonThuTheoNamVaCoQuan(int coQuanID, int namTiepNhan)
+        {
+
+            int val = 0;
+            SqlParameter[] parameters = new SqlParameter[]{
+                new SqlParameter("CoQuanID",SqlDbType.Int),
+                new SqlParameter("NamTiepNhan",SqlDbType.Int)
+            };
+            parameters[0].Value = coQuanID;
+            parameters[1].Value = namTiepNhan;
+
+            using (SqlConnection conn = new SqlConnection(SQLHelper.appConnectionStrings))
+            {
+
+                conn.Open();
+                using (SqlTransaction trans = conn.BeginTransaction())
+                {
+
+                    try
+                    {
+                        val = SQLHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, "v2_XuLyDon_CapNhapSoDonThuTheoNamVaCoQuan", parameters);
+                        trans.Commit();
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+                conn.Close();
+            }
             return val;
         }
     }

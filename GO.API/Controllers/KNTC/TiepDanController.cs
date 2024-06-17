@@ -1220,5 +1220,44 @@ namespace GO.API.Controllers.KNTC
                 throw ex;
             }
         }
+
+        [HttpPost]
+        [Route("CapNhapSoDonThuTheoNam")]
+        [CustomAuthAttribute(ChucNangEnum.TiepDanThuongXuyen, AccessLevel.Create)]
+        public IActionResult CapNhapSoDonThuTheoNam(int namTiepNhan)
+        {
+            try
+            {
+                return CreateActionResult(ConstantLogMessage.HT_NhomNguoiDung_Them, EnumLogType.Insert, () =>
+                {
+                    IdentityHelper IdentityHelper = new IdentityHelper();
+                    IdentityHelper.CanBoID = CanBoID;
+                    IdentityHelper.CoQuanID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CoQuanID").Value, 0);
+                    IdentityHelper.NguoiDungID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "NguoiDungID").Value, 0);
+                    IdentityHelper.UserID = IdentityHelper.NguoiDungID;
+                    IdentityHelper.CapID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapID").Value, 0);
+                    IdentityHelper.MaCoQuan = Utils.ConvertToString(User.Claims.FirstOrDefault(c => c.Type == "MaCoQuan").Value, String.Empty);
+                    IdentityHelper.SuDungQuyTrinhPhucTap = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQuyTrinhPhucTap").Value, false);
+                    IdentityHelper.SuDungQuyTrinhGQPhucTap = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQuyTrinhGQPhucTap").Value, false);
+                    IdentityHelper.SuDungQTVanThuTiepDan = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQTVanThuTiepDan").Value, false);
+
+                    
+                    var Data = _TiepDanBUS.CapNhapSoDonThuTheoNam(IdentityHelper,namTiepNhan);
+                    base.Data = Data.Data;
+                    base.Status = Data.Status;
+                    base.Message = Data.Message;
+                    base.MessageDetail = Data.MessageDetail;
+                    return base.GetActionResult();
+                });
+            }
+            catch (Exception ex)
+            {
+                base.Status = -1;
+                base.Message = ConstantLogMessage.API_Error_System;
+                return base.GetActionResult();
+                throw ex;
+            }
+
+        }
     }
 }
