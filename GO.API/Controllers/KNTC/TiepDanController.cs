@@ -1224,7 +1224,7 @@ namespace GO.API.Controllers.KNTC
         [HttpPost]
         [Route("CapNhapSoDonThuTheoNam")]
         [CustomAuthAttribute(ChucNangEnum.TiepDanThuongXuyen, AccessLevel.Create)]
-        public IActionResult CapNhapSoDonThuTheoNam(int namTiepNhan)
+        public IActionResult CapNhapSoDonThuTheoNam([FromBody] int namTiepNhan)
         {
             try
             {
@@ -1241,8 +1241,8 @@ namespace GO.API.Controllers.KNTC
                     IdentityHelper.SuDungQuyTrinhGQPhucTap = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQuyTrinhGQPhucTap").Value, false);
                     IdentityHelper.SuDungQTVanThuTiepDan = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQTVanThuTiepDan").Value, false);
 
-                    
-                    var Data = _TiepDanBUS.CapNhapSoDonThuTheoNam(IdentityHelper,namTiepNhan);
+
+                    var Data = _TiepDanBUS.CapNhapSoDonThuTheoNam(IdentityHelper, namTiepNhan);
                     base.Data = Data.Data;
                     base.Status = Data.Status;
                     base.Message = Data.Message;
