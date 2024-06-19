@@ -356,6 +356,7 @@ namespace GO.API.Controllers.KNTC
                 base.Data = Data.Data;
                 base.Status = Data.Status;
                 base.Message = Data.Message;
+                base.MessageDetail = Data.MessageDetail;
                 return base.GetActionResult();
             }
             catch (Exception ex)

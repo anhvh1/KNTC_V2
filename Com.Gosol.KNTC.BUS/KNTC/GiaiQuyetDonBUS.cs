@@ -965,6 +965,11 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     Result.MessageDetail = ex.Message;
                     return Result;
                 }
+
+                Result.Status = 1;
+                Result.Data = 0;
+                Result.Message = "Cập nhập đoàn tổ xác minh thành công";
+                return Result;
             }
             Result.Status = -1;
             Result.Data = 0;
