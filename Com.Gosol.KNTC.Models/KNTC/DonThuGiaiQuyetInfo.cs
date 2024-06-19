@@ -130,7 +130,7 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public int LoaiQuyTrinh { get; set; }
         public int KetQuaID { get; set; }
         public int LanhDaoDuyet2ID { get; set; }
-
+        public int CoCapNhapDoanToXacMinh { get; set; }
 
     }
 

@@ -328,8 +328,45 @@ namespace GO.API.Controllers.KNTC
                 return base.GetActionResult();
                 throw ex;
             }
-
         }
+
+        [HttpPost]
+        [Route("CapNhapDoanToXacMinh")]
+        [CustomAuthAttribute(ChucNangEnum.GiaiQuyetDonThu, AccessLevel.Create)]
+        public IActionResult CapNhapDoanToXacMinh(GiaoXacMinhModel GiaoXacMinhModel)
+        {
+            try
+            {
+                IdentityHelper IdentityHelper = new IdentityHelper();
+                IdentityHelper.CanBoID = CanBoID;
+                IdentityHelper.CoQuanID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CoQuanID").Value, 0);
+                IdentityHelper.NguoiDungID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "NguoiDungID").Value, 0);
+                IdentityHelper.UserID = IdentityHelper.NguoiDungID;
+                IdentityHelper.CapID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapID").Value, 0);
+                IdentityHelper.CapThanhTra = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapThanhTra").Value, 0);
+                IdentityHelper.MaCoQuan = Utils.ConvertToString(User.Claims.FirstOrDefault(c => c.Type == "MaCoQuan").Value, String.Empty);
+                IdentityHelper.SuDungQuyTrinhPhucTap = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQuyTrinhPhucTap").Value, false);
+                IdentityHelper.SuDungQuyTrinhGQPhucTap = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQuyTrinhGQPhucTap").Value, false);
+                IdentityHelper.SuDungQTVanThuTiepDan = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "SuDungQTVanThuTiepDan").Value, false);
+                IdentityHelper.RoleID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "RoleID").Value, 0);
+                IdentityHelper.CapUBND = Utils.ConvertToBoolean(User.Claims.FirstOrDefault(c => c.Type == "CapUBND").Value, false);
+                IdentityHelper.CapHanhChinh = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapHanhChinh").Value, 0);
+
+                var Data = _GiaiQuyetDonBUS.CapNhapDoanToXacMinh(IdentityHelper, GiaoXacMinhModel);
+                base.Data = Data.Data;
+                base.Status = Data.Status;
+                base.Message = Data.Message;
+                return base.GetActionResult();
+            }
+            catch (Exception ex)
+            {
+                base.Status = -1;
+                base.Message = ConstantLogMessage.API_Error_System;
+                return base.GetActionResult();
+                throw ex;
+            }
+        }
+
 
         [HttpPost]
         [Route("GiaoXacMinh_QuyTrinhDonGian")]

@@ -4,6 +4,7 @@ using Com.Gosol.KNTC.Model.HeThong;
 using Com.Gosol.KNTC.Models;
 using Com.Gosol.KNTC.Models.HeThong;
 using Com.Gosol.KNTC.Models.KNTC;
+using Com.Gosol.KNTC.Models.TiepDan;
 using Com.Gosol.KNTC.Security;
 using Com.Gosol.KNTC.Ultilities;
 using Microsoft.Office.Interop.Word;
@@ -540,12 +541,14 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     {
                         if (xldInfo.NguonDonDenID == (int)EnumNguonDonDen.TrucTiep)
                         {
-                            int nhomKNID = InsertChuDon(Info);
-                            int donthuID = InsertDonThu(nhomKNID, Info);
+                            //int donthuID = InsertDonThu(nhomKNID, Info);
                             var insertedInfo = InsertXuLyDon(IdentityHelper, Info, xldInfo.DonThuID, true, isKNLan2);
                             return insertedInfo;
                         }
                     }
+                    int nhomKNID = InsertChuDon(Info);
+                    int donthuID = InsertDonThu(nhomKNID, Info);
+
                 }
 
 

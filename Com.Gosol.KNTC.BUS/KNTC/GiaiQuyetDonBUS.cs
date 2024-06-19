@@ -907,6 +907,74 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             return Result;
         }
 
+        public BaseResultModel CapNhapDoanToXacMinh(IdentityHelper IdentityHelper, GiaoXacMinhModel GiaoXacMinhModel)
+        {
+            var Result = new BaseResultModel();
+
+            var listChuyenGiaiQuyet = new ChuyenGiaiQuyet().GetListChuyenGiaiQuyet(GiaoXacMinhModel.XuLyDonID ?? 0);
+            if (listChuyenGiaiQuyet.Any())
+            {
+                new ChuyenGiaiQuyet().DeleteByChuyenGiaiQuyetID(listChuyenGiaiQuyet.OrderByDescending(x => x.ChuyenGiaiQuyetID).FirstOrDefault().ChuyenGiaiQuyetID);
+            }
+
+            int coquanid = IdentityHelper.CoQuanID ?? 0;
+            ChuyenGiaiQuyetInfo cgqinfo = new ChuyenGiaiQuyetInfo();
+            cgqinfo.CoQuanGiaiQuyetID = coquanid;
+            cgqinfo.CoQuanPhanID = coquanid;
+            cgqinfo.NgayChuyen = DateTime.Now;
+            cgqinfo.XuLyDonID = GiaoXacMinhModel.XuLyDonID ?? 0;
+            cgqinfo.GhiChu = GiaoXacMinhModel.GhiChu;
+            cgqinfo.FileUrl = string.Empty;
+
+            int chuyenGiaiQuyetID = 0;
+            try
+            {
+                chuyenGiaiQuyetID = new ChuyenGiaiQuyet().Insert(cgqinfo);
+            }
+            catch (Exception ex)
+            {
+                Result.Status = -1;
+                Result.Data = 0;
+                Result.Message = "Cập nhập đoàn tổ xác minh thất bại";
+                Result.MessageDetail = ex.Message;
+                return Result;
+            }
+
+            if (chuyenGiaiQuyetID > 0)
+            {
+                InsertUpdatePhanGiaiQuyetArr(GiaoXacMinhModel, (int)chuyenGiaiQuyetID);
+
+                try
+                {
+                    if (GiaoXacMinhModel.DanhSachHoSoTaiLieu != null && GiaoXacMinhModel.DanhSachHoSoTaiLieu.Count > 0)
+                    {
+                        foreach (var item in GiaoXacMinhModel.DanhSachHoSoTaiLieu)
+                        {
+                            if (item.DanhSachFileDinhKemID != null && item.DanhSachFileDinhKemID.Count > 0)
+                            {
+                                new FileDinhKemDAL().UpdateFileGiaoXacMinh(item.DanhSachFileDinhKemID, (int)chuyenGiaiQuyetID);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Result.Status = -1;
+                    Result.Data = 0;
+                    Result.Message = "Cập nhập đoàn tổ xác minh thất bại";
+                    Result.MessageDetail = ex.Message;
+                    return Result;
+                }
+            }
+            Result.Status = -1;
+            Result.Data = 0;
+            Result.Message = "Cập nhập đoàn tổ xác minh thất bại";
+            Result.MessageDetail = "Không insert được cơ quan chuyển giải quyết";
+            return Result;
+        }
+
+
+
         public int InsertHistory(IdentityHelper IdentityHelper, GiaoXacMinhModel GiaoXacMinhModel)
         {
             var kq = new ChuyenGiaiQuyet().PhanHoiDelete(GiaoXacMinhModel.XuLyDonID ?? 0);
@@ -2151,5 +2219,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
 
             return Result;
         }
+
+       
     }
 }

@@ -835,5 +835,36 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             }
             return list;
         }
+
+
+        public int DeleteByChuyenGiaiQuyetID(int id)
+        {
+
+            int val = 0;
+            SqlParameter[] parameters = new SqlParameter[]{
+                new SqlParameter("ChuyenGiaiQuyetID",SqlDbType.Int)
+            };
+            parameters[0].Value = id;
+            using (SqlConnection conn = new SqlConnection(SQLHelper.appConnectionStrings))
+            {
+                conn.Open();
+                using (SqlTransaction trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        val = SQLHelper.ExecuteNonQuery(trans, CommandType.StoredProcedure, "v2_ChuyenGiaiQuyet_DeleteByChuyenGiaiQuyetID", parameters);
+                        trans.Commit();
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+                conn.Close();
+            }
+
+            return val;
+        }
     }
 }

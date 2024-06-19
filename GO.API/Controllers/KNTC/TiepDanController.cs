@@ -1221,6 +1221,7 @@ namespace GO.API.Controllers.KNTC
             }
         }
 
+
         [HttpPost]
         [Route("CapNhapSoDonThuTheoNam")]
         [CustomAuthAttribute(ChucNangEnum.TiepDanThuongXuyen, AccessLevel.Create)]
