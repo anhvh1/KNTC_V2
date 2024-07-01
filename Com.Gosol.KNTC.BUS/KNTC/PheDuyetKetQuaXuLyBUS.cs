@@ -553,7 +553,16 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             else
                             {
                                 commandCode = WorkflowInstance.Instance.GetAvailabelCommands(idxulydon)[3];
-                                kq = WorkflowInstance.Instance.ExecuteCommand(idxulydon, canboid, commandCode, DateTime.Now, DuyetXuLyModel.NoiDungPheDuyet);
+                                try
+                                {
+                                    kq = WorkflowInstance.Instance.ExecuteCommand(idxulydon, canboid, commandCode, DateTime.Now, !string.IsNullOrEmpty(DuyetXuLyModel.NoiDungPheDuyet) ? DuyetXuLyModel.NoiDungPheDuyet : "");
+                                }
+                                catch (Exception ex)
+                                {
+                                    Result.Status = -1;
+                                    Result.Message = ex.Message;
+                                    return Result;
+                                }
 
                             }
                             #endregion

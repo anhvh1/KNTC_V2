@@ -127,7 +127,7 @@ namespace Workflow
             if (transModel == null) return false;
 
             transHistoryModel.DueDate = dueDate;
-            transHistoryModel.Comment = comment;
+            transHistoryModel.Comment = !string.IsNullOrEmpty(comment) ? comment : "" ;
             transHistoryModel.DocumentID = documentID;
             transHistoryModel.TransitionID = transModel.TransitionID;
             transHistoryModel.UserID = userID;
