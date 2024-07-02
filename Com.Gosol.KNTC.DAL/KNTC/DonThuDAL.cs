@@ -429,7 +429,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                     {
                         DTInfo = GetData(dr);
                         DTInfo.NguonDonDen = Utils.ConvertToInt32(dr["NguonDonDen"], 0);
-                        DTInfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        // bổ sung tên cơ quan chuyển đến 1/7/2024
+                        DTInfo.TenNguonDonDen = Utils.GetString(dr["TenCQChuyenDonDen"], string.Empty);
                         DTInfo.TenCQChuyenDonDen = Utils.GetString(dr["TenCQChuyenDonDen"], string.Empty);
                         DTInfo.TenCanBoTiepNhan = Utils.GetString(dr["TenCanBoTiepNhan"], string.Empty);
                         DTInfo.TenCoQuanTiepNhan = Utils.GetString(dr["TenCoQuanTiepNhan"], string.Empty);
@@ -2294,7 +2295,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                     {
                         DonThuInfo DTInfo = new DonThuInfo();//GetDataForShow(dr);
                         DTInfo.DonThuID = Utils.GetInt32(dr["DonThuID"], 0);
-
+                        // lấy thêm xử lý đơn ID
+                        DTInfo.XuLyDonID = Utils.GetInt32(dr["XuLyDonID"], 0);
                         DTInfo.NgayNhapDon = Utils.GetDateTime(dr["NgayNhapDon"], Constant.DEFAULT_DATE);
 
                         DTInfo.NoiDungDon = Utils.GetString(dr["NoiDungDon"], string.Empty);
@@ -2324,7 +2326,16 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         DTInfo.CQDaGiaiQuyet = Utils.ConvertToString(dr["CQDaGiaiQuyetID"], string.Empty);
                         DTInfo.NgayQuaHanGQ = Utils.ConvertToDateTime(dr["HanGiaiQuyet"], DateTime.MinValue);
                         DTInfo.NgayQuaHanGQ = Utils.GetDateTime(dr["HanGiaiQuyet"], Constant.DEFAULT_DATE);
-                        DTInfo.TenNguonDonDen = Utils.ConvertToString(dr["TenNguonDonDen"], string.Empty);
+                        // sửa lại lấy tên Coquan Chuyển đơn 1/7/2024
+                        var tenNguonDonDen = new DonThuDAL().GetByID(DTInfo.DonThuID, DTInfo.XuLyDonID).TenNguonDonDen;
+                        if (tenNguonDonDen == null || tenNguonDonDen == "")
+                        {
+                            DTInfo.TenNguonDonDen = Utils.ConvertToString(dr["TenNguonDonDen"], string.Empty);
+                        }
+                        else
+                        {
+                            DTInfo.TenNguonDonDen = tenNguonDonDen + " chuyển đơn";
+                        }
                         DTInfo.TenHuongGiaiQuyet = Utils.ConvertToString(dr["HuongXuLy"], string.Empty);
                         ls_donthu.Add(DTInfo);
                     }

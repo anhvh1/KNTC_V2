@@ -1412,10 +1412,10 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     #endregion
 
                     int xuLyDonCloneID = 0;
-
                     TiepDanInfo xldCloneInfo = info;
                     xldCloneInfo.DonThuID = donThuIDNew;
-                    xldCloneInfo.CanBoTiepNhapID = 0;
+                    // Sửa cán bộ tiếp nhận
+                    xldCloneInfo.CanBoTiepNhapID = new XuLyDonDAL().GetByXuLyDonID_V2(info.XuLyDonID.Value).CanBoTiepNhapID;
                     xldCloneInfo.SoDonThu = GetSoDonThu(coQuanID, IdentityHelper);
                     xldCloneInfo.CoQuanID = coQuanID;
                     xldCloneInfo.NguonDonDen = (int)EnumNguonDonDen.CoQuanKhac;

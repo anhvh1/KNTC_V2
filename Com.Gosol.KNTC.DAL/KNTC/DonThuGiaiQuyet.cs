@@ -800,7 +800,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             parms[13].Value = info.TrangThai ?? Convert.DBNull;
             parms[14].Value = info.HuongXuLyID;
             parms[15].Value = info.TrangThaiDonThu ?? Convert.DBNull;
-            parms[16].Value = info.ChuTichUBND?? Convert.DBNull;
+            parms[16].Value = info.ChuTichUBND ?? Convert.DBNull;
 
             if (info.TuNgayGoc == DateTime.MinValue) parms[3].Value = DBNull.Value;
             if (info.DenNgayGoc == DateTime.MinValue) parms[4].Value = DBNull.Value;
@@ -820,7 +820,16 @@ namespace Com.Gosol.KNTC.DAL.KNTC
 
                         phanGiaiQuyetInfo.TenCoQuanPhanGQ = Utils.ConvertToString(dr["TenCoQuanPhanGQ"], string.Empty);
                         phanGiaiQuyetInfo.TenCoQuanGQ = Utils.ConvertToString(dr["TenCoQuanGQ"], string.Empty);
-                        phanGiaiQuyetInfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        // Lấy cơ quan chuyển đến 1/7/2024 bằng tên nguồn đơn đến
+                        var tenNguonDonDen = new DonThuDAL().GetByID(phanGiaiQuyetInfo.DonThuID, phanGiaiQuyetInfo.XuLyDonID).TenNguonDonDen;
+                        if (tenNguonDonDen == null || tenNguonDonDen == "")
+                        {
+                            phanGiaiQuyetInfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        }
+                        else
+                        {
+                            phanGiaiQuyetInfo.TenNguonDonDen = tenNguonDonDen + " chuyển đơn";
+                        }
                         phanGiaiQuyetInfo.StateID = Utils.ConvertToInt32(dr["StateID"], 0);
                         phanGiaiQuyetInfo.CoQuanID = Utils.ConvertToInt32(dr["CoQuanID"], 0);
                         phanGiaiQuyetInfo.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["CQGiaoID"], 0);
@@ -838,9 +847,9 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.HanGQQTPhucTap = Utils.ConvertToDateTime(dr["HanGQQTPhucTap"], DateTime.MinValue);
                         phanGiaiQuyetInfo.HanGiaiQuyet = Utils.ConvertToNullableDateTime(dr["HanGQQTPhucTap"], null);
                         phanGiaiQuyetInfo.TiepDanID = Utils.ConvertToInt32(dr["TiepDanKhongDonID"], 0);
-                        phanGiaiQuyetInfo.LoaiKhieuTo1ID = Utils.ConvertToInt32(dr["LoaiKhieuTo1ID"], 0);            
-                        phanGiaiQuyetInfo.NhomKNID = Utils.ConvertToInt32(dr["NhomKNID"], 0);            
-                        phanGiaiQuyetInfo.CQPhoiHopID = Utils.ConvertToInt32(dr["CQPhoiHopID"], 0);            
+                        phanGiaiQuyetInfo.LoaiKhieuTo1ID = Utils.ConvertToInt32(dr["LoaiKhieuTo1ID"], 0);
+                        phanGiaiQuyetInfo.NhomKNID = Utils.ConvertToInt32(dr["NhomKNID"], 0);
+                        phanGiaiQuyetInfo.CQPhoiHopID = Utils.ConvertToInt32(dr["CQPhoiHopID"], 0);
                         if (phanGiaiQuyetInfo.NhomKNID > 0)
                         {
                             phanGiaiQuyetInfo.listDoiTuongKN = new DoiTuongKN().GetByNhomKNID(phanGiaiQuyetInfo.NhomKNID).ToList();
@@ -971,7 +980,16 @@ namespace Com.Gosol.KNTC.DAL.KNTC
 
                         phanGiaiQuyetInfo.TenCoQuanPhanGQ = Utils.ConvertToString(dr["TenCoQuanPhanGQ"], string.Empty);
                         phanGiaiQuyetInfo.TenCoQuanGQ = Utils.ConvertToString(dr["TenCoQuanGQ"], string.Empty);
-                        phanGiaiQuyetInfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        // Lấy cơ quan chuyển đến 1/7/2024 bằng tên nguồn đơn đến
+                        var tenNguonDonDen = new DonThuDAL().GetByID(phanGiaiQuyetInfo.DonThuID, phanGiaiQuyetInfo.XuLyDonID).TenNguonDonDen;
+                        if (tenNguonDonDen == null || tenNguonDonDen == "")
+                        {
+                            phanGiaiQuyetInfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        }
+                        else
+                        {
+                            phanGiaiQuyetInfo.TenNguonDonDen = tenNguonDonDen + " chuyển đơn";
+                        }
                         phanGiaiQuyetInfo.CoQuanID = Utils.ConvertToInt32(dr["CoQuanID"], 0);
                         phanGiaiQuyetInfo.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["CQGiaoID"], 0);
                         phanGiaiQuyetInfo.TheoDoiXuLyID = Utils.ConvertToInt32(dr["TheoDoiXuLyID"], 0);
@@ -1248,7 +1266,16 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.DuongDanFile = Utils.ConvertToString(dr["FileUrl"], string.Empty);
                         phanGiaiQuyetInfo.TenCoQuanPhanGQ = Utils.ConvertToString(dr["TenCoQuanPhanGQ"], string.Empty);
                         phanGiaiQuyetInfo.TenCoQuanGQ = Utils.ConvertToString(dr["TenCoQuanGQ"], string.Empty);
-                        phanGiaiQuyetInfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        // Lấy cơ quan chuyển đến 1/7/2024 bằng tên nguồn đơn đến
+                        var tenNguonDonDen = new DonThuDAL().GetByID(phanGiaiQuyetInfo.DonThuID, phanGiaiQuyetInfo.XuLyDonID).TenNguonDonDen;
+                        if (tenNguonDonDen == null || tenNguonDonDen == "")
+                        {
+                            phanGiaiQuyetInfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        }
+                        else
+                        {
+                            phanGiaiQuyetInfo.TenNguonDonDen = tenNguonDonDen + " chuyển đơn";
+                        }
                         phanGiaiQuyetInfo.TenHuongGiaiQuyet = Utils.GetString(dr["TenHuongGiaiQuyet"], string.Empty);
                         phanGiaiQuyetInfo.TheoDoiXuLyID = Utils.ConvertToInt32(dr["TheoDoiXuLyID"], 0);
                         phanGiaiQuyetInfo.TrangThaiPhanHoi = Utils.ConvertToInt32(dr["TrangThaiPhanHoi"], 0);
@@ -1269,7 +1296,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         {
                             phanGiaiQuyetInfo.listDoiTuongKN = new DoiTuongKN().GetByNhomKNID(phanGiaiQuyetInfo.NhomKNID).ToList();
                         }
-                        if(phanGiaiQuyetInfo.NgayQuaHan != DateTime.MinValue)
+                        if (phanGiaiQuyetInfo.NgayQuaHan != DateTime.MinValue)
                         {
                             phanGiaiQuyetInfo.HanXuLy = phanGiaiQuyetInfo.NgayQuaHan;
                         }
@@ -1389,7 +1416,16 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.DuongDanFile = Utils.ConvertToString(dr["FileUrl"], string.Empty);
                         phanGiaiQuyetInfo.TenCoQuanPhanGQ = Utils.ConvertToString(dr["TenCoQuanPhanGQ"], string.Empty);
                         phanGiaiQuyetInfo.TenCoQuanGQ = Utils.ConvertToString(dr["TenCoQuanGQ"], string.Empty);
-                        phanGiaiQuyetInfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        // Lấy cơ quan chuyển đến 1/7/2024 bằng tên nguồn đơn đến
+                        var tenNguonDonDen = new DonThuDAL().GetByID(phanGiaiQuyetInfo.DonThuID, phanGiaiQuyetInfo.XuLyDonID).TenNguonDonDen;
+                        if (tenNguonDonDen == null || tenNguonDonDen == "")
+                        {
+                            phanGiaiQuyetInfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        }
+                        else
+                        {
+                            phanGiaiQuyetInfo.TenNguonDonDen = tenNguonDonDen + " chuyển đơn";
+                        }
                         phanGiaiQuyetInfo.TheoDoiXuLyID = Utils.ConvertToInt32(dr["TheoDoiXuLyID"], 0);
                         phanGiaiQuyetInfo.TrangThaiPhanHoi = Utils.ConvertToInt32(dr["TrangThaiPhanHoi"], 0);
 
@@ -1807,7 +1843,16 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         dtinfo.HanGQ = Utils.ConvertToDateTime(dr["HanGiaiQuyetNew"], DateTime.MinValue);
                         dtinfo.HanGQStr = dtinfo.HanGQ.ToString("dd/MM/yyyy");
                         dtinfo.NguonDonDen = Utils.ConvertToInt32(dr["NguonDonDen"], 0);
-                        dtinfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        // Lấy cơ quan chuyển đến 1/7/2024 bằng tên nguồn đơn đến
+                        var tenNguonDonDen = new DonThuDAL().GetByID(dtinfo.DonThuID, dtinfo.XuLyDonID).TenNguonDonDen;
+                        if (tenNguonDonDen == null || tenNguonDonDen == "")
+                        {
+                            dtinfo.TenNguonDonDen = Utils.GetString(dr["TenNguonDonDen"], string.Empty);
+                        }
+                        else
+                        {
+                            dtinfo.TenNguonDonDen = tenNguonDonDen + " chuyển đơn";
+                        }
                         dtinfo.TenHuongGiaiQuyet = Utils.GetString(dr["TenHuongGiaiQuyet"], string.Empty);
                         dtinfo.StateName = Utils.GetString(dr["StateName"], string.Empty);
                         dtinfo.NgayCapNhat = Utils.ConvertToDateTime(dr["NgayCapNhat"], DateTime.MinValue);
@@ -1820,7 +1865,7 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         dtinfo.NgayCVBaoCaoGQ = Utils.ConvertToDateTime(dr["NgayCVBaoCaoGQ"], DateTime.MinValue);
                         dtinfo.NgayTiep = Utils.ConvertToDateTime(dr["NgayNhapDon"], DateTime.MinValue);
 
-                        if(dtinfo.HanGiaiQuyet != DateTime.MinValue)
+                        if (dtinfo.HanGiaiQuyet != DateTime.MinValue)
                         {
                             dtinfo.HanXuLy = dtinfo.HanGiaiQuyet;
                         }

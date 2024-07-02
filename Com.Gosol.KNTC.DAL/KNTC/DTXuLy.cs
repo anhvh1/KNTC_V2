@@ -1,4 +1,5 @@
-﻿using Com.Gosol.KNTC.Model.HeThong;
+﻿using Com.Gosol.KNTC.DAL.DanhMuc;
+using Com.Gosol.KNTC.Model.HeThong;
 using Com.Gosol.KNTC.Models.KNTC;
 using Com.Gosol.KNTC.Ultilities;
 using System;
@@ -289,9 +290,18 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             {
                 info.NguonDonDens = Constant.NguonDon_TrucTieps;
             }
+            // Sửa lấy ra tên cơ quan chuyển đến 1/7/2024
+            var tenNguonDonDen = new DonThuDAL().GetByID(info.DonThuID, info.XuLyDonID).TenNguonDonDen;
             if (info.NguonDonDen == (int)EnumNguonDonDen.CoQuanKhac)
             {
-                info.NguonDonDens = Constant.NguonDon_CoQuanKhacs;
+                if (string.IsNullOrEmpty(tenNguonDonDen))
+                {
+                    info.NguonDonDens = Constant.NguonDon_CoQuanKhacs;
+                }
+                else
+                {
+                    info.NguonDonDens = tenNguonDonDen + " chuyển đơn";
+                }
             }
             if (info.NguonDonDen == (int)EnumNguonDonDen.BuuChinh)
             {
@@ -328,6 +338,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
 
             info.MaHoSoMotCua = Utils.ConvertToString(dr["MaHoSoMotCua"], String.Empty);
             info.SoBienNhanMotCua = Utils.ConvertToString(dr["SoBienNhanMotCua"], String.Empty);
+            var tenNguonDonDen = new DonThuDAL().GetByID(info.DonThuID, info.XuLyDonID).TenNguonDonDen;
+
 
             if (info.NguonDonDen == (int)EnumNguonDonDen.TrucTiep)
             {
@@ -335,7 +347,15 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             }
             if (info.NguonDonDen == (int)EnumNguonDonDen.CoQuanKhac)
             {
-                info.NguonDonDens = Constant.NguonDon_CoQuanKhacs;
+                // Sửa lại để lấy cơ quan chuyển đơn 1/7/2024
+                if (tenNguonDonDen == "" || tenNguonDonDen == null)
+                {
+                    info.NguonDonDens = Constant.NguonDon_CoQuanKhacs;
+                }
+                else
+                {
+                    info.NguonDonDens = tenNguonDonDen + " chuyển đơn";
+                }
                 if (info.MaHoSoMotCua != string.Empty)
                 {
                     info.NguonDonDens = "Liên thông một cửa";
@@ -1288,7 +1308,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         Info.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
                         Info.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
                         Info.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
-
+                        // bổ sung cơ quan chuyển đến
+                        info.CQChuyenDonDenID = Utils.ConvertToInt32(dr["CQChuyenDonDenID"], 0);
 
                         Info.NextStateID = Utils.ConvertToInt32(dr["NextStateID"], 0);
 
