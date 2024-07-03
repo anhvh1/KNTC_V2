@@ -102,6 +102,11 @@ namespace Com.Gosol.KNTC.BUS.HeThong
                 var Result = _FileDinhKemDAL.Insert(FileDinhKemModel);
                 FileID = Utils.ConvertToInt32(Result.Data, 0);
             }
+            else if (FileDinhKemModel.FileType == EnumLoaiFile.FileRutDon.GetHashCode())
+            {
+                var Result = _FileDinhKemDAL.Insert(FileDinhKemModel);
+                FileID = Utils.ConvertToInt32(Result.Data, 0);
+            }
             else if (FileDinhKemModel.FileType == EnumLoaiFile.FileThumbnail.GetHashCode()
                 || FileDinhKemModel.FileType == EnumLoaiFile.FileTrinhTuThuTuc.GetHashCode()
                 || FileDinhKemModel.FileType == EnumLoaiFile.FileQuyTrinhNghiepVu.GetHashCode()

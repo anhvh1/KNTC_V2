@@ -133,7 +133,9 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         IdentityHelper,
                         item.NgayCapNhat,
                         item.ChuyenGiaiQuyetID,
-                        item.KetQuaID
+                        item.KetQuaID,
+                        0,
+                        item.RutDonID
                         );
                     item.TrangThaiMoi = renderTrangThai.TrangThaiMoi;
                     item.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;

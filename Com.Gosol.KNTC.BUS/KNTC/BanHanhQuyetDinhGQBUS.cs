@@ -53,14 +53,15 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             item.HuongGiaiQuyetID,
                             "",
                             item.StateID,
-                            0,
+                            0,                            
                             item.TrangThaiDuyet ?? 0,
                             item.TrinhDuThao,
                             IdentityHelper,
                             item.NgayCapNhat,
                             item.ChuyenGiaiQuyetID,
                             int.TryParse(item.KetQuaID, out int result)? result : 0,
-                            item.LanhDaoDuyet2ID
+                            item.LanhDaoDuyet2ID,
+                            0
                             );
                         item.TrangThaiMoi = renderTrangThai.TrangThaiMoi;
                         item.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;

@@ -1,4 +1,5 @@
-﻿using Com.Gosol.KNTC.Models.KNTC;
+﻿using Com.Gosol.KNTC.DAL.KNTC;
+using Com.Gosol.KNTC.Models.KNTC;
 using Com.Gosol.KNTC.Ultilities;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,9 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             DateTime ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
             int? chuyenGiaiQuyetID = null,
             int? ketQuaID = null,
-            int? lanhDaoDuyet2ID = null
+            int? lanhDaoDuyet2ID = null,
+            // bổ sung trạng thái rút đơn bằng RutDonID
+            int? rutDonID = null
             )
         {
 
@@ -47,7 +50,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     IdentityHelper,
                     ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
                     chuyenGiaiQuyetID,
-                    ketQuaID
+                    ketQuaID,
+                    rutDonID
                 );
             }
             else if (loaiQuyTrinh == 2)// Quy trình Huyện 
@@ -63,7 +67,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
                     chuyenGiaiQuyetID,
                     ketQuaID,
-                    lanhDaoDuyet2ID
+                    lanhDaoDuyet2ID,
+                    rutDonID
                 );
             }
             else if (loaiQuyTrinh == 3) //Quy trình Xã
@@ -78,7 +83,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     IdentityHelper,
                     ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
                     chuyenGiaiQuyetID,
-                    ketQuaID
+                    ketQuaID,
+                    rutDonID
                 );
             }
             else if (loaiQuyTrinh == 4)//Quy trình Tỉnh
@@ -93,7 +99,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     IdentityHelper,
                     ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
                     chuyenGiaiQuyetID,
-                    ketQuaID
+                    ketQuaID,
+                    rutDonID
                 );
             }
             else if (loaiQuyTrinh == 5)//phòng thuộc sở
@@ -109,7 +116,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
                     chuyenGiaiQuyetID,
                     ketQuaID,
-                    lanhDaoDuyet2ID
+                    lanhDaoDuyet2ID,
+                    rutDonID
                 );
             }
             if (loaiQuyTrinh == 6) //phòng thuộc huyện 
@@ -124,7 +132,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     IdentityHelper,
                     ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
                     chuyenGiaiQuyetID,
-                    ketQuaID
+                    ketQuaID,
+                    rutDonID
                 );
             }
         }
@@ -138,7 +147,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             IdentityHelper IdentityHelper,
             DateTime ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
             int? chuyenGiaiQuyetID = null,
-            int? ketQuaID = null
+            int? ketQuaID = null,
+            int? rutDonID = null
             )
         {
             TrangThaiIDMoi = 0;
@@ -375,6 +385,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             TrangThaiMoi = "Đã hoàn thành";
                         }
                     }
+                    // bổ sung trạng thái đã rút đơn
+                    if (rutDonID != 0)
+                    {
+                        TrangThaiIDMoi = 406;
+                        TrangThaiMoi = "Đã rút đơn";
+                    }
                 }
             }
 
@@ -392,7 +408,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             DateTime ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
             int? chuyenGiaiQuyetID = null,
             int? ketQuaID = null,
-            int? lanhDaoDuyet2ID = null
+            int? lanhDaoDuyet2ID = null,
+            int? rutDonID = null
             )
         {
             TrangThaiIDMoi = 0;
@@ -585,6 +602,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             TrangThaiMoi = "Đã hoàn thành";
                         }
                     }
+                    // bổ sung trạng thái đã rút đơn
+                    if (rutDonID != 0)
+                    {
+                        TrangThaiIDMoi = 406;
+                        TrangThaiMoi = "Đã rút đơn";
+                    }
                 }
             }
 
@@ -601,7 +624,9 @@ namespace Com.Gosol.KNTC.BUS.KNTC
         IdentityHelper IdentityHelper,
         DateTime ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
         int? chuyenGiaiQuyetID = null,
-        int? ketQuaID = null
+        int? ketQuaID = null,
+        // bổ sung trạng thái rút đơn bằng RutDonID
+        int ? rutDonID = null
         )
         {
             TrangThaiIDMoi = 0;
@@ -802,7 +827,14 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             TrangThaiMoi = "Đã hoàn thành";
                         }
                     }
+                    // bổ sung trạng thái đã rút đơn
+                    if ((rutDonID ?? 0) != 0)
+                    {
+                        TrangThaiIDMoi = 406;
+                        TrangThaiMoi = "Đã rút đơn";
+                    }
                 }
+
             }
             CheckTrangThai = TrangThaiIDMoi > 0 ? true : false;
         }
@@ -817,7 +849,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             DateTime ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
             int? chuyenGiaiQuyetID = null,
             int? ketQuaID = null,
-            int? lanhDaoDuyet2ID = null
+            int? lanhDaoDuyet2ID = null,
+            int? rutDonID = null
             )
         {
             TrangThaiIDMoi = 0;
@@ -991,6 +1024,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             TrangThaiMoi = "Đã hoàn thành";
                         }
                     }
+                    // bổ sung trạng thái đã rút đơn
+                    if (rutDonID != 0)
+                    {
+                        TrangThaiIDMoi = 406;
+                        TrangThaiMoi = "Đã rút đơn";
+                    }
                 }
             }
 
@@ -1007,7 +1046,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             IdentityHelper IdentityHelper,
             DateTime ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
             int? chuyenGiaiQuyetID = null,
-            int? ketQuaID = null
+            int? ketQuaID = null,
+            int? rutDonID= null
             )
         {
             TrangThaiIDMoi = 0;
@@ -1129,6 +1169,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             TrangThaiMoi = "Đã hoàn thành";
                         }
                     }
+                    // bổ sung trạng thái đã rút đơn
+                    if (rutDonID != 0)
+                    {
+                        TrangThaiIDMoi = 406;
+                        TrangThaiMoi = "Đã rút đơn";
+                    }
                 }
             }
 
@@ -1145,7 +1191,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
            IdentityHelper IdentityHelper,
            DateTime ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
            int? chuyenGiaiQuyetID = null,
-           int? ketQuaID = null
+           int? ketQuaID = null,
+           int? rutDonID = null
         )
         {
             TrangThaiIDMoi = 0;
@@ -1339,6 +1386,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             TrangThaiIDMoi = 405;
                             TrangThaiMoi = "Đã hoàn thành";
                         }
+                    }
+                    // bổ sung trạng thái đã rút đơn
+                    if (rutDonID != 0 )
+                    {
+                        TrangThaiIDMoi = 406;
+                        TrangThaiMoi = "Đã rút đơn";
                     }
                 }
             }

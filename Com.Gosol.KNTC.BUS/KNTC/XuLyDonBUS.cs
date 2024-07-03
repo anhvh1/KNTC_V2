@@ -61,11 +61,14 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         item.StateID,
                         item.NextStateID,
                         item.TrangThaiDuyet ?? 0,
-                        item.TrinhDuThao,
+                        item.TrinhDuThao,                                               
                         IdentityHelper,
                         item.NgayCapNhat,
                         item.ChuyenGiaiQuyetID,
-                        item.KetQuaID
+                        item.KetQuaID,
+                        0,
+                        // bổ sung trạng thái rút đơn bằng RutDonID
+                        item.RutDonID
                         );
                     item.TrangThaiMoi = renderTrangThai.TrangThaiMoi;
                     item.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;

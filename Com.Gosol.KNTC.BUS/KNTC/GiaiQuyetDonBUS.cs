@@ -165,7 +165,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         donThuInfo.NgayCapNhat,
                         donThuInfo.ChuyenGiaiQuyetID,
                         donThuInfo.KetQuaID,
-                        donThuInfo.LanhDaoDuyet2ID
+                        donThuInfo.LanhDaoDuyet2ID,                
+                        donThuInfo.RutDonID
                         );
                     donThuInfo.TrangThaiMoi = renderTrangThai.TrangThaiMoi;
                     donThuInfo.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;
@@ -488,7 +489,9 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             IdentityHelper,
                             donThuInfo.NgayCapNhat,
                             donThuInfo.ChuyenGiaiQuyetID,
-                            donThuInfo.KetQuaID
+                            donThuInfo.KetQuaID,
+                            0,
+                            donThuInfo.RutDonID
                             );
                         donThuInfo.TrangThaiMoi = renderTrangThai.TrangThaiMoi;
                         donThuInfo.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;
@@ -534,7 +537,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     }
                 }
 
-            }
+            }   
             #endregion
 
             return donThuList;

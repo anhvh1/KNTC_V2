@@ -862,7 +862,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.LanhDaoDuyet2ID = Utils.ConvertToInt32(dr["LanhDaoDuyet2ID"], 0);
                         phanGiaiQuyetInfo.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
                         phanGiaiQuyetInfo.CoCapNhapDoanToXacMinh = Utils.ConvertToInt32(dr["CoCapNhapDoanToXacMinh"], 0);
-
+                        // bổ sung thêm rút đơn id
+                        phanGiaiQuyetInfo.RutDonID = Utils.ConvertToInt32(dr["RutDonID"], 0);
                         phangiaiquyets.Add(phanGiaiQuyetInfo);
                     }
                     dr.Close();
@@ -1018,7 +1019,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.LanhDaoDuyet2ID = Utils.ConvertToInt32(dr["LanhDaoDuyet2ID"], 0);
                         phanGiaiQuyetInfo.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
                         phanGiaiQuyetInfo.CoCapNhapDoanToXacMinh = Utils.ConvertToInt32(dr["CoCapNhapDoanToXacMinh"], 0);
-
+                        // bổ sung trạng thái rút đơn ID
+                        phanGiaiQuyetInfo.RutDonID = Utils.ConvertToInt32(dr["RutDonID"], 0);
 
                         phangiaiquyets.Add(phanGiaiQuyetInfo);
                     }
@@ -1311,6 +1313,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
                         phanGiaiQuyetInfo.CoCapNhapDoanToXacMinh = Utils.ConvertToInt32(dr["CoCapNhapDoanToXacMinh"], 0);
 
+                        // bổ sung rút đơn id
+                        phanGiaiQuyetInfo.RutDonID = Utils.ConvertToInt32(dr["RutDonID"], 0);
                         phangiaiquyets.Add(phanGiaiQuyetInfo);
                     }
                     dr.Close();
@@ -1455,6 +1459,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         phanGiaiQuyetInfo.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
                         phanGiaiQuyetInfo.CoCapNhapDoanToXacMinh = Utils.ConvertToInt32(dr["CoCapNhapDoanToXacMinh"], 0);
 
+                        // Bổ sung rút đơn id
+                        phanGiaiQuyetInfo.RutDonID = Utils.ConvertToInt32(dr["RutDonID"], 0);
                         phangiaiquyets.Add(phanGiaiQuyetInfo);
                     }
                     dr.Close();
@@ -1886,6 +1892,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         dtinfo.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
                         dtinfo.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
                         dtinfo.KetQuaID = Utils.ConvertToInt32(dr["KetQuaID"], 0);
+                        // bổ sung rút đơn id
+                        dtinfo.RutDonID = Utils.ConvertToInt32(dr["RutDonID"], 0);
                         ListInfo.Add(dtinfo);
                     }
                     dr.Close();

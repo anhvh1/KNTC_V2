@@ -213,6 +213,7 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public DateTime NgayCapNhat { get; set; }
         public int LoaiQuyTrinh { get; set; }
         public int KetQuaID { get; set; }
+        public int RutDonID { get; set; }
 
     }
 
