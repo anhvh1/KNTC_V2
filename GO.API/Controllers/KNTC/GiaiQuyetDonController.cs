@@ -616,8 +616,8 @@ namespace GO.API.Controllers.KNTC
                     IdentityHelper.CapHanhChinh = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CapHanhChinh").Value, 0);
 
                     var Data = _GiaiQuyetDonBUS.DuyetBaoCaoXacMinh(IdentityHelper, BaoCaoXacMinhModel);
-                    if(IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode() && IdentityHelper.SuDungQuyTrinhGQPhucTap == true)
-                    {
+                    if(IdentityHelper.CapID == CapQuanLy.CapUBNDXa.GetHashCode() && IdentityHelper.RoleID == RoleEnum.LanhDao.GetHashCode() && IdentityHelper.SuDungQuyTrinhGQPhucTap == true&&BaoCaoXacMinhModel.TrangThaiPheDuyet == 1)
+                    {                       
                         Data = _GiaiQuyetDonBUS.DuyetBaoCaoXacMinh(IdentityHelper, BaoCaoXacMinhModel);
                     }
                     base.Data = Data.Data;

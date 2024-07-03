@@ -61,7 +61,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             item.ChuyenGiaiQuyetID,
                             int.TryParse(item.KetQuaID, out int result)? result : 0,
                             item.LanhDaoDuyet2ID,
-                            0
+                            item.RutDonID
                             );
                         item.TrangThaiMoi = renderTrangThai.TrangThaiMoi;
                         item.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;

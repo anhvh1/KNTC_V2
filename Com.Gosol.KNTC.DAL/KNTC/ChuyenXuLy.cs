@@ -1475,8 +1475,11 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         cInfo.TrinhDuThao = Utils.ConvertToInt32(dr["TrinhDuThao"], 0);
                         cInfo.ChuyenGiaiQuyetID = Utils.ConvertToInt32(dr["ChuyenGiaiQuyetID"], 0);
                         cInfo.NgayTiepNhan = Utils.GetDateTime(dr["NgayTiepNhan"], DateTime.MinValue);
-                        cInfo.LanhDaoDuyet2ID = Utils.ConvertToInt32(dr["LanhDaoDuyet2ID"], 0);
-
+                        cInfo.LanhDaoDuyet2ID = Utils.ConvertToInt32(dr["LanhDaoDuyet2ID"], 0); 
+                        // bổ sung trạng thái ThiHanhID 
+                        cInfo.ThiHanhID = Utils.ConvertToInt32(dr["ThiHanhID"], 0);
+                        // bổ sung trạng thái RutDonID
+                        cInfo.RutDonID = Utils.ConvertToInt32(dr["RutDonID"], 0);
                         dsDonThu.Add(cInfo);
                     }
                     dr.Close();

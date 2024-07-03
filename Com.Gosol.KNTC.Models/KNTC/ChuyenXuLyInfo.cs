@@ -98,6 +98,7 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public int? ChuyenGiaiQuyetID { get; set; }
         public int? LanhDaoDuyet2ID { get; set; }
         public DateTime? NgayTiepNhan { get; set; }
-
+        public int ThiHanhID { get; set; }
+        public int RutDonID { get; set; }
     }
 }
