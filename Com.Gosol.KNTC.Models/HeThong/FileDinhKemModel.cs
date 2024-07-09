@@ -24,6 +24,7 @@ namespace Com.Gosol.KNTC.Models.HeThong
         public bool? IsBaoMat { get; set; }
         public bool? IsMaHoa { get; set; }
         public string GroupUID { get; set; }
+        public string TenFileHeThong { get; set; }
         public FileDinhKemModel()
         {
 

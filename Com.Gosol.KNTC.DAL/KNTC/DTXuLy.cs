@@ -1701,6 +1701,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         //        Info.HuongXuLy = "<div style='margin-bottom: 5px;'><span>" + Info.HuongXuLy + "</span></div>" + "<ul>" + sec_true + "</ul>";
                         //    }
                         //}
+                        // bổ sung rút đơn ID
+                        Info.RutDonID = Utils.ConvertToInt32(dr["RutDonID"], 0);
                         ListInfo.Add(Info);
                     }
                     dr.Close();

@@ -46,6 +46,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 DonThuChiTiet.VaiTroGiaiQuyetInfos = new VaiTroGiaiQuyet().GetByXuLyDonID(XuLyDonID).ToList();
                 DonThuChiTiet.CoQuanChuyenDonDi = new CoQuan().GetCoQuanByCoQuanID(DonThuChiTiet.XuLyDon.CQChuyenDonID).ToList();
                 DonThuChiTiet.CoQuanChuyenDonDen = new CoQuan().GetCoQuanByCoQuanID(DonThuChiTiet.XuLyDon.CQChuyenDonDenID).ToList();
+                DonThuChiTiet.ThongTinRutDon = new RutDon_V2BUS().GetByXuLyDonID(XuLyDonID);
                 #endregion
 
                 DonThuChiTiet.TiepDanInfo = new Com.Gosol.KNTC.DAL.KNTC.TiepDan().GetTiepDanByXuLyDonID(XuLyDonID);

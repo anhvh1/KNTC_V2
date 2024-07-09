@@ -503,7 +503,8 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                             Info.NhomKN = new NhomKN().GetByID(Info.NhomKNID);
                             Info.listDoiTuongKN = new DoiTuongKN().GetByNhomKNID(Info.NhomKNID).ToList();
                         }
-
+                        // bổ sung rút đơn ID
+                        Info.RutDonID = Utils.ConvertToInt32(dr["RutDonID"], 0);
                         tiepdaninfo.Add(Info);
                     }
                     dr.Close();

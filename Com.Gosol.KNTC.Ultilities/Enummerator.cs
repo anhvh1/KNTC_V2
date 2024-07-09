@@ -257,6 +257,7 @@ namespace Com.Gosol.KNTC.Ultilities
         FileCQGiaiQuyet = 26,
         FileKQTiep = 27,
         FileKQGiaiQuyet = 28,
+        FileDBCXM= 29,
     }
     public enum EnumDoBaoMat
     {

@@ -19,6 +19,8 @@ using System.Security.Cryptography;
 using Com.Gosol.KNTC.Security;
 using Com.Gosol.KNTC.DAL.HeThong;
 using DocumentFormat.OpenXml.Bibliography;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Com.Gosol.KNTC.BUS.KNTC
 {
@@ -165,7 +167,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         donThuInfo.NgayCapNhat,
                         donThuInfo.ChuyenGiaiQuyetID,
                         donThuInfo.KetQuaID,
-                        donThuInfo.LanhDaoDuyet2ID,                
+                        donThuInfo.LanhDaoDuyet2ID,
                         donThuInfo.RutDonID
                         );
                     donThuInfo.TrangThaiMoi = renderTrangThai.TrangThaiMoi;
@@ -537,7 +539,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     }
                 }
 
-            }   
+            }
             #endregion
 
             return donThuList;
@@ -1838,10 +1840,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             if (BaoCaoXacMinh.TrangThaiPheDuyet == 1)
             {
                 DongYKetQuaGiaiQuyet(IdentityHelper, BaoCaoXacMinh);
+                DuyetBCXM_Insert(IdentityHelper, BaoCaoXacMinh);
             }
             else
             {
                 YeuCauGiaiQuyetLai(IdentityHelper, BaoCaoXacMinh);
+                DuyetBCXM_Insert(IdentityHelper, BaoCaoXacMinh);
             }
 
             Result.Status = 1;
@@ -1849,6 +1853,95 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             return Result;
         }
 
+        public BaseResultModel DuyetBCXM_Insert(IdentityHelper IdentityHelper, BaoCaoXacMinhModel BaoCaoXacMinh)
+        {
+            var result = new BaseResultModel();
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@NoiDung",SqlDbType.NVarChar),
+                new SqlParameter("@CanBoID",SqlDbType.Int),
+                new SqlParameter("@XuLyDonID",SqlDbType.Int),
+                new SqlParameter("@NgayCapNhat",SqlDbType.Date),
+                new SqlParameter("@TrangThai",SqlDbType.Int),
+                new SqlParameter("@HanXuLy",SqlDbType.Date),
+            };
+            parameters[0].Value = BaoCaoXacMinh.NoiDung ?? Convert.DBNull;
+            parameters[1].Value = IdentityHelper.CanBoID;
+            parameters[2].Value = BaoCaoXacMinh.XuLyDonID;
+            parameters[3].Value = DateTime.Now;
+            parameters[4].Value = BaoCaoXacMinh.TrangThaiPheDuyet ?? Convert.DBNull;
+            parameters[5].Value = BaoCaoXacMinh.HanGiaiQuyet ?? Convert.DBNull;
+            using (var connection = new SqlConnection(SQLHelper.appConnectionStrings))
+            {
+                connection.Open();
+                using (var trans = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        var query = Utils.ConvertToInt32(SQLHelper.ExecuteScalar(trans, CommandType.StoredProcedure, "V2_NV_DuyetBaoCaoXacMinh_Insert", parameters).ToString(), 0);
+                        result.Status = 1;
+                        result.Data = query;
+                        result.Message = "duyệt báo cáo xác minh thành công";
+                        trans.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+            }
+            if (Utils.ConvertToInt32(result.Data, 0) > 0)
+            {
+                if (BaoCaoXacMinh.DanhSachHoSoTaiLieu.Count > 0)
+                {
+                    Insert_FileRutDon(IdentityHelper, BaoCaoXacMinh);
+                }
+
+            }
+            return result;
+        }
+        public BaseResultModel Insert_FileRutDon(IdentityHelper IdentityHelper, BaoCaoXacMinhModel BaoCaoXacMinh)
+        {
+            var result = new BaseResultModel();
+            foreach (var item in BaoCaoXacMinh.DanhSachHoSoTaiLieu)
+            {
+                foreach (var item1 in item.DanhSachFileDinhKemID)
+                {
+                    SqlParameter[] parameters = new SqlParameter[]
+                    {
+                        new SqlParameter("@XuLyDonID",SqlDbType.Int),
+                        new SqlParameter("@FileID",SqlDbType.Int),
+                        new SqlParameter("@TrangThai",SqlDbType.Int),
+                    };
+                    parameters[0].Value = BaoCaoXacMinh.XuLyDonID;
+                    parameters[1].Value = item1;
+                    parameters[2].Value = BaoCaoXacMinh.TrangThaiPheDuyet ?? Convert.DBNull;
+                    using (var connection = new SqlConnection(SQLHelper.appConnectionStrings))
+                    {
+                        connection.Open();
+                        using (var trans = connection.BeginTransaction())
+                        {
+                            try
+                            {
+                                var query = Utils.ConvertToInt32(SQLHelper.ExecuteScalar(trans, CommandType.StoredProcedure, "V2_NV_FilePheDuyetBaoCaoXacMinh_Insert", parameters).ToString(), 0);
+                                result.Status = 1;
+                                result.Data = query;
+                                result.Message = " thành công";
+                                trans.Commit();
+                            }
+                            catch (Exception)
+                            {
+                                trans.Rollback();
+                                throw;
+                            }
+                        }
+                    }
+                }
+
+            }
+            return result;
+        }
         public int DongYKetQuaGiaiQuyet(IdentityHelper IdentityHelper, BaoCaoXacMinhModel BaoCaoXacMinh)
         {
             int TPTrinhKQGiaiQuyetLDCapDuoi = 0;
@@ -1944,11 +2037,11 @@ namespace Com.Gosol.KNTC.BUS.KNTC
 
                 //        try
                 //        {
-                //            int result = new FileHoSo().InsertDonThuCDGQ(info);
+                //            int result = new FileHoSoDAL().InsertDonThuCDGQ(info);
                 //            if (result > 0)
                 //            {
                 //                infoFileLog.FileID = result;
-                //                new FileLog().Insert(infoFileLog);
+                //                new FileLogDAL().Insert(infoFileLog);
                 //            }
 
                 //        }
@@ -1957,6 +2050,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 //        }
                 //    }
                 //}
+                // bổ sung insert file 
+
             }
             catch
             {
@@ -2228,6 +2323,6 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             return Result;
         }
 
-       
+
     }
 }

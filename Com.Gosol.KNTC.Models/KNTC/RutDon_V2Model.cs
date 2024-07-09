@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Com.Gosol.KNTC.Models.HeThong;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,27 +12,22 @@ namespace Com.Gosol.KNTC.Models.KNTC
     {
         public int XuLyDonID { get; set; }
         public string LyDoRutDon { get; set; }
-        public string TenHoSo { get; set; }
-        public List<IFormFile> ListFileRutDons { get; set; } = new List<IFormFile>();
+        public List<DanhSachHoSoTaiLieu> DanhSachHoSoTaiLieu { get; set; } 
     }
     public class ChiTietRutDon 
-    {
-        public ChiTietRutDon() 
+    {      
+        public ChiTietRutDon()
         {
-            ListFileRutDons = new List<FileRutDon>();
+            DanhSachHoSoTaiLieu = new List<DanhSachHoSoTaiLieu>();
         }
         public int RutDonID { get; set; }
         public string LyDoRutDon { get; set; }
-        public string TenHoSo { get; set; }
         public int CanBoID { get; set; }
         public string TenCanBo { get; set; }
         public DateTime? NgayCapNhap { get; set; }
-        public List<FileRutDon> ListFileRutDons { get; set; }
+        public int XuLyDonID { get; set; }
+        public List<DanhSachHoSoTaiLieu> DanhSachHoSoTaiLieu { get; set; } 
     }
-    public class FileRutDon
-    {
-        public string UrlFile { get; set; }
-        public string TenFileGoc { get; set; }
-    }
+  
 
 }

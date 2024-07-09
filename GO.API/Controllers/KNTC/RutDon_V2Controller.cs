@@ -36,9 +36,8 @@ namespace GO.API.Controllers.KNTC
         }
         [HttpPost, Route("Insert")]
         [CustomAuthAttribute(0, AccessLevel.Create)]
-        public async Task<IActionResult> Insert([FromForm] RutDon_V2Model rutDon_V2Model)
+        public  IActionResult Insert([FromBody] RutDon_V2Model rutDon_V2Model)
         {
-
             try
             {
                 var canBoID = Utils.ConvertToInt32(User.Claims.FirstOrDefault(c => c.Type == "CanBoID").Value, 0);
@@ -51,29 +50,10 @@ namespace GO.API.Controllers.KNTC
                 else
                 {
                     var result = _rutDon_V2BUS.Insert(rutDon_V2Model, canBoID);
-                    if (rutDon_V2Model.ListFileRutDons.Count == 0)
-                    {
-                        base.Status = result.Status;
-                        base.Message = result.Message;
-                        return base.GetActionResult();
-                    }
-                    else
-                    {
-                        FileDinhKemModel fileDinhKem = new FileDinhKemModel
-                        {
-                            FileType = EnumLoaiFile.FileRutDon.GetHashCode(),
-                            NguoiCapNhat = canBoID,                          
-                        };
-                        foreach (var item in rutDon_V2Model.ListFileRutDons)
-                        {
-                            fileDinhKem.NghiepVuID = Utils.ConvertToInt32(result.Data, 0);
-                            var clsCommon = new Commons();
-                            var file = await clsCommon.InsertFileAsync(item, fileDinhKem, _host);
-                        }
-                        base.Status = result.Status;
-                        base.Message = result.Message;
-                        return base.GetActionResult();
-                    }                   
+                    base.Status = result.Status;
+                    base.Message = result.Message;
+                    return base.GetActionResult();
+
                 }
             }
             catch (Exception ex)
@@ -90,7 +70,7 @@ namespace GO.API.Controllers.KNTC
             try
             {
                 var Data = _rutDon_V2BUS.GetByXuLyDonID(xuLyDonID);
-               
+
                 if (Data == null || Data.RutDonID < 1)
                 {
                     base.Message = "Không có dữ liệu";
@@ -101,22 +81,7 @@ namespace GO.API.Controllers.KNTC
                 {
                     //var cmClass = new Commons();
                     base.Message = " ";
-                    base.Status = 1;
-                    var base64 = string.Empty;
-                    var clsCommon = new Commons();
-
-                    var listFile = _fileDinhKemBUS.GetByNgiepVuID(Data.RutDonID, EnumLoaiFile.FileRutDon.GetHashCode());
-                    if (listFile.Count > 0)
-                    {
-                        for (int i = 0;i< listFile.Count;i++)
-                        {
-                            var listFileRutDon = new FileRutDon();
-                            listFileRutDon.UrlFile = clsCommon.GetServerPath(HttpContext) + listFile[i].FileUrl;
-                            listFileRutDon.TenFileGoc = listFileRutDon.UrlFile.Substring(listFileRutDon.UrlFile.IndexOf("_") + 19);
-                            Data.ListFileRutDons.Add(listFileRutDon);
-                        }
-                       
-                    }
+                    base.Status = 1;                   
                     base.Data = Data;
                 }
 

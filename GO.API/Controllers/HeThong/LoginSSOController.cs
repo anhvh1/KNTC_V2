@@ -223,7 +223,7 @@ namespace Com.Gosol.KNTC.API.Controllers.HeThong
                 request.AddParameter("client_secret", client_secret);
                 request.AddParameter("grant_type", grant_type);
                 request.AddParameter("code", login_sso.code);
-                request.AddParameter("redirect_uri", redirect_uri);
+                request.AddParameter("redirect_uri", "https://unittest.gosol.com.vn/");
                 IRestResponse response = client.Execute(request);
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                     return Result;

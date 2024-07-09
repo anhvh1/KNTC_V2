@@ -82,6 +82,11 @@ namespace Com.Gosol.KNTC.API.Controllers
         public static readonly String PATH_FILE_HDSD_ENCRYPT = "UploadFiles/FileHuongDanSuDung/encrypt";
         public static readonly String PATH_FILE_HDSD_DECRYPT = "UploadFiles/FileHuongDanSuDung/decrypt";
         public static readonly String PATH_FILE_HDSD = "UploadFiles/FileHuongDanSuDung";
+
+        public static readonly String PATH_FILE_DBCXM_ENCRYPT = "UploadFiles/FileDuyetBaoCaoXacMinh/encrypt";
+        public static readonly String PATH_FILE_DBCXM_DECRYPT = "UploadFiles/FileDuyetBaoCaoXacMinh/decrypt";
+        public static readonly String PATH_FILE_DBCXM = "UploadFiles/FileDuyetBaoCaoXacMinh";
+
         #endregion
         public string passwordForCompress_DecompressFile = "";
         public Commons(string password)
@@ -551,6 +556,11 @@ namespace Com.Gosol.KNTC.API.Controllers
             {
                 FolderPath = PATH_FILE_HDSD;
                 FolderPathEncrypt = PATH_FILE_HDSD_ENCRYPT;
+            }
+            else if (FileType == EnumLoaiFile.FileDBCXM.GetHashCode())
+            {
+                FolderPath = PATH_FILE_DBCXM;
+                FolderPathEncrypt = PATH_FILE_DBCXM_ENCRYPT;
             }
             else
             {

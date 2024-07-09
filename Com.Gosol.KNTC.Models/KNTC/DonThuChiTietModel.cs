@@ -32,6 +32,8 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public List<VaiTroGiaiQuyetInfo> VaiTroGiaiQuyetInfos { get; set; }
         public List<CoQuanInfo> CoQuanChuyenDonDi { get; set; }
         public List<CoQuanInfo> CoQuanChuyenDonDen { get; set; }
+        // bổ sung thông tin rút đơn
+        public ChiTietRutDon ThongTinRutDon { get; set; }
 
     }
 

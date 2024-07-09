@@ -350,7 +350,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 {
                     TrangThaiMoi = "Đang thi hành quyết định giải quyết";
                     TrangThaiIDMoi = 300;
-                    
+
                     if (ketQuaID != 0)
                     {
                         TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
@@ -479,10 +479,16 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         TrangThaiMoi = "Đã duyệt";
                         TrangThaiIDMoi = 106;
                         if (lanhDaoDuyet2ID > 0 && lanhDaoDuyet2ID == IdentityHelper.CanBoID)
-                        {
+                        {                            
                             TrangThaiMoi = "Đã duyệt và chưa giao xác minh";
                             TrangThaiIDMoi = 202;
+                            if (huongGiaiQuyetID != (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                            {
+                                TrangThaiMoi = "Đã duyệt";
+                                TrangThaiIDMoi = 202;
+                            }
                         }
+                        
                     }
                 }
                 else if (stateID == 19)
@@ -626,7 +632,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
         int? chuyenGiaiQuyetID = null,
         int? ketQuaID = null,
         // bổ sung trạng thái rút đơn bằng RutDonID
-        int ? rutDonID = null
+        int? rutDonID = null
         )
         {
             TrangThaiIDMoi = 0;
@@ -709,6 +715,11 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         {
                             TrangThaiMoi = "Đã duyệt và chưa giao xác minh";
                             TrangThaiIDMoi = 202;
+                            if (huongGiaiQuyetID != (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                            {
+                                TrangThaiMoi = "Đã duyệt";
+                                TrangThaiIDMoi = 202;
+                            }
                         }
                     }
                 }
@@ -792,7 +803,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 {
                     TrangThaiMoi = "Đang thi hành quyết định giải quyết";
                     TrangThaiIDMoi = 300;
-                    
+
                     if (ketQuaID != 0)
                     {
                         TrangThaiMoi = "Đã cập nhập quyết định giải quyết";
@@ -1047,7 +1058,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             DateTime ngayCapNhatTheoDoiXuLy, // trường này ở Giải quyết đơn chuyên viên
             int? chuyenGiaiQuyetID = null,
             int? ketQuaID = null,
-            int? rutDonID= null
+            int? rutDonID = null
             )
         {
             TrangThaiIDMoi = 0;
@@ -1097,6 +1108,11 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     {
                         TrangThaiMoi = "Đã duyệt và chưa giao xác minh";
                         TrangThaiIDMoi = 202;
+                        if (huongGiaiQuyetID != (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                        {
+                            TrangThaiMoi = "Đã duyệt";
+                            TrangThaiIDMoi = 202;
+                        }
                     }
                 }
                 else if (stateID == 8)
@@ -1275,7 +1291,13 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         {
                             TrangThaiMoi = "Đã duyệt và chưa giao xác minh";
                             TrangThaiIDMoi = 202;
+                            if (huongGiaiQuyetID != (int)HuongGiaiQuyetEnum.DeXuatThuLy)
+                            {
+                                TrangThaiMoi = "Đã duyệt";
+                                TrangThaiIDMoi = 202;
+                            }
                         }
+                        
                     }
                 }
                 //else if (stateID == 19)
@@ -1388,7 +1410,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         }
                     }
                     // bổ sung trạng thái đã rút đơn
-                    if (rutDonID != 0 )
+                    if (rutDonID != 0)
                     {
                         TrangThaiIDMoi = 406;
                         TrangThaiMoi = "Đã rút đơn";

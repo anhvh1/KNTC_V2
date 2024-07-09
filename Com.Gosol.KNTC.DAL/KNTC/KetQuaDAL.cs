@@ -1413,8 +1413,16 @@ namespace Com.Gosol.KNTC.DAL.KNTC
                         kQuaInfo.SoNguoiDuocTraQuyenLoi = Utils.ConvertToInt32(dr["SoNguoiDuocTraQuyenLoi"], 0);
                         kQuaInfo.SoDoiTuongBiXuLy = Utils.ConvertToInt32(dr["SoDoiTuongBiXuLy"], 0);
                         kQuaInfo.NoiDungQuyetDinh = Utils.ConvertToString(dr["NoiDungQuyetDinh"], string.Empty);
-                        kQuaInfo.ThoiHanThiHanh = Utils.ConvertToDateTime(dr["ThoiHanThiHanh"], DateTime.MinValue);
-                        kQuaInfo.ThoiHanThiHanhStr = kQuaInfo.ThoiHanThiHanh.Value.ToString("dd/MM/yyyy");
+                        // fix bug thời hạn thi hành 4/7/2024
+                        kQuaInfo.ThoiHanThiHanh = dr["ThoiHanThiHanh"] != DBNull.Value ? Convert.ToDateTime(dr["ThoiHanThiHanh"]) : (DateTime?)null;
+                        if (kQuaInfo.ThoiHanThiHanh != null)
+                        {
+                            kQuaInfo.ThoiHanThiHanhStr = kQuaInfo.ThoiHanThiHanh.Value.ToString("dd/MM/yyyy");
+                        }
+                        else
+                        {
+                            kQuaInfo.ThoiHanThiHanhStr = null;
+                        }
 
                         kQuaInfo.CoQuanThiHanh = Utils.ConvertToInt32(dr["CoQuanThiHanh"], 0);
                         kQuaInfo.VaiTro = Utils.ConvertToInt32(dr["VaiTro"], 0);

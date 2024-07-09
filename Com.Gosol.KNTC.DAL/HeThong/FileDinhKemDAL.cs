@@ -101,6 +101,8 @@ namespace Com.Gosol.KNTC.DAL.HeThong
                         crFile.FileUrl = Utils.ConvertToString(dr[FILE_URL], string.Empty);
                         crFile.IsBaoMat = Utils.ConvertToBoolean(dr[ISBAOMAT], false);
                         crFile.IsMaHoa = Utils.ConvertToBoolean(dr[ISMAHOA], false);
+                        // bổ sung tên File hệ thống
+                        crFile.TenFileHeThong = Utils.ConvertToString(dr[TEN_FILE_HE_THONG], string.Empty);
                         break;
                     }
                     dr.Close();

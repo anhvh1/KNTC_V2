@@ -74,6 +74,6 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public List<ThanhPhanThamGiaInfo> ThanhPhanThamGia { get; set; }
         public int? CanBoXuLyID { get; set; }
         public int? CanBoTiepNhanID { get; set; }
-
+        public int RutDonID { get; set; }
     }
 }
