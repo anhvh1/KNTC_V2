@@ -42,7 +42,7 @@ namespace GO.API.Controllers.KNTC
         {
             try
             {
-                //return CreateActionResult(false, ConstantLogMessage.HT_NhomNguoiDung_GetListPaging, EnumLogType.GetList, () =>
+                ////return CreateActionResult(false, ConstantLogMessage.HT_NhomNguoiDung_GetListPaging, EnumLogType.GetList, () =>
                 //{
                 IdentityHelper IdentityHelper = new IdentityHelper();
                 IdentityHelper.CanBoID = CanBoID;
