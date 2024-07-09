@@ -479,7 +479,6 @@ namespace GO.API.Controllers.KNTC
 
         }
 
-
         [HttpPost]
         [Route("CapNhatBuocXacMinh")]
         [CustomAuthAttribute(ChucNangEnum.GiaiQuyetDonThu, AccessLevel.Edit)]
