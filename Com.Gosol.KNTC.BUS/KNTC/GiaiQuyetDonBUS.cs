@@ -2130,7 +2130,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             }
 
             int canboid = IdentityHelper.CanBoID ?? 0;
-            WorkflowInstance.Instance.ExecuteCommand(xuLyDonID, canboid, commandCode, hanGiaiQuyet, BaoCaoXacMinh.NoiDung);
+            WorkflowInstance.Instance.ExecuteCommand(xuLyDonID, canboid, !string.IsNullOrEmpty(commandCode) ? commandCode : "", hanGiaiQuyet, !string.IsNullOrEmpty(BaoCaoXacMinh.NoiDung) ? BaoCaoXacMinh.NoiDung : "");
 
             //try
             //{
