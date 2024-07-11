@@ -1309,6 +1309,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 new XuLyDonDAL().UpdateCoQuanChuyenNgoaiHeThong(ChuyenDonModel.XuLyDonID ?? 0, ChuyenDonModel.CoQuanNgoaiHeThong, ChuyenDonModel.CoQuanTheoDoiDonDoc);
                 Result.Status = 1;
                 Result.Message = "Chuyển thành công";
+                new RutDon_V2DAL().UpdateDocument_By_XuLyDonID(ChuyenDonModel.XuLyDonID ?? 0);
             }
             else
             {
