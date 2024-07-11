@@ -1895,13 +1895,13 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             {
                 if (BaoCaoXacMinh.DanhSachHoSoTaiLieu.Count > 0)
                 {
-                    Insert_FileRutDon(IdentityHelper, BaoCaoXacMinh);
+                    Insert_FileBaoCaoXM(IdentityHelper, BaoCaoXacMinh);
                 }
 
             }
             return result;
         }
-        public BaseResultModel Insert_FileRutDon(IdentityHelper IdentityHelper, BaoCaoXacMinhModel BaoCaoXacMinh)
+        public BaseResultModel Insert_FileBaoCaoXM(IdentityHelper IdentityHelper, BaoCaoXacMinhModel BaoCaoXacMinh)
         {
             var result = new BaseResultModel();
             foreach (var item in BaoCaoXacMinh.DanhSachHoSoTaiLieu)
