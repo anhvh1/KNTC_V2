@@ -34,7 +34,7 @@ namespace GO.API.Controllers.KNTC
             this._config = config;
             this._AppSettings = Settings;
         }
-
+        //
         [HttpGet]
         [Route("GetListPaging")]
         [CustomAuthAttribute(0, AccessLevel.Read)]
