@@ -2126,7 +2126,6 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     }
 
                 }
-
             }
 
             int canboid = IdentityHelper.CanBoID ?? 0;
