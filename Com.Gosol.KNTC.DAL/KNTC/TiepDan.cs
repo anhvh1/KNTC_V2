@@ -2,6 +2,7 @@
 using Com.Gosol.KNTC.Models.KNTC;
 using Com.Gosol.KNTC.Ultilities;
 using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Vml;
 using Microsoft.Office.Interop.Word;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
@@ -3269,5 +3270,6 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             }
             return val;
         }
+       
     }
 }

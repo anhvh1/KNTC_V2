@@ -3786,7 +3786,95 @@ namespace Com.Gosol.KNTC.DAL.KNTC
 
             return xulyDon;
         }
+// bổ sung     
+        public BaseResultModel ChuyenDon_Sang_TiepDanThuongXuyen(IdentityHelper IdentityHelper, string xuLyDonIDIds, string donThuIDIds)
+        {
+            var result = new BaseResultModel();
+            try
+            {
+                SqlParameter[] parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@XuLyDonIDIds", SqlDbType.NVarChar),
+                    new SqlParameter("@DonThuIDIds", SqlDbType.NVarChar),
+                    new SqlParameter("@CanBoID", SqlDbType.Int),
+                };
+                parameters[0].Value = xuLyDonIDIds;
+                parameters[1].Value = donThuIDIds;
+                parameters[2].Value = IdentityHelper.CanBoID;
 
+                using (SqlConnection conn = new SqlConnection(SQLHelper.appConnectionStrings))
+                {
 
+                    conn.Open();
+                    using (SqlTransaction trans = conn.BeginTransaction())
+                    {
+
+                        try
+                        {
+                            var val = SQLHelper.ExecuteScalar(trans, CommandType.StoredProcedure, "v2_ChuyenDon_Sang_TiepDanThuongXuyen", parameters);
+                            trans.Commit();
+                            result.Status = 1;
+                            result.Message = "Chuyển thành công";
+                        }
+                        catch
+                        {
+                            trans.Rollback();
+                            throw;
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+                throw;
+            }
+            return result;
+        }
+        public BaseResultModel ChuyenDon_Sang_TiepNhanDon(string xuLyDonIDIds, string donThuIDIds)
+        {
+            var result = new BaseResultModel();
+            try
+            {
+                SqlParameter[] parameters = new SqlParameter[]
+                {
+                    new SqlParameter("@XuLyDonIDIds", SqlDbType.NVarChar),
+                    new SqlParameter("@DonThuIDIds", SqlDbType.NVarChar),
+                };
+                parameters[0].Value = xuLyDonIDIds;
+                parameters[1].Value = donThuIDIds;
+
+                using (SqlConnection conn = new SqlConnection(SQLHelper.appConnectionStrings))
+                {
+                    conn.Open();
+                    using (SqlTransaction trans = conn.BeginTransaction())
+                    {
+
+                        try
+                        {
+                            var val = SQLHelper.ExecuteScalar(trans, CommandType.StoredProcedure, "v2_ChuyenDon_Sang_TiepNhanDon", parameters);
+                            trans.Commit();
+                            result.Status = 1;
+                            result.Message = "Chuyển thành công";
+                        }
+                        catch
+                        {
+                            trans.Rollback();
+                            throw;
+                        }
+                    }
+                    conn.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+                throw;
+            }
+            return result;
+        }
     }
 }

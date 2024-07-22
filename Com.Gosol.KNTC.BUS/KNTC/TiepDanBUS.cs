@@ -2274,5 +2274,23 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             //Result.Data = url;
             return resultModel;
         }
+        /// <summary>
+        /// Chuyển đơn thu từ tiếp dân thường xuyên sang tiếp nhận đơn
+        /// </summary>
+        public BaseResultModel ChuyenDonTDTTSangTND(string xuLyDonIDIDS, string donThuIDIds)
+        {
+            var result = new BaseResultModel();
+            try
+            {
+                result = new XuLyDonDAL().ChuyenDon_Sang_TiepNhanDon(xuLyDonIDIDS, donThuIDIds);
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+                throw;
+            }
+            return result;
+        }
     }
 }
