@@ -1209,5 +1209,21 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             return Result;
         }
 
+        public BaseResultModel ChuyenTNDSangTDTT(IdentityHelper IdentityHelper, string xuLyDonIDIds, string donThuIDIds)
+        {
+            var result = new BaseResultModel();
+            try
+            {
+                // thêm dữ liệu cho tiếp dân không đơn
+                result = new XuLyDonDAL().ChuyenDon_Sang_TiepDanThuongXuyen(IdentityHelper, xuLyDonIDIds, donThuIDIds);
+            }
+            catch (Exception ex)
+            {
+                result.Status = -1;
+                result.Message = ex.Message;
+                throw;
+            }
+            return result;
+        }
     }
 }
