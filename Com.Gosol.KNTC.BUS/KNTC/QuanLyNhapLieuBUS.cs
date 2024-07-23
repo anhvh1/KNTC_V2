@@ -23,7 +23,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
         public BaoCaoModel GetBySearch(ref int TotalRow, BasePagingParamsForFilter p)
         {
             var coQuanList = new ThongKeNhapLieu().GetByTime(p.TuNgay ?? DateTime.Now, p.DenNgay ?? DateTime.Now);
-            if(p.CoQuanID > 0)
+            if (p.CoQuanID > 0)
             {
                 coQuanList = coQuanList.Where(x => x.CoQuanID == p.CoQuanID).ToList();
             }
@@ -62,22 +62,114 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             //Row1.isClick = false;          
             List<TableData> data = new List<TableData>();
             int stt = 0;
-            foreach (ThongKeNhapLieuInfo cq in coQuanList)
+            //foreach (ThongKeNhapLieuInfo cq in coQuanList)
+            //{
+            //    TableData tableData = new TableData();
+            //    tableData.ID = stt++;
+            //    var DataArr = new List<RowItem>();
+            //    RowItem RowItem1 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArr);
+            //    RowItem RowItem2 = new RowItem(2, cq.TenDonVi, "", "", null, "text-align: left;", ref DataArr);
+            //    RowItem RowItem3 = new RowItem(3, cq.SLTiepDan.ToString(), "", "", null, "text-align: center;", ref DataArr);
+            //    RowItem RowItem4 = new RowItem(4, cq.SLDonThu.ToString(), "", "", null, "text-align: center;", ref DataArr);
+            //    RowItem RowItem5 = new RowItem(5, cq.SLXuLyDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
+            //    RowItem RowItem6 = new RowItem(6, cq.SLGiaiQuyetDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
+
+            //    tableData.DataArr = DataArr;
+            //    data.Add(tableData);
+            //}
+            var totalSLTiepDan = coQuanList.Sum(x => x.SLTiepDan).ToString();
+            var totalSLDonThu = coQuanList.Sum(x => x.SLDonThu).ToString();
+            var totalSLXuLyDon = coQuanList.Sum(x => x.SLXuLyDon).ToString();
+            var totalSLGiaiQuyetDon = coQuanList.Sum(x => x.SLGiaiQuyetDon).ToString();
+            var DanhSachHuyen = coQuanList.Where(x => x.CapID == (int)CapQuanLy.CapUBNDHuyen).ToList();
+            var DanhSachPhongThuocTinh = coQuanList.Where(x => x.CapID == (int)CapQuanLy.CapSoNganh || x.CoQuanChaID == x.CoQuanID).ToList();
+
+            var DataArrTong = new List<RowItem>();
+            TableData tableDataTong = new TableData();
+            tableDataTong.ID = stt++;
+            RowItem RowItem1H = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrTong);
+            RowItem RowItem2H = new RowItem(2, "Toàn tỉnh", "", "", null, "text-align: left; font-weight : bold", ref DataArrTong);
+            RowItem RowItem3H = new RowItem(3, totalSLTiepDan, "", "", null, "text-align: center;", ref DataArrTong);
+            RowItem RowItem4H = new RowItem(4, totalSLDonThu, "", "", null, "text-align: center;", ref DataArrTong);
+            RowItem RowItem5H = new RowItem(5, totalSLXuLyDon, "", "", null, "text-align: center;", ref DataArrTong);
+            RowItem RowItem6H = new RowItem(6, totalSLGiaiQuyetDon, "", "", null, "text-align: center;", ref DataArrTong);
+            tableDataTong.DataArr = DataArrTong;
+            data.Add(tableDataTong);
+
+            foreach (var ptt in DanhSachPhongThuocTinh)
             {
-                TableData tableData = new TableData();
-                tableData.ID = stt++;
-                var DataArr = new List<RowItem>();
-                RowItem RowItem1 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArr);
-                RowItem RowItem2 = new RowItem(2, cq.TenDonVi, "", "", null, "text-align: left;", ref DataArr);
-                RowItem RowItem3 = new RowItem(3, cq.SLTiepDan.ToString(), "", "", null, "text-align: center;", ref DataArr);
-                RowItem RowItem4 = new RowItem(4, cq.SLDonThu.ToString(), "", "", null, "text-align: center;", ref DataArr);
-                RowItem RowItem5 = new RowItem(5, cq.SLXuLyDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
-                RowItem RowItem6 = new RowItem(6, cq.SLGiaiQuyetDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
-              
-                tableData.DataArr = DataArr;
-                data.Add(tableData);
+                if (stt == 1)
+                {
+                    var DataArrCapTinh = new List<RowItem>();
+                    TableData tableDataCapTinh = new TableData();
+                    tableDataCapTinh.ID = stt++;
+                    RowItem RowItem1 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrCapTinh);
+                    RowItem RowItem2 = new RowItem(2, "Cấp tỉnh", "", "", null, "text-align: left; font-weight : bold", ref DataArrCapTinh);
+                    RowItem RowItem3 = new RowItem(3, coQuanList.Where(y => y.CapID == (int)CapQuanLy.CapSoNganh || y.CoQuanChaID == y.CoQuanID).Sum(x => x.SLTiepDan).ToString(), "", "", null, "text-align: center;", ref DataArrCapTinh);
+                    RowItem RowItem4 = new RowItem(4, coQuanList.Where(y => y.CapID == (int)CapQuanLy.CapSoNganh || y.CoQuanChaID == y.CoQuanID).Sum(x => x.SLDonThu).ToString(), "", "", null, "text-align: center;", ref DataArrCapTinh);
+                    RowItem RowItem5 = new RowItem(5, coQuanList.Where(y => y.CapID == (int)CapQuanLy.CapSoNganh || y.CoQuanChaID == y.CoQuanID).Sum(x => x.SLXuLyDon).ToString(), "", "", null, "text-align: center;", ref DataArrCapTinh);
+                    RowItem RowItem6 = new RowItem(6, coQuanList.Where(y => y.CapID == (int)CapQuanLy.CapSoNganh || y.CoQuanChaID == y.CoQuanID).Sum(x => x.SLGiaiQuyetDon).ToString(), "", "", null, "text-align: center;", ref DataArrCapTinh);
+                    tableDataCapTinh.DataArr = DataArrCapTinh;
+                    data.Add(tableDataCapTinh);
+                }
+                else
+                {
+                    var DataArrPhongThuocTinh = new List<RowItem>();
+                    TableData tableDataPhongThuocTinh = new TableData();
+                    tableDataPhongThuocTinh.ID = stt++;
+                    RowItem RowItem1 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrPhongThuocTinh);
+                    RowItem RowItem2 = new RowItem(2, ptt.TenDonVi, "", "", null, "text-align: left", ref DataArrPhongThuocTinh);
+                    RowItem RowItem3 = new RowItem(3, ptt.SLTiepDan.ToString(), "", "", null, "text-align: center;", ref DataArrPhongThuocTinh);
+                    RowItem RowItem4 = new RowItem(4, ptt.SLDonThu.ToString(), "", "", null, "text-align: center;", ref DataArrPhongThuocTinh);
+                    RowItem RowItem5 = new RowItem(5, ptt.SLXuLyDon.ToString(), "", "", null, "text-align: center;", ref DataArrPhongThuocTinh);
+                    RowItem RowItem6 = new RowItem(6, ptt.SLGiaiQuyetDon.ToString(), "", "", null, "text-align: center;", ref DataArrPhongThuocTinh);
+                    tableDataPhongThuocTinh.DataArr = DataArrPhongThuocTinh;
+                    data.Add(tableDataPhongThuocTinh);
+                }
             }
-            
+            foreach (var item in DanhSachHuyen)
+            {
+                var DataArrHuyen = new List<RowItem>();
+                TableData tableDataHuyen = new TableData();
+                tableDataHuyen.ID = stt++;
+                RowItem RowItem1 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrHuyen);
+                RowItem RowItem2 = new RowItem(2, item.TenDonVi, "", "", null, "text-align: left; font-weight : bold", ref DataArrHuyen);
+                RowItem RowItem3 = new RowItem(3, coQuanList.Where(y => y.HuyenID == item.HuyenID ).Sum(x => x.SLTiepDan).ToString(), "", "", null, "text-align: center;", ref DataArrHuyen);
+                RowItem RowItem4 = new RowItem(4, coQuanList.Where(y => y.HuyenID == item.HuyenID ).Sum(x => x.SLDonThu).ToString(), "", "", null, "text-align: center;", ref DataArrHuyen);
+                RowItem RowItem5 = new RowItem(5, coQuanList.Where(y => y.HuyenID == item.HuyenID ).Sum(x => x.SLXuLyDon).ToString(), "", "", null, "text-align: center;", ref DataArrHuyen);
+                RowItem RowItem6 = new RowItem(6, coQuanList.Where(y => y.HuyenID == item.HuyenID ).Sum(x => x.SLGiaiQuyetDon).ToString(), "", "", null, "text-align: center;", ref DataArrHuyen);
+                tableDataHuyen.DataArr = DataArrHuyen;
+                data.Add(tableDataHuyen);
+                foreach (var cq in coQuanList.Where(x => x.CoQuanChaID == item.CoQuanID && x.CapID == (int)CapQuanLy.CapPhong).ToList())
+                {
+                    TableData tableData = new TableData();
+                    tableData.ID = stt++;
+                    var DataArr = new List<RowItem>();
+                    RowItem RowItem7 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArr);
+                    RowItem RowItem8 = new RowItem(2, cq.TenDonVi, "", "", null, "text-align: left;", ref DataArr);
+                    RowItem RowItem9 = new RowItem(3, cq.SLTiepDan.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                    RowItem RowItem10 = new RowItem(4, cq.SLDonThu.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                    RowItem RowItem11 = new RowItem(5, cq.SLXuLyDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                    RowItem RowItem12 = new RowItem(6, cq.SLGiaiQuyetDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                    tableData.DataArr = DataArr;
+                    data.Add(tableData);
+                }
+                foreach (var cq in coQuanList.Where(x => x.CoQuanChaID == item.CoQuanID && x.CapID == (int)CapQuanLy.CapUBNDXa).ToList())
+                {
+                    TableData tableData1 = new TableData();
+                    tableData1.ID = stt++;
+                    var DataArrCapXa = new List<RowItem>();
+                    RowItem RowItem7 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrCapXa);
+                    RowItem RowItem8 = new RowItem(2, cq.TenDonVi, "", "", null, "text-align: left;", ref DataArrCapXa);
+                    RowItem RowItem9 = new RowItem(3, cq.SLTiepDan.ToString(), "", "", null, "text-align: center;", ref DataArrCapXa);
+                    RowItem RowItem10 = new RowItem(4, cq.SLDonThu.ToString(), "", "", null, "text-align: center;", ref DataArrCapXa);
+                    RowItem RowItem11 = new RowItem(5, cq.SLXuLyDon.ToString(), "", "", null, "text-align: center;", ref DataArrCapXa);
+                    RowItem RowItem12 = new RowItem(6, cq.SLGiaiQuyetDon.ToString(), "", "", null, "text-align: center;", ref DataArrCapXa);
+                    tableData1.DataArr = DataArrCapXa;
+                    data.Add(tableData1);
+                }
+            }
+
             BaoCaoModel.DataTable.TableData.AddRange(data);
 
             #endregion
@@ -101,26 +193,118 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                 }
                 else if (p.TrangThai == 1)
                 {
-                    coQuanList = coQuanList.Where(x => x.SLTiepDan != 0 || x.SLDonThu!= 0 || x.SLXuLyDon != 0 || x.SLGiaiQuyetDon != 0).ToList();
+                    coQuanList = coQuanList.Where(x => x.SLTiepDan != 0 || x.SLDonThu != 0 || x.SLXuLyDon != 0 || x.SLGiaiQuyetDon != 0).ToList();
                 }
                 List<TableData> data = new List<TableData>();
                 int stt = 0;
-                foreach (ThongKeNhapLieuInfo cq in coQuanList)
-                {
-                    TableData tableData = new TableData();
-                    tableData.ID = stt++;
-                    var DataArr = new List<RowItem>();
-                    RowItem RowItem1 = new RowItem(1, stt.ToString(), "", "", null, "width: 15px", ref DataArr);
-                    RowItem RowItem2 = new RowItem(2, cq.TenDonVi, "", "", null, "text-align: left;", ref DataArr);
-                    RowItem RowItem3 = new RowItem(3, cq.SLTiepDan.ToString(), "", "", null, "text-align: center;", ref DataArr);
-                    RowItem RowItem4 = new RowItem(4, cq.SLXuLyDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
-                    RowItem RowItem5 = new RowItem(4, cq.SLDonThu.ToString(), "", "", null, "text-align: center;", ref DataArr);
-                    RowItem RowItem6 = new RowItem(5, cq.SLGiaiQuyetDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                //foreach (ThongKeNhapLieuInfo cq in coQuanList)
+                //{
+                //    TableData tableData = new TableData();
+                //    tableData.ID = stt++;
+                //    var DataArr = new List<RowItem>();
+                //    RowItem RowItem1 = new RowItem(1, stt.ToString(), "", "", null, "width: 15px", ref DataArr);
+                //    RowItem RowItem2 = new RowItem(2, cq.TenDonVi, "", "", null, "text-align: left;", ref DataArr);
+                //    RowItem RowItem3 = new RowItem(3, cq.SLTiepDan.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                //    RowItem RowItem4 = new RowItem(4, cq.SLXuLyDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                //    RowItem RowItem5 = new RowItem(4, cq.SLDonThu.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                //    RowItem RowItem6 = new RowItem(5, cq.SLGiaiQuyetDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
 
-                    tableData.DataArr = DataArr;
-                    data.Add(tableData);
+                //    tableData.DataArr = DataArr;
+                //    data.Add(tableData);
+                //}
+                var totalSLTiepDan = coQuanList.Sum(x => x.SLTiepDan).ToString();
+                var totalSLDonThu = coQuanList.Sum(x => x.SLDonThu).ToString();
+                var totalSLXuLyDon = coQuanList.Sum(x => x.SLXuLyDon).ToString();
+                var totalSLGiaiQuyetDon = coQuanList.Sum(x => x.SLGiaiQuyetDon).ToString();
+                var DanhSachHuyen = coQuanList.Where(x => x.CapID == (int)CapQuanLy.CapUBNDHuyen).ToList();
+                var DanhSachPhongThuocTinh = coQuanList.Where(x => x.CapID == (int)CapQuanLy.CapSoNganh || x.CoQuanChaID == x.CoQuanID).ToList();
+
+                var DataArrTong = new List<RowItem>();
+                TableData tableDataTong = new TableData();
+                tableDataTong.ID = stt++;
+                RowItem RowItem1H = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrTong);
+                RowItem RowItem2H = new RowItem(2, "Toàn tỉnh", "", "", null, "text-align: left; font-weight : bold", ref DataArrTong);
+                RowItem RowItem3H = new RowItem(3, totalSLTiepDan, "", "", null, "text-align: center;", ref DataArrTong);
+                RowItem RowItem4H = new RowItem(4, totalSLDonThu, "", "", null, "text-align: center;", ref DataArrTong);
+                RowItem RowItem5H = new RowItem(5, totalSLXuLyDon, "", "", null, "text-align: center;", ref DataArrTong);
+                RowItem RowItem6H = new RowItem(6, totalSLGiaiQuyetDon, "", "", null, "text-align: center;", ref DataArrTong);
+                tableDataTong.DataArr = DataArrTong;
+                data.Add(tableDataTong);
+
+                foreach (var ptt in DanhSachPhongThuocTinh)
+                {
+                    if (stt == 1)
+                    {
+                        var DataArrCapTinh = new List<RowItem>();
+                        TableData tableDataCapTinh = new TableData();
+                        tableDataCapTinh.ID = stt++;
+                        RowItem RowItem1 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrCapTinh);
+                        RowItem RowItem2 = new RowItem(2, "Cấp tỉnh", "", "", null, "text-align: left; font-weight : bold", ref DataArrCapTinh);
+                        RowItem RowItem3 = new RowItem(3, coQuanList.Where(y => y.CapID == (int)CapQuanLy.CapSoNganh || y.CoQuanChaID == y.CoQuanID).Sum(x => x.SLTiepDan).ToString(), "", "", null, "text-align: center;", ref DataArrCapTinh);
+                        RowItem RowItem4 = new RowItem(4, coQuanList.Where(y => y.CapID == (int)CapQuanLy.CapSoNganh || y.CoQuanChaID == y.CoQuanID).Sum(x => x.SLDonThu).ToString(), "", "", null, "text-align: center;", ref DataArrCapTinh);
+                        RowItem RowItem5 = new RowItem(5, coQuanList.Where(y => y.CapID == (int)CapQuanLy.CapSoNganh || y.CoQuanChaID == y.CoQuanID).Sum(x => x.SLXuLyDon).ToString(), "", "", null, "text-align: center;", ref DataArrCapTinh);
+                        RowItem RowItem6 = new RowItem(6, coQuanList.Where(y => y.CapID == (int)CapQuanLy.CapSoNganh || y.CoQuanChaID == y.CoQuanID).Sum(x => x.SLGiaiQuyetDon).ToString(), "", "", null, "text-align: center;", ref DataArrCapTinh);
+                        tableDataCapTinh.DataArr = DataArrCapTinh;
+                        data.Add(tableDataCapTinh);
+                    }
+                    else
+                    {
+                        var DataArrPhongThuocTinh = new List<RowItem>();
+                        TableData tableDataPhongThuocTinh = new TableData();
+                        tableDataPhongThuocTinh.ID = stt++;
+                        RowItem RowItem1 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrPhongThuocTinh);
+                        RowItem RowItem2 = new RowItem(2, ptt.TenDonVi, "", "", null, "text-align: left", ref DataArrPhongThuocTinh);
+                        RowItem RowItem3 = new RowItem(3, ptt.SLTiepDan.ToString(), "", "", null, "text-align: center;", ref DataArrPhongThuocTinh);
+                        RowItem RowItem4 = new RowItem(4, ptt.SLDonThu.ToString(), "", "", null, "text-align: center;", ref DataArrPhongThuocTinh);
+                        RowItem RowItem5 = new RowItem(5, ptt.SLXuLyDon.ToString(), "", "", null, "text-align: center;", ref DataArrPhongThuocTinh);
+                        RowItem RowItem6 = new RowItem(6, ptt.SLGiaiQuyetDon.ToString(), "", "", null, "text-align: center;", ref DataArrPhongThuocTinh);
+                        tableDataPhongThuocTinh.DataArr = DataArrPhongThuocTinh;
+                        data.Add(tableDataPhongThuocTinh);
+                    }
                 }
-              
+                foreach (var item in DanhSachHuyen)
+                {
+                    var DataArrHuyen = new List<RowItem>();
+                    TableData tableDataHuyen = new TableData();
+                    tableDataHuyen.ID = stt++;
+                    RowItem RowItem1 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrHuyen);
+                    RowItem RowItem2 = new RowItem(2, item.TenDonVi, "", "", null, "text-align: left; font-weight : bold", ref DataArrHuyen);
+                    RowItem RowItem3 = new RowItem(3, coQuanList.Where(y => y.HuyenID == item.HuyenID).Sum(x => x.SLTiepDan).ToString(), "", "", null, "text-align: center;", ref DataArrHuyen);
+                    RowItem RowItem4 = new RowItem(4, coQuanList.Where(y => y.HuyenID == item.HuyenID).Sum(x => x.SLDonThu).ToString(), "", "", null, "text-align: center;", ref DataArrHuyen);
+                    RowItem RowItem5 = new RowItem(5, coQuanList.Where(y => y.HuyenID == item.HuyenID).Sum(x => x.SLXuLyDon).ToString(), "", "", null, "text-align: center;", ref DataArrHuyen);
+                    RowItem RowItem6 = new RowItem(6, coQuanList.Where(y => y.HuyenID == item.HuyenID).Sum(x => x.SLGiaiQuyetDon).ToString(), "", "", null, "text-align: center;", ref DataArrHuyen);
+                    tableDataHuyen.DataArr = DataArrHuyen;
+                    data.Add(tableDataHuyen);
+                    foreach (var cq in coQuanList.Where(x => x.CoQuanChaID == item.CoQuanID && x.CapID == (int)CapQuanLy.CapPhong).ToList())
+                    {
+                        TableData tableData = new TableData();
+                        tableData.ID = stt++;
+                        var DataArr = new List<RowItem>();
+                        RowItem RowItem7 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArr);
+                        RowItem RowItem8 = new RowItem(2, cq.TenDonVi, "", "", null, "text-align: left;", ref DataArr);
+                        RowItem RowItem9 = new RowItem(3, cq.SLTiepDan.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                        RowItem RowItem10 = new RowItem(4, cq.SLDonThu.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                        RowItem RowItem11 = new RowItem(5, cq.SLXuLyDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                        RowItem RowItem12 = new RowItem(6, cq.SLGiaiQuyetDon.ToString(), "", "", null, "text-align: center;", ref DataArr);
+                        tableData.DataArr = DataArr;
+                        data.Add(tableData);
+                    }
+                    foreach (var cq in coQuanList.Where(x => x.CoQuanChaID == item.CoQuanID && x.CapID == (int)CapQuanLy.CapUBNDXa).ToList())
+                    {
+                        TableData tableData1 = new TableData();
+                        tableData1.ID = stt++;
+                        var DataArrCapXa = new List<RowItem>();
+                        RowItem RowItem7 = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrCapXa);
+                        RowItem RowItem8 = new RowItem(2, cq.TenDonVi, "", "", null, "text-align: left;", ref DataArrCapXa);
+                        RowItem RowItem9 = new RowItem(3, cq.SLTiepDan.ToString(), "", "", null, "text-align: center;", ref DataArrCapXa);
+                        RowItem RowItem10 = new RowItem(4, cq.SLDonThu.ToString(), "", "", null, "text-align: center;", ref DataArrCapXa);
+                        RowItem RowItem11 = new RowItem(5, cq.SLXuLyDon.ToString(), "", "", null, "text-align: center;", ref DataArrCapXa);
+                        RowItem RowItem12 = new RowItem(6, cq.SLGiaiQuyetDon.ToString(), "", "", null, "text-align: center;", ref DataArrCapXa);
+                        tableData1.DataArr = DataArrCapXa;
+                        data.Add(tableData1);
+                    }
+                }
+
                 string path = @"Templates\FileTam\ThongKeNhapLieu_" + CanBoDangNhapID + DateTime.Now.ToString("ddMMyyyyhhmmss") + ".xlsx";
                 string urlExcel = ThongKeNhapLieu_Excel(ContentRootPath, path, data, p.TuNgay ?? DateTime.Now, p.DenNgay ?? DateTime.Now);
                 Result.Status = 1;
@@ -177,8 +361,8 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             {
                                 //if (data[i].DataArr[j].Content != "0")
                                 //{
-                                    worksheet.Cells[i + 5, j + 1].Value = data[i].DataArr[j].Content;
-                                    if (data[i].DataArr[j].Style.Contains("bold")) worksheet.Cells[i + 5, j + 1].Style.Font.Bold = true;
+                                worksheet.Cells[i + 5, j + 1].Value = data[i].DataArr[j].Content;
+                                if (data[i].DataArr[j].Style.Contains("bold")) worksheet.Cells[i + 5, j + 1].Style.Font.Bold = true;
                                 //}
                             }
                         }

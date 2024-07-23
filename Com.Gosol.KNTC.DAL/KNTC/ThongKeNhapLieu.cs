@@ -23,10 +23,13 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             ThongKeNhapLieuInfo info = new ThongKeNhapLieuInfo();
             info.TenDonVi = Utils.ConvertToString(rdr["TenCoQuan"], string.Empty);
             info.CoQuanID = Utils.ConvertToInt32(rdr["CoQuanID"], 0);
+            info.CoQuanChaID = Utils.ConvertToInt32(rdr["CoQuanChaID"], 0);
             info.SLTiepDan = Utils.ConvertToInt32(rdr["SLTiepDan"], 0);
             info.SLDonThu = Utils.ConvertToInt32(rdr["SLDonThu"], 0);
             info.SLXuLyDon = Utils.ConvertToInt32(rdr["SLXuLyDon"], 0);
             info.SLGiaiQuyetDon = Utils.ConvertToInt32(rdr["SLGiaiQuyetDon"], 0);
+            info.HuyenID = Utils.ConvertToInt32(rdr["HuyenID"],0);
+            info.CapID = Utils.ConvertToInt32(rdr["CapID"],0);
             return info;
         }
 

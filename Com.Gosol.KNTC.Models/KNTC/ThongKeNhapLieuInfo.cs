@@ -14,5 +14,8 @@ namespace Com.Gosol.KNTC.Models.KNTC
         public int SLXuLyDon { get; set; }
         public int SLGiaiQuyetDon { get; set; }
         public int CoQuanID { get; set; }
+        public int CoQuanChaID { get; set; }
+        public int HuyenID { get; set; }
+        public int CapID { get; set; }
     }
 }
