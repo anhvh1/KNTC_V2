@@ -161,7 +161,7 @@ namespace GO.API.Controllers.KNTC
                 {
                     foreach (var item in p)
                     {
-                        var Data = _TiepNhanDonBUS.Delete(item.DonThuID ?? 0, item.XuLyDonID ?? 0);
+                        var Data = _TiepNhanDonBUS.Delete(item.DonThuID ?? 0, item.XuLyDonID ?? 0, item.NhomKNID ?? 0, IdentityHelper);
                         base.Data = Data.Data;
                         base.Status = Data.Status;
                         base.Message = Data.Message;

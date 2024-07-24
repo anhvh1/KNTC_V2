@@ -1185,7 +1185,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             return TiepDanInfo;
         }
 
-        public BaseResultModel Delete(int DonThuID, int XuLyDonID)
+        public BaseResultModel Delete(int DonThuID, int XuLyDonID,int NhomKNID, IdentityHelper IdentityHelper)
         {
             var Result = new BaseResultModel();
             int kq = 0;
@@ -1193,10 +1193,26 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             {
                 try
                 {
+                    // bổ sung thông tin log
+                    SystemLogInfo systeminfo = new SystemLogInfo();
+                    var xuLyDonInfo = new XuLyDonDAL().GetByXuLyDonID_V2(XuLyDonID);
+                    var nhomDoiTuongKhieuNai = new DoiTuongKNDAL().GetCustomDataByNhomKNID(NhomKNID);
+                    string hoTenChuoi = string.Join(", ", nhomDoiTuongKhieuNai.Select(dt => dt.HoTen));
+                    systeminfo.LogInfo = "Xóa đơn thư" + " - " + xuLyDonInfo.SoDonThu + " - " + xuLyDonInfo.XuLyDonID + " - " + hoTenChuoi;
+                    
+                    //lưu đơn thư bị xóa sang bảng XuLyDonDeleted
+                    new Com.Gosol.KNTC.DAL.KNTC.TiepDan().InsertXuLyDonDeleted(XuLyDonID);
+
                     kq = new XuLyDonDAL().Delete_DonThuDaTiepNhan(DonThuID, XuLyDonID);
                     Result.Message = Constant.CONTENT_DELETE_SUCCESS;
                     Result.Status = 1;
                     Result.Data = kq;
+
+                    // bổ sung thông tin log
+                    systeminfo.CanBoID = IdentityHelper.CanBoID ?? 0;
+                    systeminfo.LogType = (int)LogType.Delete;
+                    systeminfo.LogTime = Utils.ConvertToDateTime(DateTime.Now, DateTime.MinValue);
+                    new SystemLog().Insert(systeminfo);
                 }
                 catch
                 {

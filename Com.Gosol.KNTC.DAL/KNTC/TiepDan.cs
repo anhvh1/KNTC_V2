@@ -2,7 +2,6 @@
 using Com.Gosol.KNTC.Models.KNTC;
 using Com.Gosol.KNTC.Ultilities;
 using DocumentFormat.OpenXml.EMMA;
-using DocumentFormat.OpenXml.Vml;
 using Microsoft.Office.Interop.Word;
 using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
@@ -3270,6 +3269,40 @@ namespace Com.Gosol.KNTC.DAL.KNTC
             }
             return val;
         }
-       
+
+        // bổ sung insert đơn thư đã xóa
+        public int InsertXuLyDonDeleted(int xuLyDonID)
+        {
+
+            object val = null;
+
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("@XuLyDonID",SqlDbType.Int),
+            };
+            parameters[0].Value = xuLyDonID;
+
+            using (SqlConnection conn = new SqlConnection(SQLHelper.appConnectionStrings))
+            {
+
+                conn.Open();
+                using (SqlTransaction trans = conn.BeginTransaction())
+                {
+
+                    try
+                    {
+                        val = SQLHelper.ExecuteScalar(trans, CommandType.StoredProcedure, "NVTiepDan_InsertXuLyDon_Deleted", parameters);
+                        trans.Commit();
+                    }
+                    catch
+                    {
+                        trans.Rollback();
+                        throw;
+                    }
+                }
+                conn.Close();
+            }
+            return Utils.ConvertToInt32(val, 0);
+        }
     }
 }

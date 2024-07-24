@@ -265,9 +265,10 @@ namespace GO.API.Controllers.KNTC
                             base.Status = Data.Status;
                             base.Message = Data.Message;
                         }
+                        // thêm log cho xóa
                         else if (item.TiepDanKhongDonID > 0)
                         {
-                            var Data = _TiepDanBUS.Delete(item.TiepDanKhongDonID);
+                            var Data = _TiepDanBUS.Delete(item.TiepDanKhongDonID, item.DonThuID, item.XuLyDonID, item.NhomKNID, IdentityHelper);
                             base.Data = Data.Data;
                             base.Status = Data.Status;
                             base.Message = Data.Message;

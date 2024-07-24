@@ -42,22 +42,29 @@ namespace Com.Gosol.KNTC.BUS.KNTC
         {
             var Result = new BaseResultModel();
             SystemLogInfo systeminfo = new SystemLogInfo();
+            var xuLyDonInfo = new XuLyDonDAL().GetByXuLyDonID_V2(xuLyDonID);
+            //var doiTuongKhieuNai = new DoiTuongKNDAL().GetByID(doiTuongBiKNID);
+            var nhomDoiTuongKhieuNai = new DoiTuongKNDAL().GetCustomDataByNhomKNID(nhomKNID);
+            string hoTenChuoi = string.Join(", ", nhomDoiTuongKhieuNai.Select(dt => dt.HoTen));
+            systeminfo.LogInfo = "Xóa đơn thư" +" - "+xuLyDonInfo.SoDonThu + " - "+ xuLyDonInfo.XuLyDonID + " - "+ hoTenChuoi;
             List<SuperDeleteDTInfo> list = new SupperDeleteDT().ListXuLyDonID(donthuid);
             int kq = 0;
             if (donthuid != 0)
             {
                 try
                 {
+                    //lưu đơn thư bị xóa sang bảng XuLyDonDeleted
+                    new Com.Gosol.KNTC.DAL.KNTC.TiepDan().InsertXuLyDonDeleted(xuLyDonID);
                     new SupperDeleteDT().Delete_AllXuLyDon(donthuid, xuLyDonID);
                     kq = new SupperDeleteDT().Delete_AllDonThu(donthuid, xuLyDonID, doiTuongBiKNID, nhomKNID);
                     Result.Message = Constant.CONTENT_DELETE_SUCCESS;
                     Result.Status = 1;
                   
                     systeminfo.CanBoID = CanBoID;
-                    systeminfo.LogType = (int)LogType.Delete;
-                    systeminfo.LogInfo = "Xóa đơn thư";
+                    systeminfo.LogType = (int)LogType.Delete;                    
                     systeminfo.LogTime = Utils.ConvertToDateTime(DateTime.Now, DateTime.MinValue);
                     new SystemLog().Insert(systeminfo);
+                    
                 }
                 catch (Exception ex)
                 {

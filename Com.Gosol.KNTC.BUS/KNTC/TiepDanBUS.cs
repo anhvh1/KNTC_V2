@@ -490,15 +490,28 @@ namespace Com.Gosol.KNTC.BUS.KNTC
         {
             return new Com.Gosol.KNTC.DAL.KNTC.TiepDan().GetSTT(coquanID);
         }
-        public BaseResultModel Delete(int tiepdanID)
+        public BaseResultModel Delete(int tiepdanID,int donThuID, int xuLyDonID,int nhomKNID, IdentityHelper identityHelper)
         {
+            SystemLogInfo systeminfo = new SystemLogInfo();
+            var xuLyDonInfo = new XuLyDonDAL().GetByXuLyDonID_V2(xuLyDonID);           
+            var nhomDoiTuongKhieuNai = new DoiTuongKNDAL().GetCustomDataByNhomKNID(nhomKNID);
+            string hoTenChuoi = string.Join(", ", nhomDoiTuongKhieuNai.Select(dt => dt.HoTen));
+            systeminfo.LogInfo = "Xóa đơn thư" + " - " + xuLyDonInfo.SoDonThu + " - " + xuLyDonInfo.XuLyDonID + " - " + hoTenChuoi;
             var Result = new BaseResultModel();
             try
             {
+                //lưu đơn thư bị xóa sang bảng XuLyDonDeleted
+                new Com.Gosol.KNTC.DAL.KNTC.TiepDan().InsertXuLyDonDeleted(xuLyDonID);
+
                 var kq = new TiepDanKhongDon().Delete_Manage(tiepdanID);
                 if (kq > 0)
                 {
                     Result.Status = 1;
+                    // bổ sung thông tin vào systemlog
+                    systeminfo.CanBoID = identityHelper.CanBoID ?? 0;
+                    systeminfo.LogType = (int)LogType.Delete;
+                    systeminfo.LogTime = Utils.ConvertToDateTime(DateTime.Now, DateTime.MinValue);
+                    new SystemLog().Insert(systeminfo);
                 }
                 else Result.Status = 0;
             }
