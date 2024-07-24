@@ -1393,14 +1393,14 @@ namespace Com.Gosol.KNTC.DAL.HeThong
                                 HeThongNguoiDungModel HeThongNguoiDungModel = new HeThongNguoiDungModel();
                                 HeThongNguoiDungModel.MatKhau = Utils.HashFile(Encoding.ASCII.GetBytes(matKhauMacDinh ?? "123456")).ToUpper();
                                 SqlParameter[] paramrs = new SqlParameter[]
-                                  {
-                                    new SqlParameter("@TenNguoiDung", SqlDbType.NVarChar),
-                                    new SqlParameter("@MatKhau", SqlDbType.NVarChar),
-                                    new SqlParameter("@GhiChu", SqlDbType.NVarChar),
-                                    new SqlParameter("@TrangThai", SqlDbType.Int),
-                                    new SqlParameter("@CanBoID", SqlDbType.Int),
-                                    new SqlParameter("@SSOID", SqlDbType.NVarChar),
-                                  };
+                                {
+                                new SqlParameter("@TenNguoiDung", SqlDbType.NVarChar),
+                                new SqlParameter("@MatKhau", SqlDbType.NVarChar),
+                                new SqlParameter("@GhiChu", SqlDbType.NVarChar),
+                                new SqlParameter("@TrangThai", SqlDbType.Int),
+                                new SqlParameter("@CanBoID", SqlDbType.Int),
+                                new SqlParameter("@SSOID", SqlDbType.NVarChar),
+                                };
                                 paramrs[0].Value = HeThongCanBoModel.TenNguoiDung;
                                 paramrs[1].Value = HeThongNguoiDungModel.MatKhau.Trim();
                                 paramrs[2].Value = HeThongNguoiDungModel.GhiChu ?? Convert.DBNull;
@@ -1410,6 +1410,27 @@ namespace Com.Gosol.KNTC.DAL.HeThong
 
                                 HeThongCanBoModel.NguoiDungID = Utils.ConvertToInt32(SQLHelper.ExecuteScalar(trans, System.Data.CommandType.StoredProcedure, @"v2_HeThong_NguoiDung_Insert_New", paramrs), 0);
                                 trans.Commit();
+                            }
+                            // bổ sung cho người dùng chỉnh sửa thông tin TenNguoiDung
+                            else
+                            {
+                                HeThongNguoiDungModel HeThongNguoiDungModel = new HeThongNguoiDungModel();
+                                SqlParameter[] paramrs = new SqlParameter[]
+                                {
+                                    new SqlParameter("@NguoiDungID",SqlDbType.Int),
+                                    new SqlParameter("@TenNguoiDung", SqlDbType.NVarChar),
+                                    new SqlParameter("@GhiChu", SqlDbType.NVarChar),
+                                    new SqlParameter("@TrangThai", SqlDbType.Int),
+                                    new SqlParameter("@CanBoID", SqlDbType.Int),
+                                    new SqlParameter("@SSOID", SqlDbType.NVarChar),
+                                };
+                                paramrs[0].Value = HeThongCanBoModel.NguoiDungID;
+                                paramrs[1].Value = HeThongCanBoModel.TenNguoiDung;
+                                paramrs[2].Value = HeThongNguoiDungModel.GhiChu ?? Convert.DBNull;
+                                paramrs[3].Value = 1;
+                                paramrs[4].Value = HeThongCanBoModel.CanBoID;
+                                paramrs[5].Value = HeThongCanBoModel.SSOID ?? Convert.DBNull;
+                                SQLHelper.ExecuteNonQuery(trans, System.Data.CommandType.StoredProcedure, @"V2_HeThong_NguoiDung_Update", paramrs);
                             }
                         }
                         catch (Exception ex)
