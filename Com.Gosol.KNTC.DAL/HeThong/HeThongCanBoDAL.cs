@@ -1229,6 +1229,12 @@ namespace Com.Gosol.KNTC.DAL.HeThong
                 Message = ConstantLogMessage.Alert_Error_NotExist("Cán bộ");
                 return val;
             }
+            HeThongNguoiDungModel nguoiDungTemp = new HeThongNguoiDungDAL().GetByName(HeThongCanBoModel.TenNguoiDung.Trim().ToLower(), 0);
+            if (nguoiDungTemp.NguoiDungID > 0)
+            {
+                Message = "Tên người dùng đã được sử dụng!";
+                return val;
+            }
             if (!string.IsNullOrEmpty(HeThongCanBoModel.MaCB) && (HeThongCanBoModel.MaCB != CanBoOld.MaCB || string.IsNullOrEmpty(CanBoOld.MaCB)))
             {
                 //var CanBoByMaCb = GetByMaCB(HeThongCanBoModel.MaCB.Trim());
