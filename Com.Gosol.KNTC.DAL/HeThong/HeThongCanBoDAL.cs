@@ -1229,12 +1229,16 @@ namespace Com.Gosol.KNTC.DAL.HeThong
                 Message = ConstantLogMessage.Alert_Error_NotExist("Cán bộ");
                 return val;
             }
-            HeThongNguoiDungModel nguoiDungTemp = new HeThongNguoiDungDAL().GetByName(HeThongCanBoModel.TenNguoiDung.Trim().ToLower(), 0);
-            if (nguoiDungTemp.NguoiDungID > 0)
+            if (!string.IsNullOrEmpty(HeThongCanBoModel.TenNguoiDung))
             {
-                Message = "Tên người dùng đã được sử dụng!";
-                return val;
+                HeThongNguoiDungModel nguoiDungTemp = new HeThongNguoiDungDAL().GetByName(HeThongCanBoModel.TenNguoiDung.Trim().ToLower(), 0);
+                if (nguoiDungTemp.NguoiDungID > 0 && nguoiDungTemp.NguoiDungID != HeThongCanBoModel.NguoiDungID)
+                {
+                    Message = "Tên người dùng đã được sử dụng!";
+                    return val;
+                }
             }
+            
             if (!string.IsNullOrEmpty(HeThongCanBoModel.MaCB) && (HeThongCanBoModel.MaCB != CanBoOld.MaCB || string.IsNullOrEmpty(CanBoOld.MaCB)))
             {
                 //var CanBoByMaCb = GetByMaCB(HeThongCanBoModel.MaCB.Trim());
@@ -1418,7 +1422,7 @@ namespace Com.Gosol.KNTC.DAL.HeThong
                                 trans.Commit();
                             }
                             // bổ sung cho người dùng chỉnh sửa thông tin TenNguoiDung
-                            else
+                            else if(HeThongCanBoModel.NguoiDungID > 0 && !string.IsNullOrEmpty(HeThongCanBoModel.TenNguoiDung))
                             {
                                 HeThongNguoiDungModel HeThongNguoiDungModel = new HeThongNguoiDungModel();
                                 SqlParameter[] paramrs = new SqlParameter[]

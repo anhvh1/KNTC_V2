@@ -1468,28 +1468,40 @@ namespace Com.Gosol.KNTC.DAL.BaoCao
         public List<TKDonThuInfo> GetDSChiTietDonThu(DateTime startDate, DateTime endDate, List<CoQuanInfo> ListCoQuan, int start, int pagesize, int? Index, int? xemTaiLieuMat, int? canBoID, int? capID)
         {
             List<TKDonThuInfo> infoList = new List<TKDonThuInfo>();
-            var pList = new SqlParameter("@ListCoQuanID", SqlDbType.Structured);
-            pList.TypeName = "dbo.IntList";
+
+            // Tạo DataTable để đại diện cho tham số dạng bảng (table-valued parameter)
             var tbCoQuanID = new DataTable();
-            tbCoQuanID.Columns.Add("CoQuanID", typeof(string));
-            ListCoQuan.ForEach(x => tbCoQuanID.Rows.Add(x.CoQuanID));
-            SqlParameter[] parm = new SqlParameter[] {
-                new SqlParameter(PARM_STARTDATE, SqlDbType.DateTime),
-                new SqlParameter(PARM_ENDDATE, SqlDbType.DateTime),
-               pList,
-                new SqlParameter("@Index", SqlDbType.Int),
-                new SqlParameter(PARAM_END, SqlDbType.Int),
-                new SqlParameter(PARAM_START, SqlDbType.Int),
-                 new SqlParameter("@CapID", SqlDbType.Int)
+            tbCoQuanID.Columns.Add("CoQuanID", typeof(int));
+
+            // Điền dữ liệu từ ListCoQuan vào DataTable
+            foreach (var coQuan in ListCoQuan)
+            {
+                tbCoQuanID.Rows.Add(coQuan.CoQuanID);
+            }
+
+            // Tạo SqlParameter cho tham số dạng bảng
+            var pList = new SqlParameter("@ListCoQuanID", SqlDbType.Structured)
+            {
+                TypeName = "dbo.IntList", // Đảm bảo rằng điều này khớp với kiểu dữ liệu trong cơ sở dữ liệu của bạn
+                Value = tbCoQuanID
             };
-            parm[0].Value = startDate;
-            parm[1].Value = endDate;
-            parm[2].Value = tbCoQuanID;
-            parm[3].Value = Index ?? Convert.DBNull;
-            parm[4].Value = pagesize;
-            parm[5].Value = start;
-            parm[6].Value = capID ?? Convert.DBNull;
+
+            // Tạo các tham số SqlParameter khác
+            SqlParameter[] parm = new SqlParameter[]
+            {
+                new SqlParameter(PARM_STARTDATE, SqlDbType.DateTime) { Value = startDate },
+                new SqlParameter(PARM_ENDDATE, SqlDbType.DateTime) { Value = endDate },
+                pList,
+                new SqlParameter("@Index", SqlDbType.Int) { Value = (object)Index ?? DBNull.Value },
+                new SqlParameter(PARAM_END, SqlDbType.Int) { Value = pagesize },
+                new SqlParameter(PARAM_START, SqlDbType.Int) { Value = start },
+                new SqlParameter("@CapID", SqlDbType.Int) { Value = (object)capID ?? DBNull.Value }
+            };
+
+            // Thực hiện câu lệnh truy vấn với các tham số đã tạo
             var query = new DataTable();
+            // Sử dụng 'query' để thực hiện truy vấn hoặc lưu kết quả.
+
 
             try
             {
