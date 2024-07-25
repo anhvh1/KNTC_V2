@@ -61,7 +61,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                         item.StateID,
                         item.NextStateID,
                         item.TrangThaiDuyet ?? 0,
-                        item.TrinhDuThao,                                               
+                        item.TrinhDuThao,
                         IdentityHelper,
                         item.NgayCapNhat,
                         item.ChuyenGiaiQuyetID,
@@ -74,11 +74,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     item.TrangThaiIDMoi = renderTrangThai.TrangThaiIDMoi;
                     item.CheckTrangThai = renderTrangThai.CheckTrangThai;
 
+                    
                     if (item.HuongGiaiQuyetID == 0)
                     {
                         item.TrangThaiStr = "Chưa xử lý";
                         item.TrangThaiID = 0;
-                    }
+                    }                   
                     else if (item.StateName == Constant.CV_TiepNhan)
                     {
                         if (IdentityHelper.SuDungQuyTrinhPhucTap == true)
@@ -128,7 +129,12 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                             }
                         }
                     }
-
+                    // bổ sung chưa xử lý đơn đã rút đơn
+                    if (item.HuongGiaiQuyetID == 0 && item.RutDonID != 0)
+                    {
+                        item.TrangThaiStr = "Đã rút đơn";
+                        item.TrangThaiID = 4;
+                    }
                     int donthuID = item.DonThuID;
                     DonThuInfo dt = new DonThuInfo();
                     try
