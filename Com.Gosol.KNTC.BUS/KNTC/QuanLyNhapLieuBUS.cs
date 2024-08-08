@@ -88,7 +88,14 @@ namespace Com.Gosol.KNTC.BUS.KNTC
             TableData tableDataTong = new TableData();
             tableDataTong.ID = stt++;
             RowItem RowItem1H = new RowItem(1, stt.ToString(), "", "", null, "text-align: center;width: 50px", ref DataArrTong);
-            RowItem RowItem2H = new RowItem(2, "Toàn tỉnh", "", "", null, "text-align: left; font-weight : bold", ref DataArrTong);
+            if (p.CoQuanID > 0)
+            {
+                RowItem RowItem2H = new RowItem(2, coQuanList[0].TenDonVi, "", "", null, "text-align: left; font-weight : bold", ref DataArrTong);
+            }
+            else
+            {
+                RowItem RowItem2H = new RowItem(2, "Toàn tỉnh", "", "", null, "text-align: left; font-weight : bold", ref DataArrTong);
+            }            
             RowItem RowItem3H = new RowItem(3, totalSLTiepDan, "", "", null, "text-align: center;", ref DataArrTong);
             RowItem RowItem4H = new RowItem(4, totalSLDonThu, "", "", null, "text-align: center;", ref DataArrTong);
             RowItem RowItem5H = new RowItem(5, totalSLXuLyDon, "", "", null, "text-align: center;", ref DataArrTong);
