@@ -469,7 +469,7 @@ namespace Com.Gosol.KNTC.DAL.BaoCaoTT2024
         {
             //var camera = new Camera;
             // path to your excel file
-            string path = rootPath + @"\Templates\BaoCaoTT2024\XLD02_TT2024.xlsx";
+            string path = rootPath + @"\Templates\BaoCao_TT2024\XLD02_TT2024.xlsx";
             FileInfo fileInfo = new FileInfo(path);
             FileInfo file = new FileInfo(rootPath + "\\" + pathFile);
 
