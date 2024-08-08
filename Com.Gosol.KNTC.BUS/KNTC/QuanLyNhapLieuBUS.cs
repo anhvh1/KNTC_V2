@@ -105,7 +105,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
 
             foreach (var ptt in DanhSachPhongThuocTinh)
             {
-                if (stt == 1)
+                if (stt == 1 && p.CoQuanID is null)
                 {
                     var DataArrCapTinh = new List<RowItem>();
                     TableData tableDataCapTinh = new TableData();
@@ -119,7 +119,7 @@ namespace Com.Gosol.KNTC.BUS.KNTC
                     tableDataCapTinh.DataArr = DataArrCapTinh;
                     data.Add(tableDataCapTinh);
                 }
-                else
+                else if(p.CoQuanID is null)
                 {
                     var DataArrPhongThuocTinh = new List<RowItem>();
                     TableData tableDataPhongThuocTinh = new TableData();
